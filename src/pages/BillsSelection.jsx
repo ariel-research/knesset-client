@@ -46,14 +46,14 @@ const BillsSelection = () => {
       ),
     },
   ];
-  const [tableData, setTableData] = useState([]);
+  // const [tableData, setTableData] = useState([]);
 
   const header = "שקיפות בכנסת";
   const hint =
     "שירות זה נועד כדי לספק לציבור בישראל אפשרות להשוות בין דעותיהם הפוליטיות להצבעות חברי כנסת ישראל";
 
   const searchBillHandler = () => {
-    setTableData((prevData) => [...prevData, currentChosenBill]);
+    // setTableData((prevData) => [...prevData, currentChosenBill]);
   };
 
   const loadSelectedBillsHandler = () => {

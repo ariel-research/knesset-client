@@ -13,23 +13,23 @@ const SelectedBillsTable = (props) => {
     return res;
   };
 
-  const renderRemoveRowButton = (params, handler) => {
-    const handleButtonClick = () => {
-      handler(params.row.id);
-    };
+  // const renderRemoveRowButton = (params, handler) => {
+  //   const handleButtonClick = () => {
+  //     handler(params.row.id);
+  //   };
 
-    return (
-      <button variant="contained" color="primary" onClick={handleButtonClick}>
-        הסר
-      </button>
-    );
-  };
+  //   return (
+  //     <button variant="contained" color="primary" onClick={handleButtonClick}>
+  //       הסר
+  //     </button>
+  //   );
+  // };
 
-  const removeRow = (row_index) => {
-    const res = [...data];
-    res.splice(row_index, 1);
-    setRowsData(res);
-  };
+  // const removeRow = (row_index) => {
+  //   const res = [...data];
+  //   res.splice(row_index, 1);
+  //   setRowsData(res);
+  // };
 
   const columns = [
     {
