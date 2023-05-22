@@ -10,9 +10,9 @@ import {
   Hint,
   LoadSelectedBillsButton,
 } from "./BillsSelection.styled";
-import BillsSuggestionsTable from "../common/BillsSuggestionsTable";
-import SelectedBillsTable from "../common/SelectedBillsTable";
-import SearchBills from "../common/SearchBills";
+import BillsSuggestionsTable from "../components/common/BillsSuggestionsTable";
+import SelectedBillsTable from "../components/common/SelectedBillsTable";
+import SearchBills from "../components/common/SearchBills";
 
 const BillsSelection = () => {
 
