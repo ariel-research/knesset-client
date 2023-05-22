@@ -1,8 +1,6 @@
-import MyTabs from "./TabsCard";
 import { useState } from "react";
 import {
   ArrowBox,
-  BillsSelectionContainer,
   BillsSelectionWrapper,
   BillsTableWrapper,
   BillsTablesContainer,
@@ -14,9 +12,10 @@ import {
 } from "./BillsSelection.styled";
 import BillsSuggestionsTable from "../common/BillsSuggestionsTable";
 import SelectedBillsTable from "../common/SelectedBillsTable";
+import SearchBills from "../common/SearchBills";
 
 const BillsSelection = () => {
-  const [currentChosenBill, setCurrentChosenBill] = useState("");
+
   const [selectedData, setSelectedData] = useState([]);
   const [finalSelectedBillsData, setFinalSelectedBillsData] = useState([]);
   const [data, setData] = useState([
@@ -25,27 +24,8 @@ const BillsSelection = () => {
     { name: "Johnson" },
   ]);
 
-  const handleInputChange = (e) => {
-    setCurrentChosenBill(e.target.value);
-  };
-  const tabsHeaders = [
-    {
-      title: "מספר כנסת",
-      description: "חפש הצעות חוק המשוייכות לכנסת מסויימת",
-      content: <input type="number"></input>,
-    },
-    {
-      title: "טקסט חופשי",
-      description: "חפש הצעות חוק על פי טקסט חופשי",
-      content: (
-        <input
-          value={currentChosenBill}
-          placeholder="...הקלד כאן"
-          onChange={handleInputChange}
-        ></input>
-      ),
-    },
-  ];
+
+
   // const [tableData, setTableData] = useState([]);
 
   const header = "שקיפות בכנסת";
@@ -72,12 +52,8 @@ const BillsSelection = () => {
         <Header>{header}</Header>
         <Hint>{hint}</Hint>
       </HeadersWrapper>
-      <FormContainer>
-        <BillsSelectionContainer>
-          <MyTabs tabsHeaders={tabsHeaders} />
-          <button onClick={searchBillHandler}>!חפש</button>
-        </BillsSelectionContainer>
-
+      <FormContainer tabsHeaders={tabsHeaders} searchBillHandler={searchBillHandler}>
+        <SearchBills />
         <BillsTablesContainer>
           <BillsTableWrapper>
             <div>הצבעות אפשריות</div>

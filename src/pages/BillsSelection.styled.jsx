@@ -41,8 +41,6 @@ export const FormContainer = styled.div`
   gap: 20px;
 `;
 
-export const BillsSelectionContainer = styled.div``;
-
 export const BillsTablesContainer = styled.div`
   display: flex;
   flex-direction: row-reverse;

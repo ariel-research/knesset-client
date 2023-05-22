@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import BillsSelection from './pages/BillsSelection';
 
 function App() {
+
   return (
     <AppWrapper>
       <BillsSelection />
