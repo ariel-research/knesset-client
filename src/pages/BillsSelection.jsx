@@ -52,7 +52,7 @@ const BillsSelection = () => {
         <Header>{header}</Header>
         <Hint>{hint}</Hint>
       </HeadersWrapper>
-      <FormContainer tabsHeaders={tabsHeaders} searchBillHandler={searchBillHandler}>
+      <FormContainer >
         <SearchBills />
         <BillsTablesContainer>
           <BillsTableWrapper>
