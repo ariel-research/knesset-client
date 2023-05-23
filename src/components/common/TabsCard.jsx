@@ -20,6 +20,7 @@ const TabsCard = (props) => {
       <TabContentWrapper>
         <div>{tabsHeaders[activeTab].description}</div>
         <div>{tabsHeaders[activeTab].content}</div>
+        {tabsHeaders[activeTab].action && <div>{tabsHeaders[activeTab].action}</div>}
       </TabContentWrapper>
     </Paper>
   );
