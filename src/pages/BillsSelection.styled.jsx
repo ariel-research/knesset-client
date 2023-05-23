@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { palette } from "../assets/colorsPalette";
 
 export const BillsSelectionWrapper = styled.div`
   display: flex;
@@ -37,8 +38,17 @@ export const FormContainer = styled.div`
   flex-direction: column;
   align-items: center;
   height: 90%;
-  width: 90vh;
+  width: 100%;
   gap: 20px;
+`;
+
+export const TableDescription = styled.div`
+  text-align: center;
+  padding: 10px 20px;
+  border-top: 5px solid ${palette.brand};
+  border-right: 1px solid ${palette.greyScale};
+  border-left: 1px solid ${palette.greyScale};
+  color: ${palette.brand};
 `;
 
 export const BillsTablesContainer = styled.div`
@@ -54,7 +64,7 @@ export const BillsTableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 0.5;
+  width: 48%;
   z-index: 0;
 `;
 
@@ -62,7 +72,7 @@ export const ArrowBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex: 0.1;
+  width: 4%;
 `;
 
 export const LoadSelectedBillsButton = styled.button``;
