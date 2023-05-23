@@ -6,6 +6,9 @@ import { getAllBills } from "../../utils/apiUtils";
 import AutoComplete from "../BillsSelectionPage/AutoComplete";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../redux/searchedBillSlice";
+import { addBill } from "../redux/selectedBillsSlice";
+
+const EMPTY_BILL = { id: "", label: "" };
 
 const SearchBills = (props) => {
   const { searchBillHandler } = props;
@@ -14,7 +17,8 @@ const SearchBills = (props) => {
   const dispatch = useDispatch();
 
   const addBillHandler = () => {
-    if (currentSearchedBill) {
+    if (currentSearchedBill.id !== EMPTY_BILL.id) {
+      dispatch(addBill(currentSearchedBill));
       dispatch(clear());
     }
   };

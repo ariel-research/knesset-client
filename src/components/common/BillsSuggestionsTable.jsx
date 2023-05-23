@@ -1,9 +1,11 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const BillsSuggestionsTable = (props) => {
   const { selectedData, setSelectedData, data, setData } = props;
   const [rowsData, setRowsData] = useState([]);
+  const selectedBills = useSelector((state) => state.selectedBills);
 
   const parseData = (data) => {
     const res = data.map((obj, index) => ({
@@ -86,8 +88,8 @@ const BillsSuggestionsTable = (props) => {
   ];
 
   useEffect(() => {
-    setRowsData(parseData(data));
-  }, [data]);
+    setRowsData(parseData(selectedBills));
+  }, [selectedBills]);
 
   return <DataGrid rows={rowsData} columns={[...columns].reverse()} />;
 };
