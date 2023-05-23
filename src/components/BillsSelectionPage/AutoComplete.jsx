@@ -1,11 +1,25 @@
 import { useState } from "react";
 import Autocomplete from "react-autocomplete";
-import { AutoCompleteWrapper, Suggestion, autoCompleteStyle } from "./AutoComplete.styled";
+import {
+  AutoCompleteWrapper,
+  Suggestion,
+  autoCompleteStyle,
+} from "./AutoComplete.styled";
+import { useDispatch } from "react-redux";
+import { update } from "../redux/searchedBillSlice";
 
 const AutoComplete = (props) => {
   const { data } = props;
   const [value, setValue] = useState("");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const dispatch = useDispatch();
+
+  const onSelectHandler = (val) => {
+    //search for the full data of the selected item
+    const selectedItem = filteredSuggestions.find((item) => item.label === val);
+    setValue(val);
+    dispatch(update(selectedItem));
+  };
 
   const onChangeHandler = (e) => {
     const userInput = e.target.value;
@@ -52,7 +66,7 @@ const AutoComplete = (props) => {
         )}
         value={value}
         onChange={(e) => onChangeHandler(e)}
-        onSelect={(val) => setValue(val)}
+        onSelect={(val) => onSelectHandler(val)}
       />
     </AutoCompleteWrapper>
   );

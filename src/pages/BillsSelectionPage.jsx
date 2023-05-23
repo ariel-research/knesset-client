@@ -15,26 +15,13 @@ import SelectedBillsTable from "../components/common/SelectedBillsTable";
 import SearchBills from "../components/common/SearchBills";
 
 const BillsSelectionPage = () => {
-
   const [selectedData, setSelectedData] = useState([]);
   const [finalSelectedBillsData, setFinalSelectedBillsData] = useState([]);
-  const [data, setData] = useState([
-    { name: "Doe" },
-    { name: "Smith" },
-    { name: "Johnson" },
-  ]);
-
-
-
-  // const [tableData, setTableData] = useState([]);
+  const [data, setData] = useState([]);
 
   const header = "שקיפות בכנסת";
   const hint =
     "שירות זה נועד כדי לספק לציבור בישראל אפשרות להשוות בין דעותיהם הפוליטיות להצבעות חברי כנסת ישראל";
-
-  // const searchBillHandler = () => {
-  //   // setTableData((prevData) => [...prevData, currentChosenBill]);
-  // };
 
   const loadSelectedBillsHandler = () => {
     const res = [...selectedData];
@@ -52,7 +39,7 @@ const BillsSelectionPage = () => {
         <Header>{header}</Header>
         <Hint>{hint}</Hint>
       </HeadersWrapper>
-      <FormContainer >
+      <FormContainer>
         <SearchBills />
         <BillsTablesContainer>
           <BillsTableWrapper>

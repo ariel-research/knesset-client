@@ -1,17 +1,22 @@
 import styled from "styled-components";
-import MyTabs from "../../pages/TabsCard";
+import MyTabs from "./TabsCard";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getAllBills } from "../../utils/apiUtils";
-import AutoComplete from "../BillsSelection/AutoComplete";
+import AutoComplete from "../BillsSelectionPage/AutoComplete";
+import { useDispatch, useSelector } from "react-redux";
+import { clear } from "../redux/searchedBillSlice";
 
 const SearchBills = (props) => {
   const { searchBillHandler } = props;
   const [allBills, setAllBills] = useState([]);
-  const [currentChosenBill, setCurrentChosenBill] = useState("");
+  const currentSearchedBill = useSelector((state) => state.searchedBill);
+  const dispatch = useDispatch();
 
-  const handleInputChange = (e) => {
-    setCurrentChosenBill(e.target.value);
+  const addBillHandler = () => {
+    if (currentSearchedBill) {
+      dispatch(clear());
+    }
   };
 
   const tabsHeaders = [
@@ -23,9 +28,8 @@ const SearchBills = (props) => {
     {
       title: "טקסט חופשי",
       description: "חפש הצעות חוק על פי טקסט חופשי",
-      content: (
-        <AutoComplete data={allBills}/>
-      ),
+      content: <AutoComplete data={allBills} />,
+      action: <button onClick={addBillHandler}>הוסף הצעת חוק</button>,
     },
   ];
 
