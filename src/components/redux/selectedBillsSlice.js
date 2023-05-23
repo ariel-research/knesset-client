@@ -12,12 +12,12 @@ export const selectedBillsSlice = createSlice({
     addBill: (state, action) => {
       const index = state.findIndex((value) => value.id === action.payload.id);
       //add only if not exist already
-      if (index == -1) {
+      if (index === -1) {
         state.push(action.payload);
       }
     },
     removeBill: (state, action) => {
-      const index = state.findIndex((value) => value === action.payload);
+      const index = state.findIndex((value) => value.id === action.payload);
       if (index !== -1) {
         state.splice(index, 1);
       }

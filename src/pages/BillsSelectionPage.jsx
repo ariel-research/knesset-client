@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   ArrowBox,
   BillsSelectionWrapper,
@@ -13,24 +12,18 @@ import {
 import SearchBills from "../components/common/SearchBills";
 import BillsSuggestionsTable from "../components/Tables/BillsSuggestionsTable";
 import SelectedBillsTable from "../components/Tables/SelectedBillsTable";
+import { useDispatch, useSelector } from "react-redux";
+import { addBills } from "../components/redux/finalBillsSlice";
 
 const BillsSelectionPage = () => {
-  const [selectedData, setSelectedData] = useState([]);
-  const [finalSelectedBillsData, setFinalSelectedBillsData] = useState([]);
-  const [data, setData] = useState([]);
-
   const header = "שקיפות בכנסת";
   const hint =
     "שירות זה נועד כדי לספק לציבור בישראל אפשרות להשוות בין דעותיהם הפוליטיות להצבעות חברי כנסת ישראל";
-
-  const loadSelectedBillsHandler = () => {
-    const res = [...selectedData];
-    setFinalSelectedBillsData(res);
-  };
+  const selectedBills = useSelector((state) => state.selectedBills);
+  const dispatch = useDispatch();
 
   const loadAllBillsHandler = () => {
-    const res = [...data];
-    setFinalSelectedBillsData(res);
+    dispatch(addBills(selectedBills));
   };
 
   return (
@@ -44,23 +37,16 @@ const BillsSelectionPage = () => {
         <BillsTablesContainer>
           <BillsTableWrapper>
             <div>הצבעות אפשריות</div>
-            <BillsSuggestionsTable
-              selectedData={selectedData}
-              setSelectedData={setSelectedData}
-              data={data}
-              setData={setData}
-            />
+            <BillsSuggestionsTable />
           </BillsTableWrapper>
-
           <ArrowBox>
-            <LoadSelectedBillsButton onClick={loadSelectedBillsHandler}>
-              טען הצעות חוק שנבחרו
+            <LoadSelectedBillsButton onClick={loadAllBillsHandler}>
+              טען הכל
             </LoadSelectedBillsButton>
-            <button onClick={loadAllBillsHandler}>טען הכל</button>
           </ArrowBox>
           <BillsTableWrapper>
             <div>הצבעות שנבחרו</div>
-            <SelectedBillsTable data={finalSelectedBillsData} />
+            <SelectedBillsTable />
           </BillsTableWrapper>
         </BillsTablesContainer>
       </FormContainer>

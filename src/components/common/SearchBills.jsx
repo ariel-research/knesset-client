@@ -10,8 +10,7 @@ import { addBill } from "../redux/selectedBillsSlice";
 
 const EMPTY_BILL = { id: "", label: "" };
 
-const SearchBills = (props) => {
-  const { searchBillHandler } = props;
+const SearchBills = () => {
   const [allBills, setAllBills] = useState([]);
   const currentSearchedBill = useSelector((state) => state.searchedBill);
   const dispatch = useDispatch();
@@ -50,7 +49,6 @@ const SearchBills = (props) => {
   return (
     <BillsSelectionContainer>
       <MyTabs tabsHeaders={tabsHeaders} />
-      <button onClick={searchBillHandler}>!חפש</button>
     </BillsSelectionContainer>
   );
 };

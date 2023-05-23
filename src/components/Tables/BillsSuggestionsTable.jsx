@@ -1,16 +1,19 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removeBill } from "../redux/selectedBillsSlice";
 
-const BillsSuggestionsTable = (props) => {
-  const { selectedData, setSelectedData, data, setData } = props;
+const BillsSuggestionsTable = () => {
   const [rowsData, setRowsData] = useState([]);
   const selectedBills = useSelector((state) => state.selectedBills);
+  const dispatch = useDispatch();
 
   const parseData = (data) => {
     const res = data.map((obj, index) => ({
       ...obj,
-      id: index,
+      index: index,
+      id: obj.id,
+      label: obj.label,
     }));
     return res;
   };
@@ -26,53 +29,27 @@ const BillsSuggestionsTable = (props) => {
     );
   };
 
-  const renderCheckbox = (params, handler) => {
-    return (
-      <input
-        type="checkbox"
-        onChange={(event) => {
-          handler(event, params);
-        }}
-      />
-    );
-  };
-
-  const removeRow = (row_index) => {
-    const res = [...data];
-    res.splice(row_index, 1);
-    setData(res);
-  };
-
-  const checkboxMarkHandler = (event, params) => {
-    if (event.target.checked) {
-      const res = [...selectedData, params.row];
-      setSelectedData(res);
-    }
-    if (!event.target.checked) {
-      const res = [...selectedData];
-      res.splice(params.row.id, 1);
-      setSelectedData(res);
-    }
+  const removeRow = (bill_id) => {
+    dispatch(removeBill(bill_id));
   };
 
   const columns = [
     {
-      field: "select",
-      headerName: "",
-      headerAlign: "right",
-      align: "right",
-      flex: 0.1,
-      renderCell: (params) => renderCheckbox(params, checkboxMarkHandler),
-    },
-    {
-      field: "id",
-      headerName: "מזהה חוק",
+      field: "index",
+      headerName: " ",
       flex: 1,
       headerAlign: "right",
       align: "center",
     },
     {
-      field: "name",
+      field: "id",
+      headerName: "מזהה חוק",
+      flex: 0.5,
+      headerAlign: "right",
+      align: "center",
+    },
+    {
+      field: "label",
       headerName: "הצעת חוק",
       flex: 1,
       headerAlign: "right",
@@ -82,7 +59,7 @@ const BillsSuggestionsTable = (props) => {
       headerName: "Action",
       headerAlign: "right",
       align: "right",
-      width: 150,
+      flex: 0.1,
       renderCell: (params) => renderRemoveRowButton(params, removeRow),
     },
   ];

@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const BillsSelectionWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 100%;
   gap: 30px;
 `;
@@ -35,9 +36,8 @@ export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   height: 90%;
-  width: 100%;
+  width: 90vh;
   gap: 20px;
 `;
 
@@ -61,7 +61,7 @@ export const BillsTableWrapper = styled.div`
 export const ArrowBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  justify-content: center;
   flex: 0.1;
 `;
 
