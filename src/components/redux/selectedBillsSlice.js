@@ -10,7 +10,11 @@ export const selectedBillsSlice = createSlice({
   initialState,
   reducers: {
     addBill: (state, action) => {
-      state.push(action.payload);
+      const index = state.findIndex((value) => value.id === action.payload.id);
+      //add only if not exist already
+      if (index == -1) {
+        state.push(action.payload);
+      }
     },
     removeBill: (state, action) => {
       const index = state.findIndex((value) => value === action.payload);
