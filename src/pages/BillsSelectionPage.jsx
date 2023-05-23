@@ -10,9 +10,9 @@ import {
   Hint,
   LoadSelectedBillsButton,
 } from "./BillsSelection.styled";
-import BillsSuggestionsTable from "../components/common/BillsSuggestionsTable";
-import SelectedBillsTable from "../components/common/SelectedBillsTable";
 import SearchBills from "../components/common/SearchBills";
+import BillsSuggestionsTable from "../components/Tables/BillsSuggestionsTable";
+import SelectedBillsTable from "../components/Tables/SelectedBillsTable";
 
 const BillsSelectionPage = () => {
   const [selectedData, setSelectedData] = useState([]);
