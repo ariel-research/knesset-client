@@ -67,6 +67,7 @@ const TabContent = styled.div`
   display: flex;
   flex-direction: column;
   width: 400px;
+  height: 100px;
   align-items: center;
   border: 1px solid #dee2e6;
   padding: 20px;

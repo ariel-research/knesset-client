@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import MyTabs from "./TabsCard";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getAllBills } from "../../utils/apiUtils";
@@ -7,6 +6,7 @@ import AutoComplete from "../BillsSelectionPage/AutoComplete";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../redux/searchedBillSlice";
 import { addBill } from "../redux/selectedBillsSlice";
+import TabsCards from "../Tabs/TabsCards";
 
 const EMPTY_BILL = { id: "", label: "" };
 
@@ -48,7 +48,7 @@ const SearchBills = () => {
 
   return (
     <BillsSelectionContainer>
-      <MyTabs tabsHeaders={tabsHeaders} />
+      <TabsCards tabsHeaders={tabsHeaders} />
     </BillsSelectionContainer>
   );
 };
