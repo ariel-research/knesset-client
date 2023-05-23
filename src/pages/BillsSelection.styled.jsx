@@ -55,6 +55,7 @@ export const BillsTableWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   flex: 0.5;
+  z-index: 0;
 `;
 
 export const ArrowBox = styled.div`

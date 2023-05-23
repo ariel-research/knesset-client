@@ -3,7 +3,7 @@ import MyTabs from "../../pages/TabsCard";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getAllBills } from "../../utils/apiUtils";
-import { parseBills } from "../../utils/localUtils";
+import AutoComplete from "../BillsSelection/AutoComplete";
 
 const SearchBills = (props) => {
   const { searchBillHandler } = props;
@@ -24,11 +24,7 @@ const SearchBills = (props) => {
       title: "טקסט חופשי",
       description: "חפש הצעות חוק על פי טקסט חופשי",
       content: (
-        <input
-          value={currentChosenBill}
-          placeholder="...הקלד כאן"
-          onChange={handleInputChange}
-        ></input>
+        <AutoComplete data={allBills}/>
       ),
     },
   ];
