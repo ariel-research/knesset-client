@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import BillsSelection from './pages/BillsSelection';
+import BillsSelectionPage from './pages/BillsSelectionPage';
 
 function App() {
 
   return (
     <AppWrapper>
-      <BillsSelection />
+      <BillsSelectionPage />
     </AppWrapper>
   );
 }

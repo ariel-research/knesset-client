@@ -14,7 +14,7 @@ import BillsSuggestionsTable from "../components/common/BillsSuggestionsTable";
 import SelectedBillsTable from "../components/common/SelectedBillsTable";
 import SearchBills from "../components/common/SearchBills";
 
-const BillsSelection = () => {
+const BillsSelectionPage = () => {
 
   const [selectedData, setSelectedData] = useState([]);
   const [finalSelectedBillsData, setFinalSelectedBillsData] = useState([]);
@@ -32,9 +32,9 @@ const BillsSelection = () => {
   const hint =
     "שירות זה נועד כדי לספק לציבור בישראל אפשרות להשוות בין דעותיהם הפוליטיות להצבעות חברי כנסת ישראל";
 
-  const searchBillHandler = () => {
-    // setTableData((prevData) => [...prevData, currentChosenBill]);
-  };
+  // const searchBillHandler = () => {
+  //   // setTableData((prevData) => [...prevData, currentChosenBill]);
+  // };
 
   const loadSelectedBillsHandler = () => {
     const res = [...selectedData];
@@ -81,4 +81,4 @@ const BillsSelection = () => {
   );
 };
 
-export default BillsSelection;
+export default BillsSelectionPage;
