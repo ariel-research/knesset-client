@@ -52,7 +52,7 @@ const AutoComplete = (props) => {
 
   return (
     <AutoCompleteWrapper>
-      <Autocomplete
+      {/* <Autocomplete
         menuStyle={autoCompleteStyle}
         getItemValue={(item) => item.label}
         items={
@@ -72,7 +72,7 @@ const AutoComplete = (props) => {
         value={value}
         onChange={(e) => onChangeHandler(e)}
         onSelect={(val) => onSelectHandler(val)}
-      />
+      /> */}
     </AutoCompleteWrapper>
   );
 };
