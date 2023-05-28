@@ -95,13 +95,13 @@ export const AutoCompleteInput = styled.input`
 
 export const AutoCompleteRowsContainer = styled.div`
   position: absolute;
-  margin-top: 90px;
   width: 100%;
-  min-height: 53px;
-  max-height: 340px;
-  overflow-y: hidden;
+  margin-top: 180px;
+  min-height: 142px;
+  max-height: 100px;
+  overflow-y: scroll;
   border-radius: 5px;
-  background-color: ${palette.greyScale};
+  background-color: rgb(222, 226, 230);
   border: 1px solid rgb(145, 154, 164);
   z-index: 1;
 `;
