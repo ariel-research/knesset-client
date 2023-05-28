@@ -44,6 +44,8 @@ const AutoComplete = (props) => {
       setFilteredSuggestions(
         filtered.splice(0, filtered.length < 30 ? filtered.length : 30)
       );
+    } else {
+      setFilteredSuggestions([]);
     }
   };
 
