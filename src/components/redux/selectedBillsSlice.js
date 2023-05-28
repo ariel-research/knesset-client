@@ -9,6 +9,17 @@ export const selectedBillsSlice = createSlice({
   name: "selectedBills",
   initialState,
   reducers: {
+    addMultipleBills: (state, action) => {
+      const res = [];
+      action.payload.forEach((element) => {
+        const index = state.findIndex((value) => value.id === element.id);
+        //add only if not exist already
+        if (index === -1) {
+          res.push(element);
+        }
+      });
+      state.push(...res);
+    },
     addBill: (state, action) => {
       const index = state.findIndex((value) => value.id === action.payload.id);
       //add only if not exist already
@@ -25,6 +36,7 @@ export const selectedBillsSlice = createSlice({
   },
 });
 
-export const { addBill, removeBill } = selectedBillsSlice.actions;
+export const { addMultipleBills, addBill, removeBill } =
+  selectedBillsSlice.actions;
 
 export default selectedBillsSlice.reducer;

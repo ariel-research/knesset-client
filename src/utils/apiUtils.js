@@ -9,3 +9,9 @@ export const getAllBills = async () => {
 export const getAllKnessetNum = async () => {
   return await axios.get(`${BASE_URL}/knessetAmounts`);
 };
+
+export const getBillsOfKnesset = async (knesset_num) => {
+  return await axios.get(
+    `${BASE_URL}/billsByKnessetNum?knessetNum=${knesset_num}`
+  );
+};

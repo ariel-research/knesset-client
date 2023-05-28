@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getAllBills, getAllKnessetNum } from "../../utils/apiUtils";
+import {
+  getAllBills,
+  getAllKnessetNum,
+  getBillsOfKnesset,
+} from "../../utils/apiUtils";
 import AutoComplete from "../BillsSelectionPage/AutoComplete";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../redux/searchedBillSlice";
-import { addBill } from "../redux/selectedBillsSlice";
+import { addBill, addMultipleBills } from "../redux/selectedBillsSlice";
 import TabsCards from "../Tabs/TabsCards";
 
 const EMPTY_BILL = { id: "", label: "" };
@@ -13,7 +17,7 @@ const EMPTY_BILL = { id: "", label: "" };
 const SearchBills = () => {
   const [allBills, setAllBills] = useState([]);
   const [allKnessetNum, setAllKnessetNum] = useState([]);
-  const [selectedKnessetNum, setSelectedKnessetNum] = useState('1');
+  const [selectedKnessetNum, setSelectedKnessetNum] = useState("1");
   const currentSearchedBill = useSelector((state) => state.searchedBill);
   const dispatch = useDispatch();
 
@@ -25,15 +29,30 @@ const SearchBills = () => {
   };
 
   const addKnessetNumBIlls = () => {
-    console.log(selectedKnessetNum);
-};
+    const arr = [];
+    getBillsOfKnesset(selectedKnessetNum)
+      .then((res) => {
+        const bills = res.data.bills;
+        bills.forEach((bill) => {
+          const current = { id: bill.id, label: bill.name };
+          arr.push(current);
+        });
+        dispatch(addMultipleBills(arr));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const tabsHeaders = [
     {
       title: "מספר כנסת",
       description: "חפש הצעות חוק המשוייכות לכנסת מסויימת",
       content: (
-        <select value={selectedKnessetNum} onChange={(e) => (setSelectedKnessetNum(e.target.value))}>
+        <select
+          value={selectedKnessetNum}
+          onChange={(e) => setSelectedKnessetNum(e.target.value)}
+        >
           {allKnessetNum.map((num, index) => (
             <option key={`knesset-num_${index}`} value={num.KnessetNum}>
               {num.KnessetNum}
