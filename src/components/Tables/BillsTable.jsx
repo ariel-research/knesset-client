@@ -9,6 +9,9 @@ import {
   TableRow,
 } from "./BillsTable.styled";
 import { useDispatch } from "react-redux";
+import { tableFlags } from "../../assets/consts";
+import UserVoteBox from "../common/UserVoteBox";
+import { removeBill } from "../redux/selectedBillsSlice";
 
 const BillsTable = (props) => {
   const { data, action } = props;
@@ -28,18 +31,23 @@ const BillsTable = (props) => {
     return res;
   };
 
-  const renderRemoveRowButton = (id, handler) => {
-    const handleButtonClick = () => {
-      handler(id, action);
-    };
-    return (
-      <button variant="contained" color="primary" onClick={handleButtonClick}>
+  const renderActionComponent = (id) => {
+    return action === tableFlags.REMOVE_ROW ? (
+      <button
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          actionHandler(id, removeBill);
+        }}
+      >
         הסר
       </button>
+    ) : (
+      <UserVoteBox billId={id} />
     );
   };
 
-  const removeRow = (bill_id, action) => {
+  const actionHandler = (bill_id, action) => {
     dispatch(action(bill_id));
   };
 
@@ -49,12 +57,9 @@ const BillsTable = (props) => {
       rowsData.map(({ id, label }, index) => {
         return (
           <TableRow key={`suggestion_table_row-${index}`}>
-            {action && (
-              <TableRowCell width="3%" textAlign="center">
-                {renderRemoveRowButton(id, removeRow)}
-              </TableRowCell>
-            )}
-
+            <TableRowCell width="3%" textAlign="center">
+              {renderActionComponent(id)}
+            </TableRowCell>
             <TableRowCell width="40%" textAlign="center">
               {label}
             </TableRowCell>

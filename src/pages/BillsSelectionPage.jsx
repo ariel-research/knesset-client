@@ -14,8 +14,8 @@ import SearchBills from "../components/common/SearchBills";
 import BillsTable from "../components/Tables/BillsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { addBills } from "../components/redux/finalBillsSlice";
-import { removeBill } from "../components/redux/selectedBillsSlice";
 import LeftArrow from "../assets/LeftArrow";
+import { tableFlags } from "../assets/consts";
 
 const BillsSelectionPage = () => {
   const header = "שקיפות בכנסת";
@@ -40,7 +40,7 @@ const BillsSelectionPage = () => {
         <BillsTablesContainer>
           <BillsTableWrapper>
             <TableDescription>הצבעות אפשריות</TableDescription>
-            <BillsTable data={selectedBills} action={removeBill} />
+            <BillsTable data={selectedBills} action={tableFlags.REMOVE_ROW} />
           </BillsTableWrapper>
           <ArrowBox>
             <LoadSelectedBillsButton onClick={loadAllBillsHandler}>
@@ -50,7 +50,7 @@ const BillsSelectionPage = () => {
           </ArrowBox>
           <BillsTableWrapper>
             <TableDescription>הצבעות שנבחרו</TableDescription>
-            <BillsTable data={finalBills}  />
+            <BillsTable data={finalBills} />
           </BillsTableWrapper>
         </BillsTablesContainer>
       </FormContainer>

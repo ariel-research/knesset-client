@@ -14,19 +14,21 @@ export const finalBillsSlice = createSlice({
         const index = state.findIndex((value) => value.id === bill.id);
         //add only if not exist already
         if (index === -1) {
-          state.push(bill);
+          state.push({ ...bill, vote: "" });
         }
       });
     },
     billVote: (state, action) => {
-      const index = state.findIndex((value) => value === action.payload);
+      const index = state.findIndex(
+        (value) => value.id === action.payload.billId
+      );
       if (index !== -1) {
-        state[index] = action.payload;
+        state[index].vote = action.payload.vote;
       }
     },
   },
 });
 
-export const { addBills, removeBills } = finalBillsSlice.actions;
+export const { addBills, billVote } = finalBillsSlice.actions;
 
 export default finalBillsSlice.reducer;
