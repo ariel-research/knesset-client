@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Autocomplete from "react-autocomplete";
 import {
+  AutoCompleteInput,
+  AutoCompleteRow,
+  AutoCompleteRowsContainer,
   AutoCompleteWrapper,
-  Suggestion,
-  autoCompleteStyle,
 } from "./AutoComplete.styled";
 import { useDispatch, useSelector } from "react-redux";
 import { update } from "../redux/searchedBillSlice";
@@ -11,7 +11,7 @@ import { useEffect } from "react";
 
 const AutoComplete = (props) => {
   const { data } = props;
-  const [value, setValue] = useState("");
+  const [userInput, setUserInput] = useState("");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const searchedBill = useSelector((select) => select.searchedBill);
   const dispatch = useDispatch();
@@ -23,23 +23,24 @@ const AutoComplete = (props) => {
   };
 
   const onChangeHandler = (e) => {
-    const userInput = e.target.value;
-    setValue(userInput);
+    const value = e.target.value;
+    setUserInput(value);
     const filtered = data.filter(
       (suggestion) =>
-        suggestion.label.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+        suggestion.label.toLowerCase().indexOf(value.toLowerCase()) > -1
     );
-    if (userInput) {
+    if (value) {
       //sort by prefix
       filtered.sort((a, b) => {
-        if (a.label.startsWith(userInput) && !b.label.startsWith(userInput)) {
+        if (a.label.startsWith(value) && !b.label.startsWith(value)) {
           return -1;
         }
-        if (b.label.startsWith(userInput) && !a.label.startsWith(userInput)) {
+        if (b.label.startsWith(value) && !a.label.startsWith(value)) {
           return 1;
         }
         return a.label.localeCompare(b.label);
       });
+      //present only the first 30 results
       setFilteredSuggestions(
         filtered.splice(0, filtered.length < 30 ? filtered.length : 30)
       );
@@ -47,32 +48,25 @@ const AutoComplete = (props) => {
   };
 
   useEffect(() => {
-    setValue(searchedBill.label);
+    setUserInput(searchedBill.label);
   }, [searchedBill]);
 
   return (
-    <AutoCompleteWrapper>
-      {/* <Autocomplete
-        menuStyle={autoCompleteStyle}
-        getItemValue={(item) => item.label}
-        items={
-          filteredSuggestions
-            ? filteredSuggestions.map((item) => ({
-                label: item.label,
-                id: item.id,
-              }))
-            : data.map((item) => ({
-                label: item.label,
-                id: item.id,
-              }))
-        }
-        renderItem={(item) => (
-          <Suggestion key={item.id}>{item.label}</Suggestion>
-        )}
-        value={value}
-        onChange={(e) => onChangeHandler(e)}
-        onSelect={(val) => onSelectHandler(val)}
-      /> */}
+    <AutoCompleteWrapper id="autocomplete-wrapper">
+      <AutoCompleteInput
+        id="autocomplete-input"
+        autoComplete="off"
+        placeholder="...הקלד כאן"
+        onChange={onChangeHandler}
+        value={userInput}
+      />
+      {filteredSuggestions.length > 0 && (
+        <AutoCompleteRowsContainer>
+          {filteredSuggestions.map((bill, index) => {
+            return <AutoCompleteRow key={index} onSelect={onSelectHandler}>{bill.label}</AutoCompleteRow>;
+          })}
+        </AutoCompleteRowsContainer>
+      )}
     </AutoCompleteWrapper>
   );
 };
