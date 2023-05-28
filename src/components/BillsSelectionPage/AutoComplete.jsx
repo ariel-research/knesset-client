@@ -16,10 +16,10 @@ const AutoComplete = (props) => {
   const searchedBill = useSelector((select) => select.searchedBill);
   const dispatch = useDispatch();
 
-  const onSelectHandler = (val) => {
-    //search for the full data of the selected item
-    const selectedItem = filteredSuggestions.find((item) => item.label === val);
-    dispatch(update(selectedItem));
+  const onSuggestionClickHandler = (val) => {
+    setUserInput(val.label);
+    setFilteredSuggestions([]);
+    dispatch(update(val));
   };
 
   const onChangeHandler = (e) => {
@@ -63,7 +63,14 @@ const AutoComplete = (props) => {
       {filteredSuggestions.length > 0 && (
         <AutoCompleteRowsContainer>
           {filteredSuggestions.map((bill, index) => {
-            return <AutoCompleteRow key={index} onSelect={onSelectHandler}>{bill.label}</AutoCompleteRow>;
+            return (
+              <AutoCompleteRow
+                key={index}
+                onClick={() => onSuggestionClickHandler(bill)}
+              >
+                {bill.label}
+              </AutoCompleteRow>
+            );
           })}
         </AutoCompleteRowsContainer>
       )}

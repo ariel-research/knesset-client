@@ -18,10 +18,10 @@ export const finalBillsSlice = createSlice({
         }
       });
     },
-    removeBills: (state, action) => {
+    billVote: (state, action) => {
       const index = state.findIndex((value) => value === action.payload);
       if (index !== -1) {
-        state.splice(index, 1);
+        state[index] = action.payload;
       }
     },
   },

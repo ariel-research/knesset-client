@@ -65,13 +65,13 @@ export const BillsTableWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 48%;
-  z-index: 0;
 `;
 
 export const ArrowBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 4%;
 `;
 
