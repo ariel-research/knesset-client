@@ -12,6 +12,7 @@ const {
 } = require("../../headers/bills_selection_page_headers");
 
 const KNESSET_NUM = 24;
+const SLEEP_TIME = 3000;
 
 describe("bills Selection Page", () => {
   beforeEach(() => {
@@ -88,7 +89,7 @@ describe("bills Selection Page", () => {
   });
 
   it("Load free text searched bills", () => {
-    cy.wait(3000); //wait for results to load up
+    cy.wait(SLEEP_TIME); //wait for results to load up
     let searchedBills = [];
     for (const prefix of INPUT_PREFIXES) {
       cy.get("#autocomplete-input").as("BillsInput").type(prefix); //search for bills
@@ -150,5 +151,44 @@ describe("bills Selection Page", () => {
             expect(associatedBills.includes(text)).to.be.true;
           });
       });
+  });
+
+  it.only("load possible bills into selected table", () => {
+    cy.get("#tab-1_title").click(); //choose knesset num tab
+    cy.get("#knesset_num_select").select(KNESSET_NUM - 1);
+    cy.get("#tab-action_button").click();
+    cy.wait(SLEEP_TIME); // wait for bills to load up to possible table
+    cy.get("#bills_selection_page-load_votes_button").click();
+
+    const possibleBills = [];
+    cy.get("#possible_bills-table_body")
+      .children()
+      .each(($el) => {
+        cy.wrap($el)
+          .children()
+          .eq(1) //the billLabel div
+          .invoke("text")
+          .then((text) => {
+            possibleBills.push(text);
+          });
+      });
+
+    const selectedBills = [];
+    cy.get("#selected_bills-table_body")
+      .children()
+      .each(($el) => {
+        cy.wrap($el)
+          .children()
+          .eq(1) //the billLabel div
+          .invoke("text")
+          .then((text) => {
+            selectedBills.push(text);
+          });
+      });
+
+    const compareTables = possibleBills.every((label) =>
+      selectedBills.includes(label)
+    );
+    expect(compareTables).to.be.true;
   });
 });

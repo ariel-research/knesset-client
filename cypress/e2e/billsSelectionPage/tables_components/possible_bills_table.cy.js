@@ -3,7 +3,7 @@
 const KNESSET_NUM = 24;
 const MAX_ITERATIONS = 10;
 
-describe("Possible Table", () => {
+describe("Possible Bills Table", () => {
   before(() => {
     cy.visit("http://localhost:3000/");
   });
