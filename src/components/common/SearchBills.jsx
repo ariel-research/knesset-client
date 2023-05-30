@@ -56,7 +56,11 @@ const SearchBills = () => {
           onChange={(e) => setSelectedKnessetNum(e.target.value)}
         >
           {allKnessetNum.map((num, index) => (
-            <option key={`knesset-num_${index}`} value={num.KnessetNum}>
+            <option
+              id={`knesset-num_${index}`}
+              key={`knesset-num_${index}`}
+              value={num.KnessetNum}
+            >
               {num.KnessetNum}
             </option>
           ))}

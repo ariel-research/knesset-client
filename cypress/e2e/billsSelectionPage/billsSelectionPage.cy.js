@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+const { getBillsOfKnesset } = require("../../../src/utils/apiUtils");
 const {
   billsSelectionHeaders,
   tabHeader2,
@@ -9,6 +10,8 @@ const {
   selectedBillsTable,
   INPUT_PREFIXES,
 } = require("../../headers/bills_selection_page_headers");
+
+const KNESSET_NUM = 24;
 
 describe("bills Selection Page", () => {
   before(() => {
@@ -84,9 +87,9 @@ describe("bills Selection Page", () => {
     cy.get("#bills_selection_page-left_arrow").should("exist");
   });
 
-  it.only("Load free text searched bills", () => {
+  it("Load free text searched bills", () => {
     cy.wait(3000); //wait for results to load up
-    const searchedBills = [];
+    let searchedBills = [];
     for (const prefix of INPUT_PREFIXES) {
       cy.get("#autocomplete-input").as("BillsInput").type(prefix); //search for bills
       cy.get("#autocomplete-dropdown")
@@ -113,6 +116,38 @@ describe("bills Selection Page", () => {
           .invoke("text")
           .then((text) => {
             expect(searchedBills.includes(text)).to.be.true;
+          });
+      });
+  });
+
+  it.only("Load associated knesset num bills", () => {
+    cy.get("#tab-1_title").click(); //choose knesset num tab
+    cy.get("#knesset_num_select").select(KNESSET_NUM - 1);
+    cy.get("#tab-action_button").click();
+
+    let associatedBills = [];
+    // call for API for data validation
+    getBillsOfKnesset(KNESSET_NUM)
+      .then((res) => {
+        const bills = res.data.bills;
+        bills.forEach((bill) => {
+          associatedBills.push(bill.name);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    //validate results are in the possible bills table
+    cy.get("#possible_bills-table_body")
+      .children()
+      .each(($el) => {
+        cy.wrap($el)
+          .children()
+          .eq(1) //the billLabel div
+          .invoke("text")
+          .then((text) => {
+            expect(associatedBills.includes(text)).to.be.true;
           });
       });
   });
