@@ -5,18 +5,20 @@ export const BillsSelectionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
   gap: 30px;
+  height: 100vh;
+  background-color: ${palette.snow};
 `;
 
 export const HeadersWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 10%;
+  height: 30%;
   width: 100%;
   margin-top: 30px;
   gap: 30px;
+  color: ${palette.brand};
 `;
 
 export const Header = styled.div`
@@ -30,6 +32,7 @@ export const Header = styled.div`
 export const Hint = styled.header`
   font-size: 16px;
   font-weight: 500;
+  font-size: 20px;
   font-family: Poppins, sans-serif;
 `;
 
@@ -37,7 +40,7 @@ export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 90%;
+  height: 70%;
   width: 100%;
   gap: 20px;
 `;
@@ -49,6 +52,7 @@ export const TableDescription = styled.div`
   border-right: 1px solid ${palette.greyScale};
   border-left: 1px solid ${palette.greyScale};
   color: ${palette.brand};
+  background-color: white;
 `;
 
 export const BillsTablesContainer = styled.div`

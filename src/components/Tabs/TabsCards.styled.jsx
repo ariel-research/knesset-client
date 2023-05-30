@@ -17,14 +17,16 @@ export const TabButton = styled.button`
   font-size: 16px;
   border-right: ${(props) => (props.active ? "1px solid #dee2e6" : "none")};
   border-left: ${(props) => (props.active ? "1px solid #dee2e6" : "none")};
-  border-top: ${(props) => (props.active ? `5px solid ${palette.brand}` : "none")};
-  border-bottom: ${(props) => (props.active ? `1px solid ${palette.bleakWhite}` : "none")};
+  border-top: ${(props) =>
+    props.active ? `5px solid ${palette.brand}` : "none"};
+  border-bottom: ${(props) =>
+    props.active ? `1px solid ${palette.bleakWhite}` : "none"};
   color: ${palette.brand};
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => (props.active ? "blue" : "lightgray")};
+    background-color: ${(props) => (props.active ? "" : "lightgray")};
   }
 `;
 
@@ -33,7 +35,9 @@ export const TabContent = styled.div`
   flex-direction: column;
   width: 400px;
   height: 100px;
+  border-radius: 8px;
   align-items: center;
+  background-color: white;
   border: 1px solid #dee2e6;
   padding: 20px;
   gap: 10px;
@@ -41,5 +45,5 @@ export const TabContent = styled.div`
 
 export const TabDescription = styled.div`
   font-weight: 500;
-  color: ${palette.greyish};
+  color: ${palette.brand};
 `;

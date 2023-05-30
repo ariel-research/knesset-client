@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../redux/searchedBillSlice";
 import { addBill, addMultipleBills } from "../redux/selectedBillsSlice";
 import TabsCards from "../Tabs/TabsCards";
+import { palette } from "../../assets/colorsPalette";
 
 const EMPTY_BILL = { id: "", label: "" };
 
@@ -61,16 +62,18 @@ const SearchBills = () => {
         </select>
       ),
       action: (
-        <button onClick={addKnessetNumBIlls}>
+        <ActionButton onClick={addKnessetNumBIlls}>
           הוסף הצעות חוק המשוייכות לכנסת
-        </button>
+        </ActionButton>
       ),
     },
     {
       title: "טקסט חופשי",
       description: "חפש הצעות חוק על פי טקסט חופשי",
       content: <AutoComplete data={allBills} />,
-      action: <button onClick={addBillHandler}>הוסף הצעת חוק</button>,
+      action: (
+        <ActionButton onClick={addBillHandler}>הוסף הצעת חוק</ActionButton>
+      ),
     },
   ];
 
@@ -102,5 +105,15 @@ const SearchBills = () => {
 };
 
 const BillsSelectionContainer = styled.div``;
+
+const ActionButton = styled.button`
+  background-color: ${palette.brand};
+  border-radius: 8px;
+  font-size: 20px;
+  color: white;
+  font-family: sans-serif;
+  border: 1px solid transparent;
+  cursor: pointer;
+`;
 
 export default SearchBills;

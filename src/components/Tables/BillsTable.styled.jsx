@@ -4,6 +4,7 @@ import { palette } from "../../assets/colorsPalette";
 export const TableContainer = styled.table`
   border-collapse: collapse;
   overflow: hidden;
+  border-radius: 8px;
 `;
 
 export const TableHead = styled.thead`
@@ -23,7 +24,8 @@ export const TableHeaderRow = styled.tr`
 export const TableBody = styled.tbody`
   display: block;
   height: 327px;
-  overflow-y: scroll;
+  background-color: white;
+  overflow-y: auto;
   ::-webkit-scrollbar {
     width: 10px;
     height: 328px;

@@ -57,16 +57,16 @@ const BillsTable = (props) => {
       rowsData.map(({ id, label }, index) => {
         return (
           <TableRow key={`suggestion_table_row-${index}`}>
-            <TableRowCell width="3%" textAlign="center">
+            <TableRowCell width="15%" textAlign="center">
               {renderActionComponent(id)}
             </TableRowCell>
-            <TableRowCell width="40%" textAlign="center">
+            <TableRowCell width="65%" textAlign="center">
               {label}
             </TableRowCell>
-            <TableRowCell width="10%" textAlign="center">
+            <TableRowCell width="15%" textAlign="center">
               {id}
             </TableRowCell>
-            <TableRowCell width="3%" textAlign="center">
+            <TableRowCell width="5%" textAlign="center">
               {index + 1}
             </TableRowCell>
           </TableRow>
@@ -83,13 +83,14 @@ const BillsTable = (props) => {
     <TableContainer>
       <TableHead>
         <TableHeaderRow>
-          <TableHeaderCell key="group_header" width="40%" textAlign="center">
+          <TableHeaderCell key="action_header" width="15%" textAlign="center" />
+          <TableHeaderCell key="group_header" width="65%" textAlign="center">
             הצעת חוק
           </TableHeaderCell>
-          <TableHeaderCell key="platform_header" width="10%" textAlign="center">
+          <TableHeaderCell key="platform_header" width="15%" textAlign="center">
             מזהה חוק
           </TableHeaderCell>
-          <TableHeaderCell key="user_header" width="3%" />
+          <TableHeaderCell key="user_header" width="5%" />
         </TableHeaderRow>
       </TableHead>
       <TableBody>{renderTableBody()}</TableBody>

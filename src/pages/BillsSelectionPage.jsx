@@ -34,9 +34,9 @@ const BillsSelectionPage = () => {
       <HeadersWrapper>
         <Header>{header}</Header>
         <Hint>{hint}</Hint>
+        <SearchBills />
       </HeadersWrapper>
       <FormContainer>
-        <SearchBills />
         <BillsTablesContainer>
           <BillsTableWrapper>
             <TableDescription>הצבעות אפשריות</TableDescription>
@@ -53,6 +53,7 @@ const BillsSelectionPage = () => {
             <BillsTable data={finalBills} />
           </BillsTableWrapper>
         </BillsTablesContainer>
+        <button>מצא התאמות</button>
       </FormContainer>
     </BillsSelectionWrapper>
   );
