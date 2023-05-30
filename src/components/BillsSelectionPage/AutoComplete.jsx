@@ -63,7 +63,7 @@ const AutoComplete = (props) => {
         value={userInput}
       />
       {filteredSuggestions.length > 0 && (
-        <AutoCompleteRowsContainer>
+        <AutoCompleteRowsContainer id="autocomplete-dropdown">
           {filteredSuggestions.map((bill, index) => {
             return (
               <AutoCompleteRow
