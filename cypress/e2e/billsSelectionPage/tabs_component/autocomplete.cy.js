@@ -2,7 +2,7 @@
 
 const {
   INPUT_PREFIXES,
-} = require("../../headers/bills_selection_page_headers");
+} = require("../../../headers/bills_selection_page_headers");
 
 const MAX_DROPDOWN_SIZE = 30;
 

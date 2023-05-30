@@ -14,7 +14,7 @@ const {
 const KNESSET_NUM = 24;
 
 describe("bills Selection Page", () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit("http://localhost:3000/");
   });
 
@@ -120,7 +120,7 @@ describe("bills Selection Page", () => {
       });
   });
 
-  it.only("Load associated knesset num bills", () => {
+  it("Load associated knesset num bills", () => {
     cy.get("#tab-1_title").click(); //choose knesset num tab
     cy.get("#knesset_num_select").select(KNESSET_NUM - 1);
     cy.get("#tab-action_button").click();
