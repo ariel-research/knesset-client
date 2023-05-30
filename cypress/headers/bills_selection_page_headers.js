@@ -30,3 +30,13 @@ export const table = {
   identifyField: "מזהה חוק",
   labelField: "הצעת חוק",
 };
+
+export const INPUT_PREFIXES = [
+  "dvd",
+  "התנתקות",
+  "ממשלה",
+  "מדינה",
+  "משפט",
+  "חוק",
+  "מס",
+];

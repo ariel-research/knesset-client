@@ -128,7 +128,7 @@ const BillsTable = (props) => {
           <TableHeaderCell id={`${prefix}-index_header`} width="5%" />
         </TableHeaderRow>
       </TableHead>
-      <TableBody>{renderTableBody()}</TableBody>
+      <TableBody id={`${prefix}-table_body`}>{renderTableBody()}</TableBody>
     </TableContainer>
   );
 };

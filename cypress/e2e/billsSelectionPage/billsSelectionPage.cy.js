@@ -7,6 +7,7 @@ const {
   possibleBillsTable,
   table,
   selectedBillsTable,
+  INPUT_PREFIXES,
 } = require("../../headers/bills_selection_page_headers");
 
 describe("bills Selection Page", () => {
@@ -81,5 +82,38 @@ describe("bills Selection Page", () => {
       billsSelectionHeaders.searchButton
     );
     cy.get("#bills_selection_page-left_arrow").should("exist");
+  });
+
+  it.only("Load free text searched bills", () => {
+    cy.wait(3000); //wait for results to load up
+    const searchedBills = [];
+    for (const prefix of INPUT_PREFIXES) {
+      cy.get("#autocomplete-input").as("BillsInput").type(prefix); //search for bills
+      cy.get("#autocomplete-dropdown")
+        .children()
+        .then(($res) => {
+          cy.wrap($res[0])
+            .invoke("text")
+            .then((text) => {
+              searchedBills.push(text);
+            });
+          $res[0].click(); //load the selected to the input field
+          cy.get("#tab-action_button").click(); // add the searched bill to the possible bills table
+        });
+      cy.get("@BillsInput").clear();
+    }
+
+    //validate results are in the possible bills table
+    cy.get("#possible_bills-table_body")
+      .children()
+      .each(($el) => {
+        cy.wrap($el)
+          .children()
+          .eq(1) //the billLabel div
+          .invoke("text")
+          .then((text) => {
+            expect(searchedBills.includes(text)).to.be.true;
+          });
+      });
   });
 });

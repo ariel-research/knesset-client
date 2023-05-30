@@ -1,24 +1,14 @@
 /// <reference types="cypress" />
 
-const INPUT_PREFIXES = [
-  "dvd",
-  "התנתקות",
-  "ממשלה",
-  "מדינה",
-  "משפט",
-  "חוק",
-  "מס",
-];
+const {
+  INPUT_PREFIXES,
+} = require("../../headers/bills_selection_page_headers");
 
 const MAX_DROPDOWN_SIZE = 30;
 
 describe("autocomplete", () => {
   before(() => {
     cy.visit("http://localhost:3000/");
-  });
-
-  beforeEach(() => {
-    cy.get("#autocomplete-input").clear();
   });
 
   it("Autocomplete functionality", () => {
