@@ -1,5 +1,6 @@
-const LeftArrow = () => (
+const LeftArrow = (props) => (
   <svg
+    id={`${props.prefix}-left_arrow`}
     width="100px"
     height="80px"
     viewBox="0 0 24 24"

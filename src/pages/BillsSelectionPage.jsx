@@ -18,6 +18,7 @@ import LeftArrow from "../assets/LeftArrow";
 import { tableFlags } from "../assets/consts";
 
 const BillsSelectionPage = () => {
+  const prefix = "bills_selection_page";
   const header = "שקיפות בכנסת";
   const hint =
     "שירות זה נועד כדי לספק לציבור בישראל אפשרות להשוות בין דעותיהם הפוליטיות להצבעות חברי כנסת ישראל";
@@ -32,28 +33,43 @@ const BillsSelectionPage = () => {
   return (
     <BillsSelectionWrapper>
       <HeadersWrapper>
-        <Header>{header}</Header>
-        <Hint>{hint}</Hint>
+        <Header id={`${prefix}-header`}>{header}</Header>
+        <Hint id={`${prefix}-hint`}>{hint}</Hint>
         <SearchBills />
       </HeadersWrapper>
       <FormContainer>
         <BillsTablesContainer>
           <BillsTableWrapper>
-            <TableDescription>הצבעות אפשריות</TableDescription>
-            <BillsTable data={selectedBills} action={tableFlags.REMOVE_ROW} />
+            <TableDescription id={`${prefix}-possible_votes`}>
+              הצבעות אפשריות
+            </TableDescription>
+            <BillsTable
+              prefix="possible_bills"
+              data={selectedBills}
+              action={tableFlags.REMOVE_ROW}
+            />
           </BillsTableWrapper>
           <ArrowBox>
-            <LoadSelectedBillsButton onClick={loadAllBillsHandler}>
+            <LoadSelectedBillsButton
+              id={`${prefix}-load_votes_button`}
+              onClick={loadAllBillsHandler}
+            >
               טען הכל
             </LoadSelectedBillsButton>
-            <LeftArrow />
+            <LeftArrow prefix={prefix} />
           </ArrowBox>
           <BillsTableWrapper>
-            <TableDescription>הצבעות שנבחרו</TableDescription>
-            <BillsTable data={finalBills} />
+            <TableDescription id={`${prefix}-selected_votes`}>
+              הצבעות שנבחרו
+            </TableDescription>
+            <BillsTable
+              prefix="selected_bills"
+              data={finalBills}
+              action={tableFlags.VOTE_ROW}
+            />
           </BillsTableWrapper>
         </BillsTablesContainer>
-        <button>מצא התאמות</button>
+        <button id={`${prefix}-search_button`}>מצא התאמות</button>
       </FormContainer>
     </BillsSelectionWrapper>
   );

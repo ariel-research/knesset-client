@@ -14,7 +14,6 @@ export const HeadersWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 30%;
   width: 100%;
   margin-top: 30px;
   gap: 30px;
@@ -40,7 +39,6 @@ export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 70%;
   width: 100%;
   gap: 20px;
 `;

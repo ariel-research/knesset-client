@@ -51,6 +51,7 @@ const SearchBills = () => {
       description: "חפש הצעות חוק המשוייכות לכנסת מסויימת",
       content: (
         <select
+          id="knesset_num_select"
           value={selectedKnessetNum}
           onChange={(e) => setSelectedKnessetNum(e.target.value)}
         >
@@ -62,7 +63,7 @@ const SearchBills = () => {
         </select>
       ),
       action: (
-        <ActionButton onClick={addKnessetNumBIlls}>
+        <ActionButton id="tab-action_button" onClick={addKnessetNumBIlls}>
           הוסף הצעות חוק המשוייכות לכנסת
         </ActionButton>
       ),
@@ -72,7 +73,9 @@ const SearchBills = () => {
       description: "חפש הצעות חוק על פי טקסט חופשי",
       content: <AutoComplete data={allBills} />,
       action: (
-        <ActionButton onClick={addBillHandler}>הוסף הצעת חוק</ActionButton>
+        <ActionButton id="tab-action_button" onClick={addBillHandler}>
+          הוסף הצעת חוק
+        </ActionButton>
       ),
     },
   ];

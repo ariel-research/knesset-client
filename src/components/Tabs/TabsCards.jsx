@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { TabButton, TabContainer, TabContent, TabDescription, TabHeader } from "./TabsCards.styled";
+import {
+  TabButton,
+  TabContainer,
+  TabContent,
+  TabDescription,
+  TabHeader,
+} from "./TabsCards.styled";
 
 const TabsCard = (props) => {
   const { tabsHeaders } = props;
@@ -15,6 +21,7 @@ const TabsCard = (props) => {
       <TabHeader>
         {tabsHeaders.map((tab, index) => (
           <TabButton
+            id={`tab-${index + 1}_title`}
             key={index}
             active={activeTab === index}
             onClick={() => handleTabClick(index)}
@@ -24,7 +31,7 @@ const TabsCard = (props) => {
         ))}
       </TabHeader>
       <TabContent>
-        <TabDescription>
+        <TabDescription id="tab_description">
           {tabsHeaders[activeTab].description &&
             tabsHeaders[activeTab].description}
         </TabDescription>
