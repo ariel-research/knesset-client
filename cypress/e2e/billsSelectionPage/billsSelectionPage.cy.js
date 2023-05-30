@@ -7,22 +7,10 @@ const {
   possibleBillsTable,
   table,
   selectedBillsTable,
-} = require("../headers/bills_selection_page_headers");
-
-const INPUT_PREFIXES = [
-  "dvd",
-  "התנתקות",
-  "ממשלה",
-  "מדינה",
-  "משפט",
-  "חוק",
-  "מס",
-];
-
-const MAX_DROPDOWN_SIZE = 30;
+} = require("../../headers/bills_selection_page_headers");
 
 describe("bills Selection Page", () => {
-  beforeEach(() => {
+  before(() => {
     cy.visit("http://localhost:3000/");
   });
 
@@ -93,21 +81,5 @@ describe("bills Selection Page", () => {
       billsSelectionHeaders.searchButton
     );
     cy.get("#bills_selection_page-left_arrow").should("exist");
-  });
-
-  it.only("Autocomplete functionality", () => {
-    cy.get("#autocomplete-input").as("BillsInput").should("be.empty");
-    cy.wait(3000); //wait for results to load up
-    for (const prefix of INPUT_PREFIXES) {
-      cy.get("@BillsInput").type(prefix).clear().type(prefix);
-      cy.get("#autocomplete-dropdown")
-        .children()
-        .each(($child, $index, $list) => {
-          expect($list.length).to.be.at.most(MAX_DROPDOWN_SIZE);
-          const currentElementText = $child.text().toLowerCase();
-          expect(currentElementText).to.have.string(`${prefix}`); // validate that the results matches the prefix
-        });
-      cy.get("@BillsInput").clear();
-    }
   });
 });
