@@ -35,7 +35,7 @@ const BillsTable = (props) => {
   };
 
   const renderActionComponent = (id) => {
-    const billData = searchedBills.find((bill) => bill.id == id);
+    const billData = searchedBills.find((bill) => bill.id === id);
     return action === tableFlags.REMOVE_ROW ? (
       <button
         variant="contained"
