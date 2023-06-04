@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { addBills } from "../components/redux/finalBillsSlice";
 import LeftArrow from "../assets/LeftArrow";
 import { tableFlags } from "../assets/consts";
+import { useNavigate } from "react-router-dom";
+import { getVotesScore } from "../utils/apiUtils";
+import { updateResults } from "../components/redux/compassResultsSlice";
 
 const BillsSelectionPage = () => {
   const prefix = "bills_selection_page";
@@ -24,10 +27,16 @@ const BillsSelectionPage = () => {
     "שירות זה נועד כדי לספק לציבור בישראל אפשרות להשוות בין דעותיהם הפוליטיות להצבעות חברי כנסת ישראל";
   const selectedBills = useSelector((state) => state.selectedBills);
   const finalBills = useSelector((state) => state.finalBills);
+  const results = useSelector((state) => state.CompassResults);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const loadAllBillsHandler = () => {
     dispatch(addBills(selectedBills));
+  };
+
+  const onFindMatchesButtonHandler = () => {
+    navigate("/results");
   };
 
   return (
@@ -69,7 +78,20 @@ const BillsSelectionPage = () => {
             />
           </BillsTableWrapper>
         </BillsTablesContainer>
-        <button id={`${prefix}-search_button`}>מצא התאמות</button>
+        <button
+          id={`${prefix}-search_button`}
+          onClick={onFindMatchesButtonHandler}
+          disabled={finalBills.length ? false : true}
+        >
+          מצא התאמות
+        </button>
+        <button
+          onClick={() => {
+            console.log(results);
+          }}
+        >
+          ss
+        </button>
       </FormContainer>
     </BillsSelectionWrapper>
   );

@@ -59,9 +59,9 @@ const SearchBills = () => {
             <option
               id={`knesset-num_${index}`}
               key={`knesset-num_${index}`}
-              value={num.KnessetNum}
+              value={num}
             >
-              {num.KnessetNum}
+              {num}
             </option>
           ))}
         </select>
@@ -97,7 +97,8 @@ const SearchBills = () => {
   useEffect(() => {
     getAllKnessetNum()
       .then((res) => {
-        setAllKnessetNum(res.data);
+        const knessetNums = res.data.map((num) => parseInt(num.KnessetNum));
+        setAllKnessetNum(knessetNums.sort((a, b) => a - b));
       })
       .catch((err) => {
         console.log(err);

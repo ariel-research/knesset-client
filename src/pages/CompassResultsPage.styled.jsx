@@ -2,36 +2,22 @@ import styled from "styled-components";
 
 export const CompassResWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   height: 100vh;
-  gap: 30px;
+  gap: 50px;
   background-color: #f7f7f7;
-`;
-
-export const CardsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  padding: 30px;
   justify-content: center;
-  align-items: center;
-  gap: 100px;
-  flex: 0.2;
-`;
-
-export const Card = styled.div`
-  display: flex;
-  height: 100%;
-  padding: 22px;
-  border-radius: 12px;
-  background-color: #fff;
+  flex: 0.8;
 `;
 
 export const DataContainer = styled.div`
   display: flex;
-  flex-direction: column;
   padding: 30px;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 50px;
   flex: 0.8;
 `;
 
@@ -44,6 +30,6 @@ export const VotesTableWrapper = styled.div`
 
 export const ScoreGraphContainer = styled.div`
   display: flex;
-  width: 800px;
-  height: 400px;
+  width: 600px;
+  height: 70%;
 `;
