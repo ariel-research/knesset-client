@@ -17,8 +17,6 @@ import { addBills } from "../components/redux/finalBillsSlice";
 import LeftArrow from "../assets/LeftArrow";
 import { tableFlags } from "../assets/consts";
 import { useNavigate } from "react-router-dom";
-import { getVotesScore } from "../utils/apiUtils";
-import { updateResults } from "../components/redux/compassResultsSlice";
 
 const BillsSelectionPage = () => {
   const prefix = "bills_selection_page";
