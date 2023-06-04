@@ -25,7 +25,6 @@ const BillsSelectionPage = () => {
     "שירות זה נועד כדי לספק לציבור בישראל אפשרות להשוות בין דעותיהם הפוליטיות להצבעות חברי כנסת ישראל";
   const selectedBills = useSelector((state) => state.selectedBills);
   const finalBills = useSelector((state) => state.finalBills);
-  const results = useSelector((state) => state.CompassResults);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
