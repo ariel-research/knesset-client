@@ -17,7 +17,6 @@ const UserVoteBox = (props) => {
     <select value={selectedValue} onChange={onSelectHandler}>
       <option value={1}>בעד</option>
       <option value={2}>נגד</option>
-      <option value={3}>נמנע</option>
     </select>
   );
 };

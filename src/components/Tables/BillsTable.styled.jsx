@@ -48,3 +48,15 @@ export const TableRow = styled.tr`
   table-layout: fixed;
   font-family: Open Sans;
 `;
+
+export const RemoveRowButton = styled.button`
+  display: flex;
+  background-color: transparent;
+  border: 1px solid transparent;
+  font-size: 30px;
+  cursor: pointer;
+  border-radius: 16px;
+  &:hover {
+    background-color: ${palette.brand};
+  }
+`;

@@ -2,8 +2,13 @@ import styled from "styled-components";
 import BillsSelectionPage from "./pages/BillsSelectionPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CompassResultsPage from "./pages/CompassResultsPage";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    document.title = "Political Transparency";
+  }, []);
+
   return (
     <Router>
       <AppWrapper>

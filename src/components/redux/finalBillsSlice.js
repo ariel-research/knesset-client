@@ -18,6 +18,13 @@ export const finalBillsSlice = createSlice({
         }
       });
     },
+    loadBill: (state, action) => {
+      const index = state.findIndex((value) => value.id === action.payload.id);
+      //add only if not exist already
+      if (index === -1) {
+        state.push({ ...action.payload, vote: 1 });
+      }
+    },
     billVote: (state, action) => {
       const index = state.findIndex(
         (value) => value.id === action.payload.billId
@@ -26,9 +33,16 @@ export const finalBillsSlice = createSlice({
         state[index].vote = action.payload.vote;
       }
     },
+    removeBillFinal: (state, action) => {
+      const index = state.findIndex((value) => value.id === action.payload);
+      if (index !== -1) {
+        state.splice(index, 1);
+      }
+    },
   },
 });
 
-export const { addBills, billVote } = finalBillsSlice.actions;
+export const { addBills, loadBill, billVote, removeBillFinal } =
+  finalBillsSlice.actions;
 
 export default finalBillsSlice.reducer;

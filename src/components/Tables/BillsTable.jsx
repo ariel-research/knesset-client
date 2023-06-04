@@ -2,20 +2,23 @@ import { useState, useEffect } from "react";
 import TableHeaderCell from "./TableHeaderCell";
 import TableRowCell from "./TableRowCell";
 import {
+  RemoveRowButton,
   TableBody,
   TableContainer,
   TableHead,
   TableHeaderRow,
   TableRow,
 } from "./BillsTable.styled";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { tableFlags } from "../../assets/consts";
 import UserVoteBox from "../common/UserVoteBox";
+import { loadBill, removeBillFinal } from "../redux/finalBillsSlice";
 import { removeBill } from "../redux/selectedBillsSlice";
 
 const BillsTable = (props) => {
   const { prefix, data, action } = props;
   const [rowsData, setRowsData] = useState([]);
+  const searchedBills = useSelector((state) => state.selectedBills);
   const dispatch = useDispatch();
 
   const parseData = (data) => {
@@ -32,15 +35,16 @@ const BillsTable = (props) => {
   };
 
   const renderActionComponent = (id) => {
+    const billData = searchedBills.find((bill) => bill.id == id);
     return action === tableFlags.REMOVE_ROW ? (
       <button
         variant="contained"
         color="primary"
         onClick={() => {
-          actionHandler(id, removeBill);
+          actionHandler(billData, loadBill);
         }}
       >
-        הסר
+        הוסף
       </button>
     ) : (
       <UserVoteBox billId={id} />
@@ -90,7 +94,20 @@ const BillsTable = (props) => {
               width="5%"
               textAlign="center"
             >
-              {index + 1}
+              <>
+                <RemoveRowButton
+                  onClick={() => {
+                    actionHandler(
+                      id,
+                      action === tableFlags.REMOVE_ROW
+                        ? removeBill
+                        : removeBillFinal
+                    );
+                  }}
+                >
+                  x
+                </RemoveRowButton>
+              </>
             </TableRowCell>
           </TableRow>
         );
