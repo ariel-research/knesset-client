@@ -9,6 +9,7 @@ import {
 } from "./CompassResultsPage.styled";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import { useCallback } from "react";
 
 const CompassResultsPage = () => {
   const [data, setData] = useState([]);
@@ -18,7 +19,7 @@ const CompassResultsPage = () => {
   const [allKnessetMembers, setAllKnessetMembers] = useState([]);
   const compassResults = useSelector((state) => state.compassResults);
 
-  const parseData = () => {
+  const parseData = useCallback(() => {
     if (compassResults) {
       const parsed = [];
       const parsedGraphData = [];
@@ -54,7 +55,7 @@ const CompassResultsPage = () => {
       setData(parsed);
       setOriginalData(parsed);
     }
-  };
+  }, [compassResults]);
 
   const onKnessetMemberFilterChange = () => {
     const filtered = originalData.filter(
@@ -69,10 +70,8 @@ const CompassResultsPage = () => {
   };
 
   useEffect(() => {
-    if (compassResults) {
-      parseData();
-    }
-  }, [compassResults]);
+    parseData();
+  }, [parseData]);
 
   return (
     <CompassResWrapper>
