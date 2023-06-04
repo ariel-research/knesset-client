@@ -3,6 +3,7 @@ import VoteTable from "../components/Tables/VotesTable";
 import {
   CompassResWrapper,
   DataContainer,
+  FilterButton,
   ScoreGraphContainer,
   VotesTableWrapper,
 } from "./CompassResultsPage.styled";
@@ -13,7 +14,8 @@ const CompassResultsPage = () => {
   const [data, setData] = useState([]);
   const [graphData, setGraphData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
-  const [filterValue, setFilterValue] = useState();
+  const [selectedKnessetMember, setSelectedKnessetMember] = useState();
+  const [allKnessetMembers, setAllKnessetMembers] = useState([]);
   const compassResults = useSelector((state) => state.compassResults);
 
   const parseData = () => {
@@ -44,27 +46,22 @@ const CompassResultsPage = () => {
           });
         });
       });
+      const all_km = parsed.filter((object, index, self) => {
+        return index === self.findIndex((o) => o.km_name === object.km_name);
+      });
+      setAllKnessetMembers(all_km);
       setGraphData(parsedGraphData);
       setData(parsed);
       setOriginalData(parsed);
     }
   };
 
-  const onKnessetMemberFilterHandler = () => {
-    console.log(data);
-    const filtered = data.filter(
+  const onKnessetMemberFilterChange = () => {
+    const filtered = originalData.filter(
       (suggestion) =>
-        suggestion.label.toLowerCase().indexOf(filterValue.toLowerCase()) > -1
+        suggestion.km_name.toLowerCase() === selectedKnessetMember.toLowerCase()
     );
-    if (filterValue) {
-      //sort by prefix
-      filtered.sort((a, b) => {
-        if (parseInt(a.id) > parseInt(b.id)) {
-          return -1;
-        } else {
-          return 1;
-        }
-      });
+    if (selectedKnessetMember) {
       setData(filtered);
     } else {
       setData(originalData);
@@ -85,13 +82,22 @@ const CompassResultsPage = () => {
           <ScoreGraph data={graphData} />
         </ScoreGraphContainer>
         <VotesTableWrapper>
-          <input
-            onChange={(e) => {
-              setFilterValue(e.target.value);
-            }}
-            placeholder="חפש הצבעות של חבר כנסת"
-          />
-          <button onClick={onKnessetMemberFilterHandler}>חפש</button>
+          <select
+            id="filter-results"
+            value={selectedKnessetMember}
+            onChange={(e) => setSelectedKnessetMember(e.target.value)}
+          >
+            {allKnessetMembers.map((record, index) => (
+              <option
+                id={`knesset-num_${index}`}
+                key={`knesset-num_${index}`}
+                value={record.km_name}
+              >
+                {record.km_name}
+              </option>
+            ))}
+          </select>
+          <FilterButton onClick={onKnessetMemberFilterChange}>חפש</FilterButton>
           <VoteTable data={data} />
         </VotesTableWrapper>
       </DataContainer>

@@ -9,6 +9,7 @@ import {
   Hint,
   LoadSelectedBillsButton,
   TableDescription,
+  StyledButton,
 } from "./BillsSelection.styled";
 import SearchBills from "../components/common/SearchBills";
 import BillsTable from "../components/Tables/BillsTable";
@@ -94,13 +95,13 @@ const BillsSelectionPage = () => {
             />
           </BillsTableWrapper>
         </BillsTablesContainer>
-        <button
+        <StyledButton
           id={`${prefix}-search_button`}
           onClick={onFindMatchesButtonHandler}
           disabled={finalBills.length ? false : true}
         >
           מצא התאמות
-        </button>
+        </StyledButton>
       </FormContainer>
     </BillsSelectionWrapper>
   );

@@ -77,4 +77,22 @@ export const ArrowBox = styled.div`
   width: 4%;
 `;
 
-export const LoadSelectedBillsButton = styled.button``;
+export const StyledButton = styled.button`
+  background-color: ${(props) => (props.disabled ? "grey" : palette.brand)};
+  border-radius: 8px;
+  font-size: 20px;
+  color: white;
+  font-family: sans-serif;
+  border: 1px solid transparent;
+  cursor: pointer;
+`;
+
+export const LoadSelectedBillsButton = styled.button`
+  background-color: ${palette.brand};
+  border-radius: 8px;
+  font-size: 15px;
+  color: white;
+  font-family: sans-serif;
+  border: 1px solid transparent;
+  cursor: pointer;
+`;

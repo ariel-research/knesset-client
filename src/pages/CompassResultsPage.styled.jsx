@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { palette } from "../assets/colorsPalette";
 
 export const CompassResWrapper = styled.div`
   display: flex;
@@ -26,10 +27,21 @@ export const VotesTableWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 45%;
+  gap: 10px;
 `;
 
 export const ScoreGraphContainer = styled.div`
   display: flex;
   width: 600px;
   height: 70%;
+`;
+
+export const FilterButton = styled.button`
+  background-color: ${palette.brand};
+  border-radius: 8px;
+  font-size: 15px;
+  color: white;
+  font-family: sans-serif;
+  border: 1px solid transparent;
+  cursor: pointer;
 `;
