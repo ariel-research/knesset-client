@@ -36,12 +36,15 @@ const BillsSelectionPage = () => {
   };
 
   const onFindMatchesButtonHandler = () => {
-    let bill_id = "";
     const user_votes = [];
-    finalBills.forEach((bill) => {
-      bill_id = bill_id.concat(", ", bill.id);
-      user_votes.push(parseInt(bill.vote) === 1 ? true : false);
-    });
+    const bill_id = finalBills.reduce((accumulator, bill) => {
+      user_votes.push(bill.vote === 1 ? true : false);
+      if (accumulator === "") {
+        return `${bill.id},`;
+      } else {
+        return `${accumulator}, ${bill.id}`;
+      }
+    }, "");
     const body = {
       bill_id: bill_id,
       user_votes: user_votes,
