@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import ScoreGraph from "../components/CompassResultsPage/ScoreGraph";
 import VoteTable from "../components/Tables/VotesTable";
 import {
@@ -8,22 +7,20 @@ import {
   VotesTableWrapper,
 } from "./CompassResultsPage.styled";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { getVotesScore } from "../utils/apiUtils";
+import { useState, useEffect } from "react";
 
 const CompassResultsPage = () => {
   const [data, setData] = useState([]);
   const [graphData, setGraphData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [filterValue, setFilterValue] = useState();
-  const finalBills = useSelector((state) => state.finalBills);
+  const compassResults = useSelector((state) => state.compassResults);
 
-  const parseData = (rawData) => {
-    if (rawData) {
+  const parseData = () => {
+    if (compassResults) {
       const parsed = [];
       const parsedGraphData = [];
-      const res = [...rawData.batch];
-      console.log(res);
+      const res = [...compassResults];
       res.forEach((record) => {
         const ans = {
           id: record.bill_id,
@@ -37,7 +34,7 @@ const CompassResultsPage = () => {
           if (!isExist) {
             parsedGraphData.push({
               voter_name: voter.voter_name,
-              graded: voter.graded,
+              תוצאות: voter.graded,
             });
           }
           parsed.push({
@@ -48,7 +45,8 @@ const CompassResultsPage = () => {
         });
       });
       setGraphData(parsedGraphData);
-      return parsed;
+      setData(parsed);
+      setOriginalData(parsed);
     }
   };
 
@@ -74,26 +72,10 @@ const CompassResultsPage = () => {
   };
 
   useEffect(() => {
-    let bill_id = "";
-    const user_votes = [];
-    finalBills.forEach((bill) => {
-      bill_id = bill_id.concat(", ", bill.id);
-      user_votes.push(parseInt(bill.vote) === 1 ? true : false);
-    });
-    const body = {
-      bill_id: bill_id,
-      user_votes: user_votes,
-    };
-    getVotesScore(body)
-      .then((res) => {
-        const ans = parseData(res.data);
-        setData(ans);
-        setOriginalData(ans);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [finalBills]);
+    if (compassResults) {
+      parseData();
+    }
+  }, [compassResults]);
 
   return (
     <CompassResWrapper>

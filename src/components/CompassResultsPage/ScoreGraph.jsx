@@ -9,14 +9,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { palette } from "../../assets/colorsPalette";
-import { useEffect } from "react";
 
 const ScoreGraph = (props) => {
   const { data } = props;
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <ResponsiveContainer>
@@ -26,7 +21,7 @@ const ScoreGraph = (props) => {
         <Tooltip />
         <Legend />
         <ReferenceLine y={0} stroke="#000" />
-        <Bar barSize={10} dataKey="graded" fill={palette.brand} />
+        <Bar barSize={10} dataKey="תוצאות" fill={palette.brand} />
       </BarChart>
     </ResponsiveContainer>
   );

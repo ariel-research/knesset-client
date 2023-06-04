@@ -17,6 +17,8 @@ import { addBills } from "../components/redux/finalBillsSlice";
 import LeftArrow from "../assets/LeftArrow";
 import { tableFlags } from "../assets/consts";
 import { useNavigate } from "react-router-dom";
+import { getVotesScore } from "../utils/apiUtils";
+import { updateResults } from "../components/redux/compassResultsSlice";
 
 const BillsSelectionPage = () => {
   const prefix = "bills_selection_page";
@@ -33,7 +35,24 @@ const BillsSelectionPage = () => {
   };
 
   const onFindMatchesButtonHandler = () => {
-    navigate("/results");
+    let bill_id = "";
+    const user_votes = [];
+    finalBills.forEach((bill) => {
+      bill_id = bill_id.concat(", ", bill.id);
+      user_votes.push(parseInt(bill.vote) === 1 ? true : false);
+    });
+    const body = {
+      bill_id: bill_id,
+      user_votes: user_votes,
+    };
+    getVotesScore(body)
+      .then((res) => {
+        dispatch(updateResults(res.data));
+        navigate("/results");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
