@@ -85,13 +85,6 @@ const BillsSelectionPage = () => {
         >
           מצא התאמות
         </button>
-        <button
-          onClick={() => {
-            console.log(results);
-          }}
-        >
-          ss
-        </button>
       </FormContainer>
     </BillsSelectionWrapper>
   );
