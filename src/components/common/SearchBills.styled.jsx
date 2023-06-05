@@ -20,12 +20,7 @@ export const TabHeader = styled.button`
   border-top: 5px solid ${palette.brand};
   border-bottom: 1px solid ${palette.bleakWhite};
   color: ${palette.brand};
-  cursor: pointer;
   transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: ${(props) => (props.active ? "" : "lightgray")};
-  }
 `;
 
 export const TabContent = styled.div`
