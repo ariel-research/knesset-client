@@ -84,7 +84,7 @@ describe("bills Selection Page", () => {
     cy.get("#bills_selection_page-search_button").should(
       "contain.text",
       billsSelectionHeaders.searchButton
-    );
+    ).should('be.disabled');
     cy.get("#bills_selection_page-left_arrow").should("exist");
   });
 
@@ -153,12 +153,14 @@ describe("bills Selection Page", () => {
       });
   });
 
-  it.only("load possible bills into selected table", () => {
+  it("load possible bills into selected table", () => {
     cy.get("#tab-1_title").click(); //choose knesset num tab
     cy.get("#knesset_num_select").select(KNESSET_NUM - 1);
     cy.get("#tab-action_button").click();
     cy.wait(SLEEP_TIME); // wait for bills to load up to possible table
     cy.get("#bills_selection_page-load_votes_button").click();
+
+    cy.get("#bills_selection_page-search_button").should('be.enabled'); // only after bills are loaded in final bills table, user can search for matches
 
     const possibleBills = [];
     cy.get("#possible_bills-table_body")
