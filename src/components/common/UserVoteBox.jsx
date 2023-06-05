@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { billVote } from "../redux/finalBillsSlice";
 
 const UserVoteBox = (props) => {
-  const { billId } = props;
+  const { index, billId } = props;
   const [selectedValue, setSelectedValue] = useState(1);
   const dispatch = useDispatch();
 
@@ -14,9 +14,17 @@ const UserVoteBox = (props) => {
   };
 
   return (
-    <select value={selectedValue} onChange={onSelectHandler}>
-      <option value={1}>בעד</option>
-      <option value={2}>נגד</option>
+    <select
+      id={`user_vote-${index}`}
+      value={selectedValue}
+      onChange={onSelectHandler}
+    >
+      <option id={`for_vote-${index}`} value={1}>
+        בעד
+      </option>
+      <option id={`against_vote-${index}`} value={2}>
+        נגד
+      </option>
     </select>
   );
 };

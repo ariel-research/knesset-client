@@ -34,7 +34,7 @@ const BillsTable = (props) => {
     return res;
   };
 
-  const renderActionComponent = (id) => {
+  const renderActionComponent = (id, index) => {
     const billData = searchedBills.find((bill) => bill.id === id);
     return action === tableFlags.REMOVE_ROW ? (
       <button
@@ -47,7 +47,7 @@ const BillsTable = (props) => {
         הוסף
       </button>
     ) : (
-      <UserVoteBox billId={id} />
+      <UserVoteBox index={index} billId={id} />
     );
   };
 
@@ -70,7 +70,7 @@ const BillsTable = (props) => {
               width="15%"
               textAlign="center"
             >
-              {renderActionComponent(id)}
+              {renderActionComponent(id, index)}
             </TableRowCell>
             <TableRowCell
               id={`${prefix}-label-${index}`}
