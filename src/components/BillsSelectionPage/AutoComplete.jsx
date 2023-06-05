@@ -58,7 +58,7 @@ const AutoComplete = (props) => {
       <AutoCompleteInput
         id="autocomplete-input"
         autoComplete="off"
-        placeholder="...הקלד כאן"
+        placeholder="שם הצעת חוק"
         onChange={onChangeHandler}
         value={userInput}
       />

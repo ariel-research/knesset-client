@@ -1,24 +1,45 @@
-import styled from "styled-components";
 import { useState } from "react";
 import { useEffect } from "react";
-import {
-  getAllBills,
-  getAllKnessetNum,
-  getBillsOfKnesset,
-} from "../../utils/apiUtils";
+import { getAllBills, getBillsOfKnesset } from "../../utils/apiUtils";
 import AutoComplete from "../BillsSelectionPage/AutoComplete";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../redux/searchedBillSlice";
 import { addBill, addMultipleBills } from "../redux/selectedBillsSlice";
-import TabsCards from "../Tabs/TabsCards";
-import { palette } from "../../assets/colorsPalette";
+import {
+  ActionButton,
+  ActionButtonsContainer,
+  AutoCompleteContainer,
+  BillsSelectionContainer,
+  OptionKnessetNum,
+  SelectKnessetNum,
+  TabContainer,
+  TabContent,
+  TabDescription,
+  TabHeader,
+} from "./SearchBills.styled";
 
 const EMPTY_BILL = { id: "", label: "" };
+const ALL_KNESSET_NUM = [
+  "השש-עשרה",
+  "השבע-עשרה",
+  "השמונה-עשרה",
+  "התשע-עשרה",
+  "העשרים",
+  "העשרים ואחת",
+  "העשרים ושתיים",
+  "העשרים ושלוש",
+  "העשרים וארבע",
+  "העשרים וחמש",
+];
+const KNESSET_NUM_BASE_COUNT = 16; // available data is from the 16 knesset
 
 const SearchBills = () => {
+  const title = "חיפוש הצעות חוק";
+  const description =
+    "חיפוש הצעות חוק השייכות לכנסת ספציפית, או על פי טקסט חופשי";
   const [allBills, setAllBills] = useState([]);
-  const [allKnessetNum, setAllKnessetNum] = useState([]);
-  const [selectedKnessetNum, setSelectedKnessetNum] = useState("1");
+  const [filteredBillsByKnessetNum, setFilteredBillsByKnessetNum] = useState([]);
+  const [selectedKnessetNum, setSelectedKnessetNum] = useState("0");
   const currentSearchedBill = useSelector((state) => state.searchedBill);
   const dispatch = useDispatch();
 
@@ -29,8 +50,32 @@ const SearchBills = () => {
     }
   };
 
+  const onKnessetNumSelectHandler = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === "0") {
+      setFilteredBillsByKnessetNum([...allBills]);
+    }
+    setSelectedKnessetNum(selectedValue);
+    const arr = [];
+    getBillsOfKnesset(selectedValue).then((res) => {
+      const bills = res.data.bills;
+      bills.forEach((bill) => {
+        const current = { id: bill.id, label: bill.name };
+        arr.push(current);
+      });
+      setFilteredBillsByKnessetNum([...arr]);
+    });
+  };
+
   const addKnessetNumBIlls = () => {
     const arr = [];
+
+    //if the default option was selected - load all bills
+    if (selectedKnessetNum === "0") {
+      dispatch(addMultipleBills(allBills));
+      return;
+    }
+
     getBillsOfKnesset(selectedKnessetNum)
       .then((res) => {
         const bills = res.data.bills;
@@ -45,60 +90,11 @@ const SearchBills = () => {
       });
   };
 
-  const tabsHeaders = [
-    {
-      title: "מספר כנסת",
-      description: "חפש הצעות חוק המשוייכות לכנסת מסויימת",
-      content: (
-        <select
-          id="knesset_num_select"
-          value={selectedKnessetNum}
-          onChange={(e) => setSelectedKnessetNum(e.target.value)}
-        >
-          {allKnessetNum.map((num, index) => (
-            <option
-              id={`knesset-num_${index}`}
-              key={`knesset-num_${index}`}
-              value={num}
-            >
-              {num}
-            </option>
-          ))}
-        </select>
-      ),
-      action: (
-        <ActionButton id="tab-action_button" onClick={addKnessetNumBIlls}>
-          הוסף הצעות חוק המשוייכות לכנסת
-        </ActionButton>
-      ),
-    },
-    {
-      title: "טקסט חופשי",
-      description: "חפש הצעות חוק על פי טקסט חופשי",
-      content: <AutoComplete data={allBills} />,
-      action: (
-        <ActionButton id="tab-action_button" onClick={addBillHandler}>
-          הוסף הצעת חוק
-        </ActionButton>
-      ),
-    },
-  ];
-
   useEffect(() => {
     getAllBills()
       .then((res) => {
         setAllBills(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    getAllKnessetNum()
-      .then((res) => {
-        const knessetNums = res.data.map((num) => parseInt(num.KnessetNum));
-        setAllKnessetNum(knessetNums.sort((a, b) => a - b));
+        setFilteredBillsByKnessetNum(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -106,22 +102,48 @@ const SearchBills = () => {
   }, []);
 
   return (
-    <BillsSelectionContainer>
-      <TabsCards tabsHeaders={tabsHeaders} />
-    </BillsSelectionContainer>
+    <TabContainer>
+      <TabHeader id={`tab_title`}>{title}</TabHeader>
+      <TabContent>
+        <TabDescription id="tab_description">{description}</TabDescription>
+        <BillsSelectionContainer>
+          <SelectKnessetNum
+            id="knesset_num_select"
+            value={selectedKnessetNum}
+            onChange={onKnessetNumSelectHandler}
+          >
+            <OptionKnessetNum
+              id={`knesset-num_${0}`}
+              key={`knesset-num_${0}`}
+              value="0"
+            >
+              מספר כנסת
+            </OptionKnessetNum>
+            {ALL_KNESSET_NUM.map((num, index) => (
+              <OptionKnessetNum
+                id={`knesset-num_${index + KNESSET_NUM_BASE_COUNT}`}
+                key={`knesset-num_${index + KNESSET_NUM_BASE_COUNT}`}
+                value={index + KNESSET_NUM_BASE_COUNT}
+              >
+                {num}
+              </OptionKnessetNum>
+            ))}
+          </SelectKnessetNum>
+          <AutoCompleteContainer>
+            <AutoComplete data={filteredBillsByKnessetNum} />
+          </AutoCompleteContainer>
+        </BillsSelectionContainer>
+        <ActionButtonsContainer>
+          <ActionButton id="add_bill" onClick={addBillHandler}>
+            הוסף הצעת חוק שנבחרה
+          </ActionButton>
+          <ActionButton id="add_all_bills" onClick={addKnessetNumBIlls}>
+            הוסף את כל הצעות הכנסת
+          </ActionButton>
+        </ActionButtonsContainer>
+      </TabContent>
+    </TabContainer>
   );
 };
-
-const BillsSelectionContainer = styled.div``;
-
-const ActionButton = styled.button`
-  background-color: ${palette.brand};
-  border-radius: 8px;
-  font-size: 20px;
-  color: white;
-  font-family: sans-serif;
-  border: 1px solid transparent;
-  cursor: pointer;
-`;
 
 export default SearchBills;

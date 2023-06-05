@@ -76,13 +76,16 @@ export const AutoCompleteWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: center;
 `;
 
 export const AutoCompleteInput = styled.input`
-  width: 80%;
-  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  border-radius: 4px;
   text-align: right;
   font-family: sans-serif;
   font-style: normal;

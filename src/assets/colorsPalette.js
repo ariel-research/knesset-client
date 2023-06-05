@@ -3,5 +3,6 @@ export const palette = {
   bleakWhite: "#ffffff",
   greyish: "#919aa4",
   greyScale: "#dee2e6",
+  silver: "#c0c0c0",
   snow: "	#FFFAFA",
 };
