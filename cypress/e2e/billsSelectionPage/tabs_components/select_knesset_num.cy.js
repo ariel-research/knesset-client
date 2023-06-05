@@ -2,7 +2,8 @@
 
 const { getBillsOfKnesset } = require("../../../../src/utils/apiUtils");
 
-const KNESSET_NUM = 24;
+const KNESSET_NUM = "העשרים וארבע";
+const KNESSET_NUM_VAL = 24;
 
 describe("Select Knesset Num Bills", () => {
   before(() => {
@@ -10,13 +11,12 @@ describe("Select Knesset Num Bills", () => {
   });
 
   it("select knesset num bills functionality", () => {
-    cy.get("#tab-1_title").click(); //choose knesset num tab
-    cy.get("#knesset_num_select").select(KNESSET_NUM - 1);
-    cy.get("#tab-action_button").click();
+    cy.get("#knesset_num_select").select(KNESSET_NUM);
+    cy.get('#add_all_bills').click();
 
     let associatedBills = [];
     // call for API for data validation
-    getBillsOfKnesset(KNESSET_NUM)
+    getBillsOfKnesset(KNESSET_NUM_VAL)
       .then((res) => {
         const bills = res.data.bills;
         bills.forEach((bill) => {

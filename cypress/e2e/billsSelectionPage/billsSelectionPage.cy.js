@@ -3,15 +3,15 @@
 const { getBillsOfKnesset } = require("../../../src/utils/apiUtils");
 const {
   billsSelectionHeaders,
-  tabHeader2,
-  tabHeader1,
   possibleBillsTable,
   table,
   selectedBillsTable,
   INPUT_PREFIXES,
+  tabHeader,
 } = require("../../headers/bills_selection_page_headers");
 
-const KNESSET_NUM = 24;
+const KNESSET_NUM = "העשרים וארבע";
+const KNESSET_NUM_VAL = 24;
 const SLEEP_TIME = 3000;
 
 describe("bills Selection Page", () => {
@@ -31,18 +31,14 @@ describe("bills Selection Page", () => {
     );
 
     // tabs check
-    // tab 1
-    cy.get("#tab-2_title").should("contain.text", tabHeader2.title);
-    cy.get("#tab_description").should("contain.text", tabHeader2.description);
+    cy.get('#tab_title').should("contain.text", tabHeader.title);
+    cy.get("#tab_description").should("contain.text", tabHeader.description);
     cy.get("#autocomplete-input")
       .invoke("attr", "placeholder")
-      .should("equal", tabHeader2.inputPlaceholder);
-    cy.get("#tab-action_button").should("contain.text", tabHeader2.button);
-    //tab 2
-    cy.get("#tab-1_title").should("contain.text", tabHeader1.title).click();
-    cy.get("#tab_description").should("contain.text", tabHeader1.description);
-    cy.get("#knesset_num_select").should("exist");
-    cy.get("#tab-action_button").should("contain.text", tabHeader1.button);
+      .should("equal", tabHeader.inputPlaceholder);
+      cy.get('#add_bill').should("contain.text", tabHeader.addBillButton);
+      cy.get('#add_all_bills').should("contain.text", tabHeader.addKnessetBills);
+
 
     // tables check
     // possible bills
@@ -102,7 +98,7 @@ describe("bills Selection Page", () => {
               searchedBills.push(text);
             });
           $res[0].click(); //load the selected to the input field
-          cy.get("#tab-action_button").click(); // add the searched bill to the possible bills table
+          cy.get('#add_bill').click(); // add the searched bill to the possible bills table
         });
       cy.get("@BillsInput").clear();
     }
@@ -122,13 +118,12 @@ describe("bills Selection Page", () => {
   });
 
   it("Load associated knesset num bills", () => {
-    cy.get("#tab-1_title").click(); //choose knesset num tab
-    cy.get("#knesset_num_select").select(KNESSET_NUM - 1);
-    cy.get("#tab-action_button").click();
+    cy.get("#knesset_num_select").select(KNESSET_NUM);
+    cy.get('#add_all_bills').click();
 
     let associatedBills = [];
     // call for API for data validation
-    getBillsOfKnesset(KNESSET_NUM)
+    getBillsOfKnesset(KNESSET_NUM_VAL)
       .then((res) => {
         const bills = res.data.bills;
         bills.forEach((bill) => {
@@ -154,10 +149,10 @@ describe("bills Selection Page", () => {
   });
 
   it("load possible bills into selected table", () => {
-    cy.get("#tab-1_title").click(); //choose knesset num tab
-    cy.get("#knesset_num_select").select(KNESSET_NUM - 1);
-    cy.get("#tab-action_button").click();
+    cy.get("#knesset_num_select").select(KNESSET_NUM);
+    cy.get('#add_all_bills').click();
     cy.wait(SLEEP_TIME); // wait for bills to load up to possible table
+
     cy.get("#bills_selection_page-load_votes_button").click();
 
     cy.get("#bills_selection_page-search_button").should('be.enabled'); // only after bills are loaded in final bills table, user can search for matches

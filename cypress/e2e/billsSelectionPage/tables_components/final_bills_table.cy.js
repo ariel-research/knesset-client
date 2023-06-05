@@ -1,7 +1,9 @@
 /// <reference types="cypress" />
 
-const KNESSET_NUM = 24;
+const KNESSET_NUM = "העשרים וארבע";
 const MAX_ITERATIONS = 10;
+const NEUTRAL_VAL = "3";
+const NEUTRAL_TEXT = "נמנע";
 const AGAINST_VAL = "2";
 const AGAINST_TEXT = "נגד";
 const FOR_VAL = "1";
@@ -9,18 +11,17 @@ const FOR_TEXT = "בעד";
 const VOTES_OPTIONS = [
   { vote_text: FOR_TEXT, vote_value: FOR_VAL },
   { vote_text: AGAINST_TEXT, vote_value: AGAINST_VAL },
+  { vote_text: NEUTRAL_TEXT, vote_value: NEUTRAL_VAL },
 ];
 
 describe("Final Bills Table", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/");
     //load bills to selected table
-    cy.get("#tab-1_title").click(); //choose knesset num tab
-    cy.get("#knesset_num_select").select(KNESSET_NUM - 1);
-    cy.get("#tab-action_button").click();
-
+    cy.get("#knesset_num_select").select(KNESSET_NUM);
+    cy.get('#add_all_bills').click();
     cy.wait(2000); //wait for bills to load
-    cy.get("#bills_selection_page-load_votes_button").click();
+    cy.get('#bills_selection_page-load_votes_button').click();
   });
 
   it("remove row functionality", () => {
@@ -59,7 +60,7 @@ describe("Final Bills Table", () => {
 
   it("select votes validation", () => {
     for (let index = 0; index < MAX_ITERATIONS; index++) {
-      const currentVote = VOTES_OPTIONS[index % 2].vote_value;
+      const currentVote = VOTES_OPTIONS[index % 3].vote_value;
       cy.get(`#user_vote-${index}`).select(currentVote);
       cy.get(`#user_vote-${index}`)
         .invoke("val")

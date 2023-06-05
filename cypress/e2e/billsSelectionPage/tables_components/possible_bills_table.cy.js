@@ -1,16 +1,16 @@
 /// <reference types="cypress" />
 
-const KNESSET_NUM = 24;
+const KNESSET_NUM = "העשרים וארבע";
 const MAX_ITERATIONS = 10;
 
 describe("Possible Bills Table", () => {
   
-  before(() => {
+  beforeEach(() => {
     cy.visit("http://localhost:3000/");
     //load bills to table
-    cy.get("#tab-1_title").click(); //choose knesset num tab
-    cy.get("#knesset_num_select").select(KNESSET_NUM - 1);
-    cy.get("#tab-action_button").click();
+    cy.get("#knesset_num_select").select(KNESSET_NUM);
+    cy.get('#add_all_bills').click();
+    cy.wait(2000); //wait for bills to load
   });
 
   it("load specific bill", () => {

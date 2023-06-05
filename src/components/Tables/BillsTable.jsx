@@ -126,8 +126,9 @@ const BillsTable = (props) => {
           <TableHeaderCell
             id={`${prefix}-action_header`}
             width="15%"
-            textAlign="center"
-          />
+            textAlign="center">
+              {action === tableFlags.REMOVE_ROW? "" : "הצבעתך"}
+            </TableHeaderCell>
           <TableHeaderCell
             id={`${prefix}-label_header`}
             width="65%"
