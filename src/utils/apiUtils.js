@@ -17,5 +17,5 @@ export const getBillsOfKnesset = async (knesset_num) => {
 };
 
 export const getVotesScore = async (body) => {
-  return await axios.get(`${BASE_URL}scores`, body);
+  return await axios.post(` http://localhost:8080/scores`, body);
 };
