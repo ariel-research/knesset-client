@@ -11,7 +11,11 @@ export const compassResultsSlice = createSlice({
   reducers: {
     updateResults: (state, action) => {
       action.payload.batch.forEach((res) => {
-        state.push({ ...res });
+        const index = state.findIndex((value) => value.id === res.id);
+        //add only if not exist already
+        if (index === -1) {
+          state.push({ ...res });
+        }
       });
     },
   },
