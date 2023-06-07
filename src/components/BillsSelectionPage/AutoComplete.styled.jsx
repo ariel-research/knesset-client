@@ -107,6 +107,22 @@ export const AutoCompleteRowsContainer = styled.div`
   background-color: rgb(222, 226, 230);
   border: 1px solid rgb(145, 154, 164);
   z-index: 1;
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: ${palette.greyScale};
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+  ::-webkit-scrollbar-track {
+    background: ${palette.greyScale};
+  }
+  ::-webkit-scrollbar-thumb {
+    background: ${palette.brand};
+    border-radius: 100px;
+  }
 `;
 
 export const AutoCompleteRow = styled.div`
