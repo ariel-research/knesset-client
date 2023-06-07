@@ -61,8 +61,8 @@ export const BillsTablesContainer = styled.div`
   flex-direction: row-reverse;
   justify-content: center;
   width: 99%;
-  height: 500px;
-  overflow: auto;
+  height: 470px;
+  overflow: hidden;
 `;
 
 export const BillsTableWrapper = styled.div`
