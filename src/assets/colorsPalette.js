@@ -5,4 +5,5 @@ export const palette = {
   greyScale: "#dee2e6",
   silver: "#c0c0c0",
   snow: "	#FFFAFA",
+  incident: "#ff536a",
 };

@@ -30,7 +30,7 @@ export const finalBillsSlice = createSlice({
         (value) => value.id === action.payload.billId
       );
       if (index !== -1) {
-        state[index].vote = action.payload.vote;
+        state[index].vote = parseInt(action.payload.vote);
       }
     },
     removeBillFinal: (state, action) => {
