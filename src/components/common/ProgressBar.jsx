@@ -5,12 +5,22 @@ import { palette } from "../../assets/colorsPalette";
 const ProgressBar = ({ done }) => {
   const [style, setStyle] = useState({});
 
+  const calcWidth = (num) => {
+    if (num < 0) {
+      num *= -1;
+    }
+    if (Math.abs(num) < 8) {
+      num = 8;
+    }
+    return num;
+  };
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       const isNegative = done < 0;
       const newStyle = {
         opacity: 1,
-        width: isNegative ? `${-1 * done}%` : `${done}%`,
+        width: `${calcWidth(done)}%`,
         background: isNegative ? palette.incident : "#0dcaf0",
       };
 
