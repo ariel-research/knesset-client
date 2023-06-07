@@ -1,4 +1,3 @@
-import ScoreGraph from "../components/CompassResultsPage/ScoreGraph";
 import VoteTable from "../components/Tables/VotesTable";
 import {
   CompassResWrapper,
@@ -6,19 +5,21 @@ import {
   FilterActionsContainer,
   FilterButton,
   FilterFieldsWrapper,
+  GradesWrapper,
   OptionMemberKnesset,
   OptionVote,
-  ScoreGraphContainer,
+  ProgressVoterName,
   SelectMemberKnesset,
+  VoterGradeWrapper,
   VotesTableWrapper,
 } from "./CompassResultsPage.styled";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useCallback } from "react";
+import ProgressBar from "../components/common/ProgressBar";
 
 const CompassResultsPage = () => {
   const [data, setData] = useState([]);
-  const [graphData, setGraphData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [selectedKnessetMember, setSelectedKnessetMember] = useState();
   const [voteFilter, setVoteFilter] = useState(0);
@@ -28,28 +29,19 @@ const CompassResultsPage = () => {
   const parseData = useCallback(() => {
     if (compassResults) {
       const parsed = [];
-      const parsedGraphData = [];
       const res = [...compassResults];
       res.forEach((record) => {
         const ans = {
-          id: record.bill_id,
+          id: parseInt(record.bill_id),
           label: record.bill_name,
         };
 
         record.voters.forEach((voter) => {
-          const isExist = parsedGraphData.some(
-            (el) => el.voter_name === voter.voter_name
-          );
-          if (!isExist) {
-            parsedGraphData.push({
-              voter_name: voter.voter_name,
-              תוצאות: voter.graded,
-            });
-          }
           parsed.push({
             ...ans,
             km_name: voter.voter_name,
             km_vote: voter.ballot,
+            grade: voter.graded,
           });
         });
       });
@@ -57,7 +49,6 @@ const CompassResultsPage = () => {
         return index === self.findIndex((o) => o.km_name === object.km_name);
       });
       setAllKnessetMembers(all_km.map((bill) => bill.km_name).sort());
-      setGraphData(parsedGraphData);
       setData(parsed);
       setOriginalData(parsed);
     }
@@ -101,6 +92,19 @@ const CompassResultsPage = () => {
     setVoteFilter(parseInt(e.target.value));
   };
 
+  const renderVotersGrade = () => {
+    const satBar = [];
+    data.forEach((el, i) => {
+      satBar.push(
+        <VoterGradeWrapper key={i}>
+          <ProgressBar done={el.grade} />
+          <ProgressVoterName>{el.km_name}</ProgressVoterName>
+        </VoterGradeWrapper>
+      );
+    });
+    return satBar;
+  };
+
   useEffect(() => {
     parseData();
   }, [parseData]);
@@ -109,9 +113,7 @@ const CompassResultsPage = () => {
     <CompassResWrapper>
       <h1>תוצאות</h1>
       <DataContainer>
-        <ScoreGraphContainer>
-          <ScoreGraph data={graphData} />
-        </ScoreGraphContainer>
+        <GradesWrapper>{renderVotersGrade()}</GradesWrapper>
         <VotesTableWrapper>
           <FilterFieldsWrapper>
             <FilterActionsContainer>

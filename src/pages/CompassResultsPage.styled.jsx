@@ -26,7 +26,8 @@ export const VotesTableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 45%;
+  width: 600px;
+  height: 600px;
   gap: 10px;
 `;
 
@@ -83,4 +84,46 @@ export const OptionVote = styled.option`
   border-radius: 4px;
   font-family: sans-serif;
   text-align: center;
+`;
+
+export const ProgressVoterName = styled.div`
+  width: 30px;
+  text-align: center;
+`;
+
+export const GradesWrapper = styled.div`
+display: flex;
+width: 350px;
+height: 600px;
+overflow-y: auto;
+flex-direction: column;
+align-items: center;
+max-width: 38em;
+padding: 1em 3em 2em 3em;
+margin: 0em auto;
+background-color: #fff;
+border-radius: 4.2px;
+box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.2);
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 328px;
+  background: ${palette.greyScale};
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+::-webkit-scrollbar-track {
+  background: ${palette.greyScale};
+}
+::-webkit-scrollbar-thumb {
+  background: ${palette.brand};
+  border-radius: 100px;
+`;
+
+export const VoterGradeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: smaller;
 `;

@@ -34,7 +34,7 @@ const VoteTable = (props) => {
     return (
       data &&
       data.map(({ id, label, km_name, km_vote }, index) => {
-        const user_vote = userVotes.find((bill) => bill.id == id);
+        const user_vote = userVotes.find((bill) => bill.id === id);
         return (
           <TableRow
             id={`${prefix}-table_row-${index}`}

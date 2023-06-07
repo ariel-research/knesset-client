@@ -23,7 +23,7 @@ export const TableHeaderRow = styled.tr`
 
 export const TableBody = styled.tbody`
   display: block;
-  height: 327px;
+  height: 470px;
   background-color: white;
   overflow-y: auto;
   ::-webkit-scrollbar {
