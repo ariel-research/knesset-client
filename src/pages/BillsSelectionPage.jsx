@@ -15,17 +15,24 @@ import SearchBills from "../components/common/SearchBills";
 import BillsTable from "../components/Tables/BillsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { addBills } from "../components/redux/finalBillsSlice";
-import LeftArrow from "../assets/LeftArrow";
+import LeftArrow from "../assets/svg-icons/LeftArrow";
 import { tableFlags } from "../assets/consts";
 import { useNavigate } from "react-router-dom";
 import { getVotesScore } from "../utils/apiUtils";
 import { updateResults } from "../components/redux/compassResultsSlice";
+import TooltipInfo from "../components/common/TooltipInfo";
 
 const BillsSelectionPage = () => {
   const prefix = "bills_selection_page";
   const header = "שקיפות בכנסת";
   const hint =
     "שירות זה נועד כדי לספק לציבור בישראל אפשרות להשוות בין דעותיהם הפוליטיות להצבעות חברי כנסת ישראל";
+  const possibleTableContent = "הצבעות אפשריות";
+  const possibleTableInfo =
+    "יש לבחור את הצעות החוק הרלוונטיות מבין כל ההצעות שחופשו";
+  const finalTableContent = "הצבעות שנבחרו";
+  const finalTableInfo =
+    "יש להצביע עבור כל הצעת חוק שנבחרה על מנת להשוות עם הצבעות חברי הכנסת";
   const selectedBills = useSelector((state) => state.selectedBills);
   const finalBills = useSelector((state) => state.finalBills);
   const dispatch = useDispatch();
@@ -37,16 +44,13 @@ const BillsSelectionPage = () => {
 
   const onFindMatchesButtonHandler = () => {
     const user_votes = [];
-    const bill_id = finalBills.reduce((accumulator, bill) => {
+    const bill_ids = [];
+    finalBills.forEach((bill) => {
       user_votes.push(bill.vote === 1 ? true : false);
-      if (accumulator === "") {
-        return `${bill.id},`;
-      } else {
-        return `${accumulator}, ${bill.id}`;
-      }
-    }, "");
+      bill_ids.push(bill.id);
+    });
     const body = {
-      bill_id: bill_id,
+      bill_ids: bill_ids,
       user_votes: user_votes,
     };
     getVotesScore(body)
@@ -70,7 +74,8 @@ const BillsSelectionPage = () => {
         <BillsTablesContainer>
           <BillsTableWrapper>
             <TableDescription id={`${prefix}-possible_votes`}>
-              הצבעות אפשריות
+              <TooltipInfo info={possibleTableInfo} />
+              {possibleTableContent}
             </TableDescription>
             <BillsTable
               prefix="possible_bills"
@@ -89,7 +94,8 @@ const BillsSelectionPage = () => {
           </ArrowBox>
           <BillsTableWrapper>
             <TableDescription id={`${prefix}-selected_votes`}>
-              הצבעות שנבחרו
+              <TooltipInfo info={finalTableInfo} />
+              {finalTableContent}
             </TableDescription>
             <BillsTable
               prefix="selected_bills"

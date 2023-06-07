@@ -44,6 +44,7 @@ export const FormContainer = styled.div`
 `;
 
 export const TableDescription = styled.div`
+  display: flex;
   text-align: center;
   padding: 10px 20px;
   border-top: 5px solid ${palette.brand};
@@ -51,6 +52,7 @@ export const TableDescription = styled.div`
   border-left: 1px solid ${palette.greyScale};
   color: ${palette.brand};
   background-color: white;
+  gap: 10px;
 `;
 
 export const BillsTablesContainer = styled.div`
