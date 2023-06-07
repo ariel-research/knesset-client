@@ -12,10 +12,10 @@ export const getAllKnessetNum = async () => {
 
 export const getBillsOfKnesset = async (knesset_num) => {
   return await axios.get(
-    `${BASE_URL}general//billsByKnessetNum?knessetNum=${knesset_num}`
+    `${BASE_URL}general/billsByKnessetNum?knessetNum=${knesset_num}`
   );
 };
 
 export const getVotesScore = async (body) => {
-  return await axios.post(` http://localhost:8080/scores`, body);
+  return await axios.post(` ${BASE_URL}general/scores`, body);
 };
