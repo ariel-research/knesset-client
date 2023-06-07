@@ -21,6 +21,8 @@ import { useNavigate } from "react-router-dom";
 import { getVotesScore } from "../utils/apiUtils";
 import { updateResults } from "../components/redux/compassResultsSlice";
 import TooltipInfo from "../components/common/TooltipInfo";
+import { useState } from "react";
+import Loader from "../components/common/Loader";
 
 const BillsSelectionPage = () => {
   const prefix = "bills_selection_page";
@@ -33,6 +35,7 @@ const BillsSelectionPage = () => {
   const finalTableContent = "הצבעות שנבחרו";
   const finalTableInfo =
     "יש להצביע עבור כל הצעת חוק שנבחרה על מנת להשוות עם הצבעות חברי הכנסת";
+  const [isLoading, setIsLoading] = useState(false);
   const selectedBills = useSelector((state) => state.selectedBills);
   const finalBills = useSelector((state) => state.finalBills);
   const dispatch = useDispatch();
@@ -53,6 +56,7 @@ const BillsSelectionPage = () => {
       bill_ids: bill_ids,
       user_votes: user_votes,
     };
+    setIsLoading(true);
     getVotesScore(body)
       .then((res) => {
         dispatch(updateResults(res.data));
@@ -68,9 +72,10 @@ const BillsSelectionPage = () => {
       <HeadersWrapper>
         <Header id={`${prefix}-header`}>{header}</Header>
         <Hint id={`${prefix}-hint`}>{hint}</Hint>
-        <SearchBills />
+        <SearchBills setIsLoading={setIsLoading} />
       </HeadersWrapper>
-      <FormContainer>
+      {isLoading && <Loader />}
+      <FormContainer isLoading={isLoading}>
         <BillsTablesContainer>
           <BillsTableWrapper>
             <TableDescription id={`${prefix}-possible_votes`}>
@@ -87,6 +92,7 @@ const BillsSelectionPage = () => {
             <LoadSelectedBillsButton
               id={`${prefix}-load_votes_button`}
               onClick={loadAllBillsHandler}
+              disabled={selectedBills.length ? false : true}
             >
               טען הכל
             </LoadSelectedBillsButton>

@@ -41,6 +41,7 @@ export const FormContainer = styled.div`
   align-items: center;
   width: 100%;
   gap: 20px;
+  opacity: ${(props) => (props.isLoading ? 0.2 : 1)};
 `;
 
 export const TableDescription = styled.div`
@@ -90,7 +91,7 @@ export const StyledButton = styled.button`
 `;
 
 export const LoadSelectedBillsButton = styled.button`
-  background-color: ${palette.brand};
+  background-color: ${(props) => (props.disabled ? "grey" : palette.brand)};
   border-radius: 8px;
   font-size: 15px;
   color: white;

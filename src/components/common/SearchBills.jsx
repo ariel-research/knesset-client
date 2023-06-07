@@ -33,12 +33,15 @@ const ALL_KNESSET_NUM = [
 ];
 const KNESSET_NUM_BASE_COUNT = 16; // available data is from the 16 knesset
 
-const SearchBills = () => {
+const SearchBills = (props) => {
+  const { setIsLoading } = props;
   const title = "חיפוש הצעות חוק";
   const description =
     "חיפוש הצעות חוק השייכות לכנסת ספציפית, או על פי טקסט חופשי";
   const [allBills, setAllBills] = useState([]);
-  const [filteredBillsByKnessetNum, setFilteredBillsByKnessetNum] = useState([]);
+  const [filteredBillsByKnessetNum, setFilteredBillsByKnessetNum] = useState(
+    []
+  );
   const [selectedKnessetNum, setSelectedKnessetNum] = useState("0");
   const currentSearchedBill = useSelector((state) => state.searchedBill);
   const dispatch = useDispatch();
@@ -68,11 +71,13 @@ const SearchBills = () => {
   };
 
   const addKnessetNumBIlls = () => {
+    setIsLoading(true);
     const arr = [];
 
     //if the default option was selected - load all bills
     if (selectedKnessetNum === "0") {
       dispatch(addMultipleBills(allBills));
+      setIsLoading(false);
       return;
     }
 
@@ -87,10 +92,14 @@ const SearchBills = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   useEffect(() => {
+    setIsLoading(true);
     getAllBills()
       .then((res) => {
         setAllBills(res.data);
@@ -98,8 +107,11 @@ const SearchBills = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-  }, []);
+  }, [setIsLoading]);
 
   return (
     <TabContainer>
