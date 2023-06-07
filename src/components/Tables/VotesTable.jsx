@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import {
   TableBody,
   TableContainer,
@@ -7,15 +8,33 @@ import {
 } from "./BillsTable.styled";
 import TableHeaderCell from "./TableHeaderCell";
 import TableRowCell from "./TableRowCell";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const VoteTable = (props) => {
   const { data } = props;
   const prefix = "results-table";
+  const [userVotes, setUserVotes] = useState([]);
+  const finalBills = useSelector((state) => state.finalBills);
+
+  const renderVoteValue = (vote) => {
+    switch (vote) {
+      case 1:
+        return "בעד";
+      case 2:
+        return "נגד";
+      case 3:
+        return "נמנע";
+      default:
+        return "";
+    }
+  };
 
   const renderTableBody = () => {
     return (
       data &&
       data.map(({ id, label, km_name, km_vote }, index) => {
+        const user_vote = userVotes.find((bill) => bill.id == id);
         return (
           <TableRow
             id={`${prefix}-table_row-${index}`}
@@ -27,7 +46,7 @@ const VoteTable = (props) => {
               width="15%"
               textAlign="center"
             >
-              ???
+              {user_vote ? renderVoteValue(user_vote.vote) : ""}
             </TableRowCell>
             <TableRowCell
               id={`${prefix}-km_vote-${index}`}
@@ -35,7 +54,7 @@ const VoteTable = (props) => {
               width="15%"
               textAlign="center"
             >
-              {km_vote}
+              {renderVoteValue(km_vote)}
             </TableRowCell>
             <TableRowCell
               id={`${prefix}-km_name-${index}`}
@@ -74,6 +93,13 @@ const VoteTable = (props) => {
       })
     );
   };
+
+  useEffect(() => {
+    if (finalBills) {
+      const res = [...finalBills];
+      setUserVotes(res);
+    }
+  }, [finalBills]);
 
   return (
     <TableContainer>

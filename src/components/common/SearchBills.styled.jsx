@@ -49,6 +49,7 @@ export const SelectKnessetNum = styled.select`
   font-style: normal;
   font-size: 16px;
   line-height: 22px;
+  text-align: center;
 `;
 
 export const AutoCompleteContainer = styled.div`
@@ -61,10 +62,6 @@ export const OptionKnessetNum = styled.option`
   border-radius: 4px;
   font-family: sans-serif;
   text-align: center;
-
-  &:hover {
-    background-color: yellow;
-  }
 `;
 
 export const BillsSelectionContainer = styled.div`

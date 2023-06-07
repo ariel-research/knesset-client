@@ -3,8 +3,13 @@ import VoteTable from "../components/Tables/VotesTable";
 import {
   CompassResWrapper,
   DataContainer,
+  FilterActionsContainer,
   FilterButton,
+  FilterFieldsWrapper,
+  OptionMemberKnesset,
+  OptionVote,
   ScoreGraphContainer,
+  SelectMemberKnesset,
   VotesTableWrapper,
 } from "./CompassResultsPage.styled";
 import { useSelector } from "react-redux";
@@ -16,6 +21,7 @@ const CompassResultsPage = () => {
   const [graphData, setGraphData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [selectedKnessetMember, setSelectedKnessetMember] = useState();
+  const [voteFilter, setVoteFilter] = useState(0);
   const [allKnessetMembers, setAllKnessetMembers] = useState([]);
   const compassResults = useSelector((state) => state.compassResults);
 
@@ -50,23 +56,49 @@ const CompassResultsPage = () => {
       const all_km = parsed.filter((object, index, self) => {
         return index === self.findIndex((o) => o.km_name === object.km_name);
       });
-      setAllKnessetMembers(all_km);
+      setAllKnessetMembers(all_km.map((bill) => bill.km_name).sort());
       setGraphData(parsedGraphData);
       setData(parsed);
       setOriginalData(parsed);
     }
   }, [compassResults]);
 
-  const onKnessetMemberFilterChange = () => {
+  const KnessetMemberFilter = () => {
+    if (!selectedKnessetMember) {
+      return originalData;
+    }
     const filtered = originalData.filter(
       (suggestion) =>
         suggestion.km_name.toLowerCase() === selectedKnessetMember.toLowerCase()
     );
-    if (selectedKnessetMember) {
-      setData(filtered);
-    } else {
-      setData(originalData);
+    return filtered;
+  };
+
+  const VoteFilter = (data) => {
+    //if all votes selected - don't filter
+    if (voteFilter === 0) {
+      return data;
     }
+    return data.filter((record) => record.km_vote === voteFilter);
+  };
+
+  const onKnessetMemberFilterChange = () => {
+    const filteredKnessetMember = KnessetMemberFilter();
+    const filtered = VoteFilter(filteredKnessetMember);
+    setData(filtered);
+  };
+
+  const onKnessetMemberSelectHandler = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === "0") {
+      setSelectedKnessetMember();
+      return;
+    }
+    setSelectedKnessetMember(selectedValue);
+  };
+
+  const onVoteSelectHandler = (e) => {
+    setVoteFilter(parseInt(e.target.value));
   };
 
   useEffect(() => {
@@ -81,22 +113,53 @@ const CompassResultsPage = () => {
           <ScoreGraph data={graphData} />
         </ScoreGraphContainer>
         <VotesTableWrapper>
-          <select
-            id="filter-results"
-            value={selectedKnessetMember}
-            onChange={(e) => setSelectedKnessetMember(e.target.value)}
-          >
-            {allKnessetMembers.map((record, index) => (
-              <option
-                id={`knesset-num_${index}`}
-                key={`knesset-num_${index}`}
-                value={record.km_name}
+          <FilterFieldsWrapper>
+            <FilterActionsContainer>
+              <SelectMemberKnesset
+                id="filter-results"
+                value={selectedKnessetMember}
+                onChange={onKnessetMemberSelectHandler}
               >
-                {record.km_name}
-              </option>
-            ))}
-          </select>
-          <FilterButton onClick={onKnessetMemberFilterChange}>חפש</FilterButton>
+                <OptionMemberKnesset
+                  id={`knesset-member_${0}`}
+                  key={`knesset-member${0}`}
+                  value="0"
+                >
+                  חבר כנסת
+                </OptionMemberKnesset>
+                {allKnessetMembers.map((record, index) => (
+                  <OptionMemberKnesset
+                    id={`knesset-member_${index + 1}`}
+                    key={`knesset-member_${index + 1}`}
+                    value={record}
+                  >
+                    {record}
+                  </OptionMemberKnesset>
+                ))}
+              </SelectMemberKnesset>
+              <SelectMemberKnesset
+                id="filter-votes"
+                value={voteFilter}
+                onChange={onVoteSelectHandler}
+              >
+                <OptionVote id={`for_vote`} value={0}>
+                  כל ההצבעות
+                </OptionVote>
+                <OptionVote id={`for_vote`} value={1}>
+                  בעד
+                </OptionVote>
+                <OptionVote id={`against_vote`} value={2}>
+                  נגד
+                </OptionVote>
+                <OptionVote id={`for_vote`} value={3}>
+                  נמנע
+                </OptionVote>
+              </SelectMemberKnesset>
+            </FilterActionsContainer>
+            <FilterButton onClick={onKnessetMemberFilterChange}>
+              חפש
+            </FilterButton>
+          </FilterFieldsWrapper>
           <VoteTable data={data} />
         </VotesTableWrapper>
       </DataContainer>
