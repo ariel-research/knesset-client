@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "./BillsTable.styled";
 import { useDispatch, useSelector } from "react-redux";
-import { tableFlags } from "../../assets/consts";
+import { TABLE_FLAGS } from "../../assets/consts";
 import UserVoteBox from "../common/UserVoteBox";
 import { loadBill, removeBillFinal } from "../redux/finalBillsSlice";
 import { removeBill } from "../redux/selectedBillsSlice";
@@ -36,7 +36,7 @@ const BillsTable = (props) => {
 
   const renderActionComponent = (id, index) => {
     const billData = searchedBills.find((bill) => bill.id === id);
-    return action === tableFlags.REMOVE_ROW ? (
+    return action === TABLE_FLAGS.REMOVE_ROW ? (
       <button
         variant="contained"
         color="primary"
@@ -99,7 +99,7 @@ const BillsTable = (props) => {
                   onClick={() => {
                     actionHandler(
                       id,
-                      action === tableFlags.REMOVE_ROW
+                      action === TABLE_FLAGS.REMOVE_ROW
                         ? removeBill
                         : removeBillFinal
                     );
@@ -127,7 +127,7 @@ const BillsTable = (props) => {
             id={`${prefix}-action_header`}
             width="15%"
             textAlign="center">
-              {action === tableFlags.REMOVE_ROW? "" : "הצבעתך"}
+              {action === TABLE_FLAGS.REMOVE_ROW? "" : "הצבעתך"}
             </TableHeaderCell>
           <TableHeaderCell
             id={`${prefix}-label_header`}

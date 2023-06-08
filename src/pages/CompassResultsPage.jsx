@@ -2,14 +2,8 @@ import VoteTable from "../components/Tables/VotesTable";
 import {
   CompassResWrapper,
   DataContainer,
-  FilterActionsContainer,
-  FilterButton,
-  FilterFieldsWrapper,
   GradesWrapper,
-  OptionMemberKnesset,
-  OptionVote,
   ProgressVoterName,
-  SelectMemberKnesset,
   VoterGradeWrapper,
   VotesTableWrapper,
 } from "./CompassResultsPage.styled";
@@ -17,6 +11,7 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useCallback } from "react";
 import ProgressBar from "../components/common/ProgressBar";
+import VotesTableFilterActions from "../components/CompassResultsPage/VotesTableFilterActions";
 
 const CompassResultsPage = () => {
   const [data, setData] = useState([]);
@@ -24,11 +19,16 @@ const CompassResultsPage = () => {
   const [selectedKnessetMember, setSelectedKnessetMember] = useState();
   const [voteFilter, setVoteFilter] = useState(0);
   const [allKnessetMembers, setAllKnessetMembers] = useState([]);
+  const [gradesData, setGradesData] = useState([{ km_name: "", grade: 0 }]);
+  const [gradesFilteredData, setGradesFilteredData] = useState([
+    { km_name: "", grade: 0 },
+  ]);
   const compassResults = useSelector((state) => state.compassResults);
 
   const parseData = useCallback(() => {
     if (compassResults) {
       const parsed = [];
+      const gradedDataParsed = [];
       const res = [...compassResults];
       res.forEach((record) => {
         const ans = {
@@ -41,13 +41,23 @@ const CompassResultsPage = () => {
             ...ans,
             km_name: voter.voter_name,
             km_vote: voter.ballot,
-            grade: voter.graded,
           });
+          const index = gradedDataParsed.findIndex(
+            (km) => km.km_name === voter.voter_name
+          );
+          if (index === -1) {
+            gradedDataParsed.push({
+              km_name: voter.voter_name,
+              grade: voter.graded,
+            });
+          }
         });
       });
       const all_km = parsed.filter((object, index, self) => {
         return index === self.findIndex((o) => o.km_name === object.km_name);
       });
+      setGradesData(gradedDataParsed);
+      setGradesFilteredData(gradedDataParsed);
       setAllKnessetMembers(all_km.map((bill) => bill.km_name).sort());
       setData(parsed);
       setOriginalData(parsed);
@@ -73,9 +83,24 @@ const CompassResultsPage = () => {
     return data.filter((record) => record.km_vote === voteFilter);
   };
 
+  const filterGrades = (membersToShow) => {
+    const res = [];
+    membersToShow.forEach((el) => {
+      const index = gradesData.findIndex(
+        (record) => record.km_name === el.km_name
+      );
+      // if the data should be filtered
+      if (index !== -1) {
+        res.push(gradesData[index]);
+      }
+    });
+    setGradesFilteredData(res);
+  };
+
   const onKnessetMemberFilterChange = () => {
     const filteredKnessetMember = KnessetMemberFilter();
     const filtered = VoteFilter(filteredKnessetMember);
+    filterGrades(filtered);
     setData(filtered);
   };
 
@@ -93,7 +118,7 @@ const CompassResultsPage = () => {
   };
 
   const renderVotersGrade = () => {
-    const sortedData = data.sort(
+    const sortedData = gradesFilteredData.sort(
       (a, b) => parseInt(b.grade) - parseInt(a.grade)
     );
     const satBar = [];
@@ -118,53 +143,14 @@ const CompassResultsPage = () => {
       <DataContainer>
         <GradesWrapper>{renderVotersGrade()}</GradesWrapper>
         <VotesTableWrapper>
-          <FilterFieldsWrapper>
-            <FilterActionsContainer>
-              <SelectMemberKnesset
-                id="filter-results"
-                value={selectedKnessetMember}
-                onChange={onKnessetMemberSelectHandler}
-              >
-                <OptionMemberKnesset
-                  id={`knesset-member_${0}`}
-                  key={`knesset-member${0}`}
-                  value="0"
-                >
-                  חבר כנסת
-                </OptionMemberKnesset>
-                {allKnessetMembers.map((record, index) => (
-                  <OptionMemberKnesset
-                    id={`knesset-member_${index + 1}`}
-                    key={`knesset-member_${index + 1}`}
-                    value={record}
-                  >
-                    {record}
-                  </OptionMemberKnesset>
-                ))}
-              </SelectMemberKnesset>
-              <SelectMemberKnesset
-                id="filter-votes"
-                value={voteFilter}
-                onChange={onVoteSelectHandler}
-              >
-                <OptionVote id={`for_vote`} value={0}>
-                  כל ההצבעות
-                </OptionVote>
-                <OptionVote id={`for_vote`} value={1}>
-                  בעד
-                </OptionVote>
-                <OptionVote id={`against_vote`} value={2}>
-                  נגד
-                </OptionVote>
-                <OptionVote id={`for_vote`} value={3}>
-                  נמנע
-                </OptionVote>
-              </SelectMemberKnesset>
-            </FilterActionsContainer>
-            <FilterButton onClick={onKnessetMemberFilterChange}>
-              חפש
-            </FilterButton>
-          </FilterFieldsWrapper>
+          <VotesTableFilterActions
+            selectedKnessetMember={selectedKnessetMember}
+            allKnessetMembers={allKnessetMembers}
+            onKnessetMemberFilterChange={onKnessetMemberFilterChange}
+            onKnessetMemberSelectHandler={onKnessetMemberSelectHandler}
+            onVoteSelectHandler={onVoteSelectHandler}
+            voteFilter={voteFilter}
+          />
           <VoteTable data={data} />
         </VotesTableWrapper>
       </DataContainer>

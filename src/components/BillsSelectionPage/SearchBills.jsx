@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { getAllBills, getBillsOfKnesset } from "../../utils/apiUtils";
-import AutoComplete from "../BillsSelectionPage/AutoComplete";
+import AutoComplete from "./AutoComplete";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../redux/searchedBillSlice";
 import { addBill, addMultipleBills } from "../redux/selectedBillsSlice";
@@ -10,28 +10,15 @@ import {
   ActionButtonsContainer,
   AutoCompleteContainer,
   BillsSelectionContainer,
-  OptionKnessetNum,
-  SelectKnessetNum,
   TabContainer,
   TabContent,
   TabDescription,
   TabHeader,
 } from "./SearchBills.styled";
+import StyledSelect from "../common/StyledSelect";
+import { ALL_KNESSET_NUMBERS } from "../../assets/consts";
 
 const EMPTY_BILL = { id: "", label: "" };
-const ALL_KNESSET_NUM = [
-  "השש-עשרה",
-  "השבע-עשרה",
-  "השמונה-עשרה",
-  "התשע-עשרה",
-  "העשרים",
-  "העשרים ואחת",
-  "העשרים ושתיים",
-  "העשרים ושלוש",
-  "העשרים וארבע",
-  "העשרים וחמש",
-];
-const KNESSET_NUM_BASE_COUNT = 16; // available data is from the 16 knesset
 
 const SearchBills = (props) => {
   const { setIsLoading } = props;
@@ -119,28 +106,16 @@ const SearchBills = (props) => {
       <TabContent>
         <TabDescription id="tab_description">{description}</TabDescription>
         <BillsSelectionContainer>
-          <SelectKnessetNum
-            id="knesset_num_select"
-            value={selectedKnessetNum}
-            onChange={onKnessetNumSelectHandler}
-          >
-            <OptionKnessetNum
-              id={`knesset-num_${0}`}
-              key={`knesset-num_${0}`}
-              value="0"
-            >
-              מספר כנסת
-            </OptionKnessetNum>
-            {ALL_KNESSET_NUM.map((num, index) => (
-              <OptionKnessetNum
-                id={`knesset-num_${index + KNESSET_NUM_BASE_COUNT}`}
-                key={`knesset-num_${index + KNESSET_NUM_BASE_COUNT}`}
-                value={index + KNESSET_NUM_BASE_COUNT}
-              >
-                {num}
-              </OptionKnessetNum>
-            ))}
-          </SelectKnessetNum>
+          <StyledSelect
+            idPrefix="knesset_num_"
+            onChangeFunc={onKnessetNumSelectHandler}
+            selectValue={selectedKnessetNum}
+            optionsLabels={Object.keys(ALL_KNESSET_NUMBERS)}
+            optionsValues={Object.values(ALL_KNESSET_NUMBERS)}
+            defaultLabel="מספר כנסת"
+            defaultValue="0"
+          />
+
           <AutoCompleteContainer>
             <AutoComplete data={filteredBillsByKnessetNum} />
           </AutoCompleteContainer>

@@ -11,12 +11,12 @@ import {
   TableDescription,
   StyledButton,
 } from "./BillsSelection.styled";
-import SearchBills from "../components/common/SearchBills";
+import SearchBills from "../components/BillsSelectionPage/SearchBills";
 import BillsTable from "../components/Tables/BillsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { addBills } from "../components/redux/finalBillsSlice";
 import LeftArrow from "../assets/svg-icons/LeftArrow";
-import { tableFlags } from "../assets/consts";
+import { TABLE_FLAGS } from "../assets/consts";
 import { useNavigate } from "react-router-dom";
 import { getVotesScore } from "../utils/apiUtils";
 import { updateResults } from "../components/redux/compassResultsSlice";
@@ -88,7 +88,7 @@ const BillsSelectionPage = () => {
             <BillsTable
               prefix="possible_bills"
               data={selectedBills}
-              action={tableFlags.REMOVE_ROW}
+              action={TABLE_FLAGS.REMOVE_ROW}
             />
           </BillsTableWrapper>
           <ArrowBox>
@@ -109,7 +109,7 @@ const BillsSelectionPage = () => {
             <BillsTable
               prefix="selected_bills"
               data={finalBills}
-              action={tableFlags.VOTE_ROW}
+              action={TABLE_FLAGS.VOTE_ROW}
             />
           </BillsTableWrapper>
         </BillsTablesContainer>
