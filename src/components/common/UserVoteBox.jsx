@@ -4,7 +4,7 @@ import { billVote } from "../redux/finalBillsSlice";
 
 const UserVoteBox = (props) => {
   const { index, billId } = props;
-  const [selectedValue, setSelectedValue] = useState(3);
+  const [selectedValue, setSelectedValue] = useState(1);
   const dispatch = useDispatch();
 
   const onSelectHandler = (e) => {
@@ -25,9 +25,9 @@ const UserVoteBox = (props) => {
       <option id={`against_vote-${index}`} value={2}>
         נגד
       </option>
-      <option id={`for_vote-${index}`} value={3}>
+      {/* <option id={`for_vote-${index}`} value={3}>
         נמנע
-      </option>
+      </option> */}
     </select>
   );
 };

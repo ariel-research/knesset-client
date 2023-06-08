@@ -14,7 +14,7 @@ export const finalBillsSlice = createSlice({
         const index = state.findIndex((value) => value.id === bill.id);
         //add only if not exist already
         if (index === -1) {
-          state.push({ ...bill, vote: 1 });
+          state.push({ ...bill, vote: 3 });
         }
       });
     },

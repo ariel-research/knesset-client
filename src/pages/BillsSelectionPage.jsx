@@ -49,7 +49,7 @@ const BillsSelectionPage = () => {
     const user_votes = [];
     const bill_ids = [];
     finalBills.forEach((bill) => {
-      user_votes.push(bill.vote === 1 ? true : false);
+      user_votes.push(bill.vote);
       bill_ids.push(bill.id);
     });
     const body = {
@@ -64,6 +64,9 @@ const BillsSelectionPage = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 

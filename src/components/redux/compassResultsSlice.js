@@ -15,6 +15,9 @@ export const compassResultsSlice = createSlice({
         //add only if not exist already
         if (index === -1) {
           state.push({ ...res });
+        } else {
+          state.splice(index, 1);
+          state.push({ ...res });
         }
       });
     },
