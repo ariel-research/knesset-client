@@ -7,11 +7,12 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMultipleBills } from "../components/redux/selectedBillsSlice";
 import LandingScreen from "../components/common/LandingScreen";
+import Loader from "../components/common/Loader";
 
 const Homepage = () => {
     const tableHeaders = ['', 'נושא ההצבעה', 'תאריך'];
-    const hints = ['מחפשים הצעות חוק מהמאגר ע״פ מספר כנסת או חיפוש חופשי', 'מצביעים לכל חוק ע״פ דעתכם בסוגיה', 'ממשיכים לדף תוצאות המשקף את חברי הכנסת הדומים לכם בדעותכם'];
-    const [isLoading, setIsLoading] = useState(false);
+    const hint = 'מחפשים הצעות חוק מהמאגר על פי מספר כנסת או חיפוש חופשי, לכל חוק מצביעים על פי דעתכם וממשיכים לדף תוצאות המשקף את חברי הכנסת הדומים לכם בדעתכם.'; 
+    const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
     const selectedBills = useSelector((state) => state.selectedBills);
 
@@ -82,15 +83,12 @@ const Homepage = () => {
             <LandingScreen />
             <HeadersWrapper>
                 <HintsWrapper>
-                    {hints.map((el, i) => {
-                        return(
-                            <li key={i}>{el}</li>
-                        )
-                    })}
+                    <StyledHint>{hint}</StyledHint>
                 </HintsWrapper>
                 <SearchBills setIsLoading={setIsLoading} />
             </HeadersWrapper>
-            <TableWrapper>
+            {isLoading && <Loader />}
+            <TableWrapper loadingState={isLoading}>
                 <Table headers={tableHeaders} data={selectedBills} rows={2} />
             </TableWrapper>
         </HomepageWrapper>
@@ -102,8 +100,8 @@ export const HeadersWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
   color: ${palette.brand};
+  margin-bottom: 0.5rem;
 `;
 
 export const Header = styled.div`
@@ -131,7 +129,13 @@ const HomepageWrapper = styled.div`
 
 `;
 
+const StyledHint = styled.h3`
+    width: 50rem;
+    text-align: center;
+`;
+
 const TableWrapper = styled.div`
+    opacity: ${(props) => props.loadingState? 0.2 : 1};
     width: min(1000px, 100% - 3rem);
 `;
 
