@@ -1,8 +1,3 @@
-export const TABLE_FLAGS = {
-  REMOVE_ROW: 0,
-  VOTE_ROW: 1,
-};
-
 export const VOTES_TYPES = {
   בעד: 1,
   נגד: 2,

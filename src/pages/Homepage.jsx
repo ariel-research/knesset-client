@@ -6,13 +6,11 @@ import { palette } from "../assets/colorsPalette";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMultipleBills } from "../components/redux/selectedBillsSlice";
+import LandingScreen from "../components/common/LandingScreen";
 
 const Homepage = () => {
     const tableHeaders = ['', 'נושא ההצבעה', 'תאריך'];
-    const prefix = "bills_selection_page";
-    const header = "שקיפות בכנסת";
-    const hint =
-        "שירות זה נועד כדי לספק לציבור בישראל אפשרות להשוות בין דעותיהם הפוליטיות להצבעות חברי כנסת ישראל";
+    const hints = ['מחפשים הצעות חוק מהמאגר ע״פ מספר כנסת או חיפוש חופשי', 'מצביעים לכל חוק ע״פ דעתכם בסוגיה', 'ממשיכים לדף תוצאות המשקף את חברי הכנסת הדומים לכם בדעותכם'];
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const selectedBills = useSelector((state) => state.selectedBills);
@@ -73,7 +71,7 @@ const Homepage = () => {
             "label": "הצעת חוק השירות האזרחי, התשסד-2003",
             "knessetNum": "16"
         },
-    ];    
+    ];
 
     useEffect(() => {
         dispatch(addMultipleBills(data));
@@ -81,9 +79,15 @@ const Homepage = () => {
 
     return (
         <HomepageWrapper>
+            <LandingScreen />
             <HeadersWrapper>
-                <Header id={`${prefix}-header`}>{header}</Header>
-                <Hint id={`${prefix}-hint`}>{hint}</Hint>
+                <HintsWrapper>
+                    {hints.map((el, i) => {
+                        return(
+                            <li key={i}>{el}</li>
+                        )
+                    })}
+                </HintsWrapper>
                 <SearchBills setIsLoading={setIsLoading} />
             </HeadersWrapper>
             <TableWrapper>
@@ -110,11 +114,13 @@ export const Header = styled.div`
   font-family: Poppins, sans-serif;
 `;
 
-export const Hint = styled.header`
+export const HintsWrapper = styled.ul`
   font-size: 16px;
   font-weight: 500;
   font-size: 20px;
   font-family: Poppins, sans-serif;
+  list-style-position: inside;
+  direction: rtl;
 `;
 
 const HomepageWrapper = styled.div`

@@ -6,8 +6,6 @@ import ManOne from '../../assets/png-images/Man_1.png';
 import ManTwo from '../../assets/png-images/Man_2.png';
 import ManThree from '../../assets/png-images/Man_3.png';
 import CompassIcon from "../../assets/svg-icons/CompassIcon";
-import LeftMic from "../../assets/svg-icons/LeftMic";
-import RightMic from "../../assets/svg-icons/RightMic";
 import { palette } from "../../assets/colorsPalette";
 
 const LandingScreen = () => {
