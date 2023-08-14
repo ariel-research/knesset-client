@@ -4,7 +4,6 @@ import UserVoteBox from "../common/UserVoteBox";
 import TableFooter from "./TableFooter";
 import useTable from "./useTable";
 import { useState } from "react";
-import { useEffect } from "react";
 
 const Table = (props) => {
     const { headers, data } = props;
@@ -26,21 +25,17 @@ const Table = (props) => {
         return (
             slicedData.map((el, i) => {
                 return (
-                    <tr key={i}>
+                    <tr key={el.id}>
                         <TableCell>
-                            <UserVoteBox />
+                            <UserVoteBox billId={el.id} />
                         </TableCell>
-                        <TableCell>{el.title}</TableCell>
-                        <TableCell>{el.date}</TableCell>
+                        <TableCell>{el.label}</TableCell>
+                        <TableCell>{el.knessetNum}</TableCell>
                     </tr>
                 )
             })
         )
     };
-
-    useEffect(() => {
-        console.log(slicedData)
-    }, [slicedData])
 
     return (
         <>
@@ -66,9 +61,9 @@ const Cell = css`
 
 const TableContainer = styled.table`
   width: 100%;
-  background: #323232;
   color: white;
   border-collapse: collapse;
+  color: black;
 `;
 
 const TableHeader = styled.th`
@@ -78,6 +73,7 @@ const TableHeader = styled.th`
     font-family: sans-serif;
     text-transform: uppercase;
     font-weight: 600;
+    color: white;
 `;
 
 const TableCell = styled.td`
