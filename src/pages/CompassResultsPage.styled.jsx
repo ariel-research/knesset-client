@@ -5,20 +5,25 @@ export const CompassResWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
-  gap: 50px;
+  min-height: 100vh;
   background-color: #f7f7f7;
   justify-content: center;
-  flex: 0.8;
+`;
+
+export const ResultsHeader = styled.div`
+  font-family: Open Sans;
+  align-self: center;
+  font-weight: 400;
+  font-size: 2.5rem;
+  font-family: Poppins, sans-serif;
+  color: ${palette.brand};
 `;
 
 export const DataContainer = styled.div`
   display: flex;
-  padding: 30px;
+  padding: 2rem;
   justify-content: center;
-  align-items: center;
-  gap: 50px;
-  flex: 0.8;
+  gap: 4rem;
 `;
 
 export const VotesTableWrapper = styled.div`
@@ -42,6 +47,21 @@ export const ProgressVoterName = styled.div`
 `;
 
 export const GradesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const GradesHeader = styled.div`
+  font-family: Open Sans;
+  align-self: center;
+  font-weight: 200;
+  font-size: 2rem;
+  font-family: Poppins, sans-serif;
+  color: ${palette.brand};
+`;
+
+export const Grades = styled.div`
   display: flex;
   width: 350px;
   height: 600px;

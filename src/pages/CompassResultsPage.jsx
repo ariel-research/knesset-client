@@ -2,8 +2,11 @@ import VoteTable from "../components/Tables/VotesTable";
 import {
   CompassResWrapper,
   DataContainer,
+  Grades,
+  GradesHeader,
   GradesWrapper,
   ProgressVoterName,
+  ResultsHeader,
   VoterGradeWrapper,
   VotesTableWrapper,
 } from "./CompassResultsPage.styled";
@@ -139,9 +142,12 @@ const CompassResultsPage = () => {
 
   return (
     <CompassResWrapper>
-      <h1>תוצאות</h1>
+      <ResultsHeader>תוצאות</ResultsHeader>
       <DataContainer>
-        <GradesWrapper>{renderVotersGrade()}</GradesWrapper>
+        <GradesWrapper>
+          <GradesHeader>ציון חברי הכנסת</GradesHeader>
+          <Grades>{renderVotersGrade()}</Grades>
+        </GradesWrapper>
         <VotesTableWrapper>
           <VotesTableFilterActions
             selectedKnessetMember={selectedKnessetMember}

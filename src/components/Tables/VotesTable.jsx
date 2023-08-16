@@ -15,7 +15,7 @@ const VoteTable = (props) => {
   const { data } = props;
   const prefix = "results-table";
   const [userVotes, setUserVotes] = useState([]);
-  const finalBills = useSelector((state) => state.finalBills);
+  const userBillsSelection = useSelector((state) => state.selectedBills);
 
   const renderVoteValue = (vote) => {
     switch (vote) {
@@ -95,11 +95,11 @@ const VoteTable = (props) => {
   };
 
   useEffect(() => {
-    if (finalBills) {
-      const res = [...finalBills];
+    if (userBillsSelection) {
+      const res = [...userBillsSelection];
       setUserVotes(res);
     }
-  }, [finalBills]);
+  }, [userBillsSelection]);
 
   return (
     <TableContainer>
