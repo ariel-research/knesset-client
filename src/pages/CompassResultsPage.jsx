@@ -138,7 +138,7 @@ const CompassResultsPage = () => {
     setAllKnessetMembers(all_km.map((bill) => bill.km_name).sort());
     setData(parsed);
     setOriginalData(parsed);
-  }, []);
+  }, [compassResults, navigate]);
 
   return (
     <CompassResWrapper>
