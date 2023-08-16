@@ -4,16 +4,12 @@ import styled from "styled-components";
 const PAGINATION_NUM = 5;
 
 const TableFooter = (props) => {
-    const { range, setCurrentPage, rows, setRows } = props;
+    const { range, setCurrentPage } = props;
     const [activeButton, setActiveButton] = useState(1);
 
     const pageButtonHandler = (data) => {
         setCurrentPage(data);
         setActiveButton(data);
-    };
-
-    const selectNumOfResHandler = (e) => {
-        setRows(e.target.value);
     };
 
     const renderPaginationButtons = () => {
@@ -33,11 +29,6 @@ const TableFooter = (props) => {
     return (
         <TableFooterWrapper>
             {range && renderPaginationButtons()}
-            <select id="selectOption" value={rows} onChange={selectNumOfResHandler}>
-                <option value={5}>חמש רשומות</option>
-                <option value={10}>עשר רשומות</option>
-                <option value={50}>חמישים רשומות</option>
-            </select>
         </TableFooterWrapper>
     )
 

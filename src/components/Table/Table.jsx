@@ -1,9 +1,8 @@
-import styled, { css } from "styled-components";
-import { palette } from "../../assets/colorsPalette";
 import UserVoteBox from "../common/UserVoteBox";
 import TableFooter from "./TableFooter";
 import useTable from "./useTable";
 import { useState } from "react";
+import { RecordsSelect, TableCell, TableContainer, TableHeader, TableNav } from "./Table.styled";
 
 const Table = (props) => {
     const { headers, data } = props;
@@ -37,8 +36,19 @@ const Table = (props) => {
         )
     };
 
+    const selectNumOfResHandler = (e) => {
+        setRows(e.target.value);
+    };
+
     return (
         <>
+            <TableNav>
+                <RecordsSelect id="selectOption" value={rows} onChange={selectNumOfResHandler}>
+                    <option value={5}>חמש רשומות</option>
+                    <option value={10}>עשר רשומות</option>
+                    <option value={50}>חמישים רשומות</option>
+                </RecordsSelect>
+            </TableNav>
             <TableContainer>
                 <thead>
                     <tr>
@@ -53,32 +63,5 @@ const Table = (props) => {
         </>
     )
 };
-
-const Cell = css`
-  padding: 1rem;
-  text-align: right;
-`;
-
-const TableContainer = styled.table`
-  min-height: 200px;
-  width: 100%;
-  color: white;
-  border-collapse: collapse;
-  color: black;
-`;
-
-const TableHeader = styled.th`
-    ${Cell}
-    background-color: ${palette.brand};
-    position: sticky;
-    font-family: sans-serif;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: white;
-`;
-
-const TableCell = styled.td`
-    ${Cell}
-`;
 
 export default Table;
