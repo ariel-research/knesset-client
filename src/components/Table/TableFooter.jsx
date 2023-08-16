@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 
+const PAGINATION_NUM = 5;
+
 const TableFooter = (props) => {
     const { range, setCurrentPage, rows, setRows } = props;
     const [activeButton, setActiveButton] = useState(1);
@@ -15,13 +17,17 @@ const TableFooter = (props) => {
     };
 
     const renderPaginationButtons = () => {
-        return (
-            range.map((num) => {
-                return (
-                    <FooterButton isActive={activeButton === num ? true : false} key={num} onClick={() => pageButtonHandler(num)}>{num}</FooterButton>
-                )
-            })
-        );
+        const rangeStart = Math.max(activeButton - PAGINATION_NUM, range[0]);
+        const rangeEnd = Math.min(activeButton + PAGINATION_NUM, range[range.length - 1]);
+        return range.slice(rangeStart - 1, rangeEnd).map(i => (
+            <FooterButton
+                isActive={activeButton === i}
+                key={i}
+                onClick={() => pageButtonHandler(i)}
+            >
+                {i}
+            </FooterButton>
+        ));
     };
 
     return (
