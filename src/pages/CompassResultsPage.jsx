@@ -9,9 +9,9 @@ import {
 } from "./CompassResultsPage.styled";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { useCallback } from "react";
 import ProgressBar from "../components/common/ProgressBar";
 import VotesTableFilterActions from "../components/CompassResultsPage/VotesTableFilterActions";
+import { useNavigate } from "react-router-dom";
 
 const CompassResultsPage = () => {
   const [data, setData] = useState([]);
@@ -24,45 +24,9 @@ const CompassResultsPage = () => {
     { km_name: "", grade: 0 },
   ]);
   const compassResults = useSelector((state) => state.compassResults);
+  const navigate = useNavigate();
 
-  const parseData = useCallback(() => {
-    if (compassResults) {
-      const parsed = [];
-      const gradedDataParsed = [];
-      const res = [...compassResults];
-      res.forEach((record) => {
-        const ans = {
-          id: parseInt(record.bill_id),
-          label: record.bill_name,
-        };
 
-        record.voters.forEach((voter) => {
-          parsed.push({
-            ...ans,
-            km_name: voter.voter_name,
-            km_vote: voter.ballot,
-          });
-          const index = gradedDataParsed.findIndex(
-            (km) => km.km_name === voter.voter_name
-          );
-          if (index === -1) {
-            gradedDataParsed.push({
-              km_name: voter.voter_name,
-              grade: voter.graded,
-            });
-          }
-        });
-      });
-      const all_km = parsed.filter((object, index, self) => {
-        return index === self.findIndex((o) => o.km_name === object.km_name);
-      });
-      setGradesData(gradedDataParsed);
-      setGradesFilteredData(gradedDataParsed);
-      setAllKnessetMembers(all_km.map((bill) => bill.km_name).sort());
-      setData(parsed);
-      setOriginalData(parsed);
-    }
-  }, [compassResults]);
 
   const KnessetMemberFilter = () => {
     if (!selectedKnessetMember) {
@@ -134,8 +98,44 @@ const CompassResultsPage = () => {
   };
 
   useEffect(() => {
-    parseData();
-  }, [parseData]);
+    if (!compassResults.length) {
+      navigate("/");
+    }
+    const parsed = [];
+    const gradedDataParsed = [];
+    const res = [...compassResults];
+    res.forEach((record) => {
+      const ans = {
+        id: parseInt(record.bill_id),
+        label: record.bill_name,
+      };
+
+      record.voters.forEach((voter) => {
+        parsed.push({
+          ...ans,
+          km_name: voter.voter_name,
+          km_vote: voter.ballot,
+        });
+        const index = gradedDataParsed.findIndex(
+          (km) => km.km_name === voter.voter_name
+        );
+        if (index === -1) {
+          gradedDataParsed.push({
+            km_name: voter.voter_name,
+            grade: voter.graded,
+          });
+        }
+      });
+    });
+    const all_km = parsed.filter((object, index, self) => {
+      return index === self.findIndex((o) => o.km_name === object.km_name);
+    });
+    setGradesData(gradedDataParsed);
+    setGradesFilteredData(gradedDataParsed);
+    setAllKnessetMembers(all_km.map((bill) => bill.km_name).sort());
+    setData(parsed);
+    setOriginalData(parsed);
+  }, []);
 
   return (
     <CompassResWrapper>
