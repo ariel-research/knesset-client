@@ -1,8 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
 
+const PAGINATION_NUM = 5;
+
 const TableFooter = (props) => {
-    const { range, setCurrentPage, rows, setRows } = props;
+    const { range, setCurrentPage } = props;
     const [activeButton, setActiveButton] = useState(1);
 
     const pageButtonHandler = (data) => {
@@ -10,28 +12,23 @@ const TableFooter = (props) => {
         setActiveButton(data);
     };
 
-    const selectNumOfResHandler = (e) => {
-        setRows(e.target.value);
-    };
-
     const renderPaginationButtons = () => {
-        return (
-            range.map((num) => {
-                return (
-                    <FooterButton isActive={activeButton === num ? true : false} key={num} onClick={() => pageButtonHandler(num)}>{num}</FooterButton>
-                )
-            })
-        );
+        const rangeStart = Math.max(activeButton - PAGINATION_NUM, range[0]);
+        const rangeEnd = Math.min(activeButton + PAGINATION_NUM, range[range.length - 1]);
+        return range.slice(rangeStart - 1, rangeEnd).map(i => (
+            <FooterButton
+                isActive={activeButton === i}
+                key={i}
+                onClick={() => pageButtonHandler(i)}
+            >
+                {i}
+            </FooterButton>
+        ));
     };
 
     return (
         <TableFooterWrapper>
             {range && renderPaginationButtons()}
-            <select id="selectOption" value={rows} onChange={selectNumOfResHandler}>
-                <option value={5}>חמש רשומות</option>
-                <option value={10}>עשר רשומות</option>
-                <option value={50}>חמישים רשומות</option>
-            </select>
         </TableFooterWrapper>
     )
 
