@@ -1,17 +1,11 @@
 import FadeLoader from "react-spinners/FadeLoader";
-import styled from "styled-components";
 
 const Loader = () => {
   return (
-    <LoaderWrapper>
+    <div>
       <FadeLoader />
-    </LoaderWrapper>
+    </div>
   );
 };
-
-export const LoaderWrapper = styled.div`
-  position: absolute;
-  top: 50%;
-`;
 
 export default Loader;

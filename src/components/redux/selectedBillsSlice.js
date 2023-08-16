@@ -27,6 +27,14 @@ export const selectedBillsSlice = createSlice({
         state.push(action.payload);
       }
     },
+    billVote: (state, action) => {
+      const index = state.findIndex(
+        (value) => value.id === action.payload.billId
+      );
+      if (index !== -1) {
+        state[index].vote = parseInt(action.payload.vote);
+      }
+    },
     removeBill: (state, action) => {
       const index = state.findIndex((value) => value.id === action.payload);
       if (index !== -1) {
@@ -36,7 +44,7 @@ export const selectedBillsSlice = createSlice({
   },
 });
 
-export const { addMultipleBills, addBill, removeBill } =
+export const { addMultipleBills, addBill, billVote, removeBill } =
   selectedBillsSlice.actions;
 
 export default selectedBillsSlice.reducer;

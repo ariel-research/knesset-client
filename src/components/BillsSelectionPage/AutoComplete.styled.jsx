@@ -106,6 +106,7 @@ export const AutoCompleteRowsContainer = styled.div`
   border-radius: 5px;
   background-color: rgb(222, 226, 230);
   border: 1px solid rgb(145, 154, 164);
+
   z-index: 1;
   ::-webkit-scrollbar {
     width: 10px;

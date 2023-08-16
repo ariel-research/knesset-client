@@ -1,8 +1,7 @@
-import styled from "styled-components";
-import BillsSelectionPage from "./pages/BillsSelectionPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CompassResultsPage from "./pages/CompassResultsPage";
 import { useEffect } from "react";
+import Homepage from "./pages/Homepage";
 
 function App() {
   useEffect(() => {
@@ -11,18 +10,14 @@ function App() {
 
   return (
     <Router>
-      <AppWrapper>
+      <div>
         <Routes>
-          <Route path="/" element={<BillsSelectionPage />} />
+          <Route path="/" element={<Homepage />} />
           <Route path="/results" element={<CompassResultsPage />} />
         </Routes>
-      </AppWrapper>
+      </div>
     </Router>
   );
 }
 
 export default App;
-
-const AppWrapper = styled.div`
-  height: 100vh;
-`;
