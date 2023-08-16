@@ -6,18 +6,21 @@ import TrashIcon from "../../assets/svg-icons/TrashIcon";
 
 const voteOptions = {
   FOR: 1,
-  AGAINST: 2
+  AGAINST: 2,
+  NEUTRAL: 3,
 };
 
 const UserVoteBox = (props) => {
   const { billId } = props;
   const selectedBills = useSelector((state) => state.selectedBills);
-  const [selectedValue, setSelectedValue] = useState(selectedBills[billId]?.vote);
+  const [selectedValue, setSelectedValue] = useState(selectedBills[billId]?.vote || voteOptions.NEUTRAL);
   const dispatch = useDispatch();
 
   const onClickHandler = (vote) => {
-    setSelectedValue(vote);
-    dispatch(billVote({ billId: billId, vote: vote }));
+    const newVote = selectedValue === vote ? voteOptions.NEUTRAL : vote;// in case of double tap on button - vote is neutral
+
+    setSelectedValue(newVote);
+    dispatch(billVote({ billId: billId, vote: newVote }));
   };
 
   const removeBillHandler = () => {
@@ -67,7 +70,7 @@ const VoteOptionsWrapper = styled.div`
 const ForOptionButton = styled.button`
   ${VoteButton}
   background: ${(props) => props.isActive ? '#C8E4B2' : '#f9f9f9'};
-  cursor: ${(props) => props.isActive ? '' : 'pointer'};
+  cursor: pointer;
   &: hover {
     background-color: #C8E4B2;
   }
@@ -76,7 +79,7 @@ const ForOptionButton = styled.button`
 const AgainstOptionButton = styled.button`
   ${VoteButton}
   background: ${(props) => props.isActive ? '#EF6262' : '#f9f9f9'};
-  cursor: ${(props) => props.isActive ? '' : 'pointer'};
+  cursor: pointer;
   &: hover {
     background-color: #EF6262;
   }
