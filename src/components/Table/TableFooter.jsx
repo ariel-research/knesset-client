@@ -12,16 +12,21 @@ const TableFooter = (props) => {
 
     const selectNumOfResHandler = (e) => {
         setRows(e.target.value);
-    }
+    };
 
-    return (
-        <TableFooterWrapper>
-            {range && range.map((num) => {
+    const renderPaginationButtons = () => {
+        return (
+            range.map((num) => {
                 return (
                     <FooterButton isActive={activeButton === num ? true : false} key={num} onClick={() => pageButtonHandler(num)}>{num}</FooterButton>
                 )
-            })}
+            })
+        );
+    };
 
+    return (
+        <TableFooterWrapper>
+            {range && renderPaginationButtons()}
             <select id="selectOption" value={rows} onChange={selectNumOfResHandler}>
                 <option value={5}>חמש רשומות</option>
                 <option value={10}>עשר רשומות</option>
@@ -45,6 +50,7 @@ const TableFooterWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-x: scroll;
     gap: 5px
 `;
 

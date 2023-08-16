@@ -60,6 +60,7 @@ const Cell = css`
 `;
 
 const TableContainer = styled.table`
+  min-height: 200px;
   width: 100%;
   color: white;
   border-collapse: collapse;
