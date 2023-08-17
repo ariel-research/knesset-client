@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://politics-transperancy-backend.onrender.com/";
+const BASE_URL = "http://157.230.22.122:8080/";
 
 export const getAllBills = async () => {
   return await axios.get(`${BASE_URL}general/bills`);
