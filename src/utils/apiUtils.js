@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://157.230.22.122:8080/";
+const BASE_URL = "https://raf-node-server.onrender.com/";
 
 export const getAllBills = async () => {
   return await axios.get(`${BASE_URL}general/bills`);
