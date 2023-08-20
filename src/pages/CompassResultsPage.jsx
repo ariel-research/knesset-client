@@ -92,7 +92,7 @@ const CompassResultsPage = () => {
     sortedData.forEach((el, i) => {
       satBar.push(
         <VoterGradeWrapper key={i}>
-          <ProgressBar done={el.grade.toFixed(0)} />
+          <ProgressBar done={el.grade?.toFixed(0)} />
           <ProgressVoterName>{el.km_name}</ProgressVoterName>
         </VoterGradeWrapper>
       );
