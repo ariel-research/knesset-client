@@ -1,34 +1,34 @@
 # Political Transparency
 
 ## Introduction
-This README file provides instructions on how to install and run your React app.
+This README file provides instructions on how to install and run the Knesset app. We will cover 2 optional ways to inatall the client.
 
-# Installation By Docker
+# Installation By Docker - Recommanded
 
 ## Prerequisites
 Make sure you have Docker installed on your system. <br>
 You can download it from the official Docker website: https://www.docker.com/get-started
 
 ## Installation
-1. If you haven't already, clone or download your React app source code from the clinet repo.
+1. If you haven't already, clone or download the political-transparency source code from [here](https://github.com/Political-Transparency/client.git).
 
 2. Build the Docker Image; 
-open a terminal or command prompt, navigate to the directory containing the Dockerfile, and run the following command to build the Docker image for your React app: <br>
+open a terminal or command prompt, navigate to client directory containing the Dockerfile, and run the following command to build the Docker image: <br>
 
 **`
-docker build -t my-react-app .
+docker build -t political-transparency .
 `**
 
-3. Replace my-react-app with a suitable name for your Docker image.
+3. You can replace political-transparency with a suitable name for your Docker image.
 
-4. Run the Docker Container:<br>
-After building the Docker image, you can run your React app in a Docker container. Use the following command to start the container:
+4. Run The Docker Container:<br>
+After building the Docker image, you can run the app in a Docker container. Use the following command to start the container:
 
-**`docker run -d -p 3000:3000 my-react-app`**
+**`docker run -d -p 3000:3000 political-transparency`**
 
-This command runs the container in detached mode (-d), maps port 3000 from the container to port 3000 on your host machine, and uses the image you built earlier (my-react-app).
+This command runs the container in detached mode (-d), maps port 3000 from the container to port 3000 on your host machine, and uses the image you built earlier (political-transparency).
 
-5. Access Your React App:<br>
+5. Access The App:<br>
 Once the container is running, you can access your React app by opening a web browser and navigating to http://localhost:3000.
 
 # Installation By NPM
