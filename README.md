@@ -3,7 +3,7 @@
 ## Introduction
 This README file provides instructions on how to install and run the Knesset app. We will cover 2 optional ways to inatall the client.
 
-# Installation By Docker - Recommanded
+# Installation By Docker - Recommended
 
 ## Prerequisites
 Make sure you have Docker installed on your system. <br>
