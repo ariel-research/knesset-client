@@ -10,7 +10,11 @@ Make sure you have Docker installed on your system. <br>
 You can download it from the official Docker website: https://www.docker.com/get-started
 
 ## Installation
-1. If you haven't already, clone or download the political-transparency source code from [here](https://github.com/Political-Transparency/client.git).
+1. If you haven't already, clone or download the political-transparency source code:
+   
+**`
+git clone https://github.com/Political-Transparency/client.git
+`**
 
 2. Build the Docker Image; 
 open a terminal or command prompt, navigate to client directory containing the Dockerfile, and run the following command to build the Docker image: <br>
