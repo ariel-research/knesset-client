@@ -8,7 +8,7 @@ WORKDIR /client
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install npm@latest
 
 # Copy the rest of the application source code
 COPY . .
