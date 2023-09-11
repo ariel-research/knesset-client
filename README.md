@@ -28,7 +28,7 @@ docker build -t political-transparency .
 4. Run The Docker Container:<br>
 After building the Docker image, you can run the app in a Docker container. Use the following command to start the container:
 
-**`docker run -d -p 3000:3000 political-transparency`**
+**`docker run -d -p 8080:80 political-transparency`**
 
 This command runs the container in detached mode (-d), maps port 3000 from the container to port 3000 on your host machine, and uses the image you built earlier (political-transparency).
 
