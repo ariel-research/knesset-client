@@ -49,6 +49,7 @@ const Homepage = () => {
       <HeadersWrapper>
         <HintsWrapper>
           <StyledHint>{hint}</StyledHint>
+          <h4>*התוצאות מסתמכות על הממשק של אתר הכנסת וייתכן שאינן מעודכנות.</h4>
         </HintsWrapper>
         <SearchBills setIsLoading={setIsLoading} />
       </HeadersWrapper>
