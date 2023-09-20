@@ -89,7 +89,7 @@ const SearchBills = (props) => {
     setIsLoading(true);
     getAllBills()
       .then((res) => {
-        // setAllBills(res.data);
+        setAllBills(res.data);
         setFilteredBillsByKnessetNum(res.data);
       })
       .catch((err) => {
@@ -124,9 +124,9 @@ const SearchBills = (props) => {
           <ActionButton id="add_bill" onClick={addBillHandler}>
             הוסף הצעת חוק שנבחרה
           </ActionButton>
-          {/* <ActionButton id="add_all_bills" onClick={addKnessetNumBIlls}>
+          <ActionButton id="add_all_bills" onClick={addKnessetNumBIlls}>
             הוסף את כל הצעות הכנסת
-          </ActionButton> */}
+          </ActionButton>
         </ActionButtonsContainer>
       </TabContent>
     </TabContainer>
