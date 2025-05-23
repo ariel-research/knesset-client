@@ -16,29 +16,26 @@ const LandingScreen = () => {
             <LandingScreenHeader>{header}</LandingScreenHeader>
             <PodiumContainer>
                 <StyledWrapper>
-                    <img src={WomanTwo} alt="React Logo" />
-                    <RectangleIcon width='221' height='488' />
+                <img src={WomanTwo} alt="React Logo" />
+                <RectangleIcon width="221" height={488 / 2} />
                 </StyledWrapper>
                 <StyledWrapper>
-                    <img src={ManOne} alt="React Logo" />
-                    <RectangleIcon width='276' height='509' />
+                <img src={ManOne} alt="React Logo" />
+                <RectangleIcon width="276" height={509 / 2} />
                 </StyledWrapper>
                 <StyledWrapper>
-                    <CompassIcon />
-                    <MainStandWrapper>
-                        {/* <LeftMic /> */}
-                        <img src={ManThree} alt="React Logo" />
-                        {/* <RightMic /> */}
-                    </MainStandWrapper>
-                    <RectangleIcon width='300' height='533' />
+                <MainStandWrapper>
+                    <img src={ManThree} alt="React Logo" />
+                </MainStandWrapper>
+                <RectangleIcon width="300" height={533 / 2} />
                 </StyledWrapper>
                 <StyledWrapper>
-                    <img src={WomanOne} alt="React Logo" />
-                    <RectangleIcon width='276' height='509' />
+                <img src={WomanOne} alt="React Logo" />
+                <RectangleIcon width="276" height={509 / 2} />
                 </StyledWrapper>
                 <StyledWrapper>
-                    <img src={ManTwo} alt="React Logo" />
-                    <RectangleIcon width='221' height='488' />
+                <img src={ManTwo} alt="React Logo" />
+                <RectangleIcon width="221" height={488 / 2} />
                 </StyledWrapper>
             </PodiumContainer>
         </LandingScreenWrapper>
