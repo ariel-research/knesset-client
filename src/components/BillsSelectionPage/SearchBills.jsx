@@ -16,9 +16,11 @@ import {
   TabHeader,
 } from "./SearchBills.styled";
 import StyledSelect from "../common/StyledSelect";
-import { ALL_KNESSET_NUMBERS } from "../../assets/consts";
+
+import { ALL_KNESSET_NUMBERS } from "../../assets/consts"; //name and number 
 
 const EMPTY_BILL = { id: "", label: "" };
+const DEFAULT_KNESSET =  Object.entries(ALL_KNESSET_NUMBERS).at(-1); //default name,number - the last knesset
 
 const SearchBills = (props) => {
   const { setIsLoading } = props;
@@ -29,7 +31,7 @@ const SearchBills = (props) => {
   const [filteredBillsByKnessetNum, setFilteredBillsByKnessetNum] = useState(
     []
   );
-  const [selectedKnessetNum, setSelectedKnessetNum] = useState("0");
+  const [selectedKnessetNum, setSelectedKnessetNum] = useState(DEFAULT_KNESSET[1]);
   const currentSearchedBill = useSelector((state) => state.searchedBill);
   const dispatch = useDispatch();
 
@@ -40,28 +42,38 @@ const SearchBills = (props) => {
     }
   };
 
+  // user selection
   const onKnessetNumSelectHandler = (e) => {
     const selectedValue = e.target.value;
+    
+    // 0 = show all bills
     if (selectedValue === "0") {
       setFilteredBillsByKnessetNum([...allBills]);
     }
+
     setSelectedKnessetNum(selectedValue);
+
+    // show bills of selected knesset
     const arr = [];
     getBillsOfKnesset(selectedValue).then((res) => {
-      const bills = res.data.bills;
+      const billsarr = res.data;
+      const bills=billsarr.flat();
+      
       bills.forEach((bill) => {
         const current = { id: bill.id, label: bill.name };
         arr.push(current);
       });
+      console.log("bills selected handler:",arr);
       setFilteredBillsByKnessetNum([...arr]);
     });
   };
 
+  // for voting
   const addKnessetNumBIlls = () => {
     setIsLoading(true);
     const arr = [];
 
-    //if the default option was selected - load all bills
+    //if the first option was selected - load all bills
     if (selectedKnessetNum === "0") {
       dispatch(addMultipleBills(allBills));
       setIsLoading(false);
@@ -70,11 +82,13 @@ const SearchBills = (props) => {
 
     getBillsOfKnesset(selectedKnessetNum)
       .then((res) => {
-        const bills = res.data.bills;
+        const bills = res.data;
+        
         bills.forEach((bill) => {
           const current = { id: bill.id, label: bill.name };
           arr.push(current);
         });
+        console.log("bills selected:",arr);
         dispatch(addMultipleBills(arr));
       })
       .catch((err) => {
@@ -85,12 +99,42 @@ const SearchBills = (props) => {
       });
   };
 
+  // log the filtered bills arr every time it changes
+  useEffect(() => {
+    console.log("Updated filteredBillsByKnessetNum:", filteredBillsByKnessetNum);
+  }, [filteredBillsByKnessetNum]);
+
+  // log the all bills arr every time it changes
+  useEffect(() => {
+    console.log("Updated allBills:", allBills);
+  }, [allBills]);
+
   useEffect(() => {
     setIsLoading(true);
     getAllBills()
+    .then((res) => {
+      const arr = [];
+      const bills = res.data;
+      bills.forEach((bill) => {
+        const current = { id: bill.id, label: bill.name };
+        arr.push(current);
+      });
+      console.log("arr: ",arr)
+      setAllBills(arr);    })
+    .catch((err) => {
+      console.log(err);
+    })
+    getBillsOfKnesset(selectedKnessetNum)
       .then((res) => {
-        setAllBills(res.data);
-        setFilteredBillsByKnessetNum(res.data);
+        const arr = [];
+        const bills = res.data;
+        bills.forEach((bill) => {
+          const current = { id: bill.id, label: bill.name };
+          arr.push(current);
+        });
+        console.log("arr: ",arr)
+        setFilteredBillsByKnessetNum(arr);
+        
       })
       .catch((err) => {
         console.log(err);
@@ -112,8 +156,8 @@ const SearchBills = (props) => {
             selectValue={selectedKnessetNum}
             optionsLabels={Object.keys(ALL_KNESSET_NUMBERS)}
             optionsValues={Object.values(ALL_KNESSET_NUMBERS)}
-            defaultLabel="מספר כנסת"
-            defaultValue="0"
+            defaultLabel={DEFAULT_KNESSET[0]}
+            defaultValue={DEFAULT_KNESSET[1]}
           />
 
           <AutoCompleteContainer>
