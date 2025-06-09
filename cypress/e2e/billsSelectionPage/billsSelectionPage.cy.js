@@ -126,6 +126,7 @@ describe("bills Selection Page", () => {
     getBillsOfKnesset(KNESSET_NUM_VAL)
       .then((res) => {
         const bills = res.data.bills;
+        console.log("cy bills:",bills)
         bills.forEach((bill) => {
           associatedBills.push(bill.name);
         });
@@ -166,6 +167,7 @@ describe("bills Selection Page", () => {
           .eq(1) //the billLabel div
           .invoke("text")
           .then((text) => {
+            console.log("possible bills")
             possibleBills.push(text);
           });
       });

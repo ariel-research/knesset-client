@@ -13,7 +13,7 @@ const TableHeaderCellStyled = styled.th`
   height: 61px;
   width: ${({ width }) => (width ? width : "")}};
   text-align: left;
-  font-family: sans-serif;
+  font-family: Assistant, sans-serif;
   text-transform: uppercase;
   font-weight: 600;
   text-align: ${({ textAlign }) => (textAlign ? textAlign : "")};

@@ -1,75 +1,58 @@
 import styled from "styled-components";
-import RectangleIcon from "../../assets/svg-icons/RectangleIcon";
-import WomanOne from '../../assets/png-images/Woman_1.png';
-import WomanTwo from '../../assets/png-images/Woman_2.png';
-import ManOne from '../../assets/png-images/Man_1.png';
-import ManTwo from '../../assets/png-images/Man_2.png';
-import ManThree from '../../assets/png-images/Man_3.png';
-import CompassIcon from "../../assets/svg-icons/CompassIcon";
+import logo from '../../assets/png-images/democratometer.png';
 import { palette } from "../../assets/colorsPalette";
 
 const LandingScreen = () => {
-    const header = "שקיפות בכנסת";
+    const header = "VoteMate";
 
     return (
-        <LandingScreenWrapper>
-            <LandingScreenHeader>{header}</LandingScreenHeader>
-            <PodiumContainer>
-                <StyledWrapper>
-                <img src={WomanTwo} alt="React Logo" />
-                <RectangleIcon width="221" height={488 / 2} />
-                </StyledWrapper>
-                <StyledWrapper>
-                <img src={ManOne} alt="React Logo" />
-                <RectangleIcon width="276" height={509 / 2} />
-                </StyledWrapper>
-                <StyledWrapper>
-                <MainStandWrapper>
-                    <img src={ManThree} alt="React Logo" />
-                </MainStandWrapper>
-                <RectangleIcon width="300" height={533 / 2} />
-                </StyledWrapper>
-                <StyledWrapper>
-                <img src={WomanOne} alt="React Logo" />
-                <RectangleIcon width="276" height={509 / 2} />
-                </StyledWrapper>
-                <StyledWrapper>
-                <img src={ManTwo} alt="React Logo" />
-                <RectangleIcon width="221" height={488 / 2} />
-                </StyledWrapper>
-            </PodiumContainer>
-        </LandingScreenWrapper>
-    )
+        <HeaderWrapper>
+            <LogoHeaderContainer>
+                <LogoImage src={logo} alt="Logo" />
+                <LandingScreenHeader>{header}</LandingScreenHeader>
+            </LogoHeaderContainer>
+
+            {/* כאן בעתיד תוכל לשים קומפוננטות נוספות */}
+            <HeaderRightContent>
+                {/* לדוג' כפתור, חיפוש וכו' */}
+            </HeaderRightContent>
+        </HeaderWrapper>
+    );
 };
 
-const LandingScreenWrapper = styled.div`
-display: flex;
-flex-direction: column;
+export default LandingScreen;
+
+const HeaderWrapper = styled.div`
+  font-family: Assistant, sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  direction: rtl;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
-const PodiumContainer = styled.div`
-    display: flex;
-    align-items: flex-end;
+const LogoHeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
-export const LandingScreenHeader = styled.div`
-  font-family: Open Sans;
-  align-self: center;
-  font-weight: 400;
-  font-size: 40px;
-  font-family: Poppins, sans-serif;
+const LandingScreenHeader = styled.div`
+  font-weight: 600;
+  font-size: 24px;
   color: ${palette.brand};
 `;
 
-const MainStandWrapper = styled.div`
-    display: flex;
-    align-items: flex-end;
+const LogoImage = styled.img`
+  height: 40px;
+  width: auto;
+  object-fit: contain;
 `;
 
-const StyledWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+const HeaderRightContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 `;
-
-export default LandingScreen;

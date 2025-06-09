@@ -1,49 +1,71 @@
-import styled, { css } from "styled-components";
-import { palette } from "../../assets/colorsPalette";
+import styled from "styled-components";
 
-export const Cell = css`
+export const TableWrapper = styled.div`
+  height: 80vh;
+  direction: rtl;
   padding: 1rem;
-  text-align: right;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
-export const TableContainer = styled.table`
-  min-height: 200px;
+export const StyledTable = styled.table`
   width: 100%;
-  color: white;
   border-collapse: collapse;
-  color: black;
+  table-layout: fixed;
 `;
 
-export const TableHeader = styled.th`
-    ${Cell}
-    background-color: ${palette.brand};
-    position: sticky;
-    font-family: sans-serif;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: white;
+export const TableHead = styled.thead`
+  background-color: #f5f5f5;
+`;
+
+export const TableHeaderCell = styled.th`
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: right;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  &:nth-child(1) { flex: 1; }
+  &:nth-child(2) { flex: 0.8; }
+  &:nth-child(3) { flex: 4; }
+  &:nth-child(4) { flex: 0.8; }
+  &:nth-child(5) { flex: 2; }
+`;
+
+export const ScrollableTBody = styled.tbody`
+  display: block;
+  max-height: 70vh;
+  overflow-y: auto;
+  width: 100%;
+`;
+
+export const TableRow = styled.tr`
+  display: flex;
+  width: 100%;
+
+  &:nth-child(even) {
+    background-color: #fafafa;
+  }
 `;
 
 export const TableCell = styled.td`
-    ${Cell}
-`;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 
-export const TableNav = styled.div`
-    background-color: #f1f1f1;
-    padding: 8px 0px;
-    width: 100%;
-    font-weight: 500;
-    text-align: left;
-    font-size: 16px;
-    color: #2c3e50;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    display: flex;
-    justify-content: right;
-    overflow-x: scroll;
-`;
 
-export const RecordsSelect = styled.select`
-    margin: 0.5rem;
-    margin-right: 2rem;
+  &:nth-child(1) { flex: 1; }
+  &:nth-child(2) { flex: 0.8; }
+  &:nth-child(3) { flex: 4; }
+  &:nth-child(4) { flex: 0.8; }
+  &:nth-child(5) { flex: 2; }
 `;

@@ -21,7 +21,7 @@ export const FilterButton = styled.button`
   border-radius: 8px;
   font-size: 15px;
   color: white;
-  font-family: sans-serif;
+  font-family: Assistant, sans-serif;
   border: 1px solid transparent;
   cursor: pointer;
 `;
@@ -29,7 +29,7 @@ export const FilterButton = styled.button`
 export const SelectMemberKnesset = styled.select`
   border-radius: 4px;
   height: 44px;
-  font-family: sans-serif;
+  font-family: Assistant, sans-serif;
   font-style: normal;
   font-size: 16px;
   line-height: 22px;
@@ -39,13 +39,13 @@ export const SelectMemberKnesset = styled.select`
 export const OptionMemberKnesset = styled.option`
   appearance: none;
   border-radius: 4px;
-  font-family: sans-serif;
+  font-family: Assistant, sans-serif;
   text-align: center;
 `;
 
 export const OptionVote = styled.option`
   appearance: none;
   border-radius: 4px;
-  font-family: sans-serif;
+  font-family: Assistant, sans-serif;
   text-align: center;
 `;

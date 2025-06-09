@@ -45,7 +45,7 @@ export const TabDescription = styled.div`
 export const SelectKnessetNum = styled.select`
   border-radius: 4px;
   height: 44px;
-  font-family: sans-serif;
+  font-family: Assistant, sans-serif;
   font-style: normal;
   font-size: 16px;
   line-height: 22px;
@@ -60,7 +60,7 @@ export const AutoCompleteContainer = styled.div`
 export const OptionKnessetNum = styled.option`
   appearance: none;
   border-radius: 4px;
-  font-family: sans-serif;
+  font-family: Assistant, sans-serif;
   text-align: center;
 `;
 
@@ -80,7 +80,7 @@ export const ActionButton = styled.button`
   border-radius: 8px;
   font-size: 20px;
   color: white;
-  font-family: sans-serif;
+  font-family: Assistant, sans-serif;
   border: 1px solid transparent;
   cursor: pointer;
 `;

@@ -30,6 +30,6 @@ const TableRowCellStyled = styled.td`
     padding:${({ padding }) => (padding ? padding : "")};
     color: ${({ textColor }) => (textColor ? textColor : "")};
     font-weight: ${({ weight }) => (weight ? weight : 600)};
-    font-family: sans-serif;
+    font-family: Assistant, sans-serif;
 `;
 export default TableRowCell;

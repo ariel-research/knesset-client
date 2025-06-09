@@ -17,7 +17,7 @@ export const TableHeaderRow = styled.tr`
   display: table;
   width: 100%;
   table-layout: fixed;
-  font-family: Open Sans;
+  font-family: Assistant, sans-serif;
   border-bottom: 2px solid ${palette.greyScale};
 `;
 
@@ -46,7 +46,7 @@ export const TableRow = styled.tr`
   display: table;
   width: 100%;
   table-layout: fixed;
-  font-family: Open Sans;
+  font-family: Assistant, sans-serif;
 `;
 
 export const RemoveRowButton = styled.button`

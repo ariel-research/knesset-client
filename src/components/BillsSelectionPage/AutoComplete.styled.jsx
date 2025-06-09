@@ -6,20 +6,17 @@ export const AutoCompleteRowsWrapper = styled.div`
   width: 98%;
   overflow-y: auto;
   ::-webkit-scrollbar {
-    width: 6px;
     height: 90%;
-    background: ${palette.greyish};
+    background: ${palette.geryLight};
   }
   ::-webkit-scrollbar-button {
     display: none;
   }
   ::-webkit-scrollbar-track {
-    background: ${palette.greyish};
-    padding-right: 5px;
-    border-radius: 5px;
+    background: ${palette.geryLight};
   }
   ::-webkit-scrollbar-thumb {
-    background: ${palette.greyish};
+    background: ${palette.geryLight};
     border-radius: 100px;
   }
 `;
@@ -27,10 +24,10 @@ export const AutoCompleteRowsWrapper = styled.div`
 export const CreateNewTeamButton = styled.button`
   height: 50px;
   width: 100px;
-  font-family: Open Sans;
+  font-family: Assistant, sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: ${palette.greyish};
+  color: ${palette.geryLight};
   background: transparent;
   border: 0;
   text-transform: uppercase;
@@ -43,7 +40,7 @@ export const NewTeamInput = styled.input`
   background: transparent;
   border: 0;
   outline: none;
-  font-family: Open Sans;
+  font-family: Assistant, sans-serif;
   font-style: italic;
   font-weight: 600;
   color: ${palette.bleakWhite};
@@ -54,7 +51,7 @@ export const CreateNewTeam = styled.div`
   display: flex;
   align-items: center;
   height: 53px;
-  background: ${palette.greyish};
+  background: ${palette.geryLight};
   border-radius: 0 0 16px 16px;
 `;
 
@@ -87,38 +84,38 @@ export const AutoCompleteInput = styled.input`
   border: 1px solid black;
   border-radius: 4px;
   text-align: right;
-  font-family: sans-serif;
+  font-family: Assistant, sans-serif;
   font-style: normal;
   font-size: 16px;
   line-height: 22px;
   &:focus {
     outline: none;
   }
+  direction: rtl;
 `;
 
 export const AutoCompleteRowsContainer = styled.div`
   position: absolute;
   width: 100%;
   margin-top: 180px;
-  min-height: 142px;
-  max-height: 100px;
+  height: fit-content;
+  max-height: 120px;
   overflow-y: scroll;
-  border-radius: 5px;
-  background-color: rgb(222, 226, 230);
-  border: 1px solid rgb(145, 154, 164);
+  background-color: rgb(255, 255, 255);
+  border-radius: 4px;
 
   z-index: 1;
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
-    background: ${palette.greyScale};
+    background: ${palette.geryLight};
   }
 
   ::-webkit-scrollbar-button {
     display: none;
   }
   ::-webkit-scrollbar-track {
-    background: ${palette.greyScale};
+    background: rgb(219, 222, 225);
   }
   ::-webkit-scrollbar-thumb {
     background: ${palette.brand};
@@ -128,19 +125,21 @@ export const AutoCompleteRowsContainer = styled.div`
 
 export const AutoCompleteRow = styled.div`
   display: flex;
-  height: 30px;
-  width: 359px;
   align-items: center;
-  list-style-type: none;
-  font-family: Open Sans;
+  height: 40px;
+  text-align: right;
+  direction: rtl;
+  font-family: Assistant, sans-serif;
   font-size: 14px;
-  font-weight: 600;
-  line-height: 19px;
-  border-bottom: 1px solid ${palette.greyish};
-  background-color: ${palette.greyScale};
-  margin-left: 24px;
+  color: black;
+  border-bottom: 1px solid ${palette.geryLight};
+  background-color: ${palette.greyLight};
   cursor: pointer;
-  overflow: hidden;
+  padding: 0 12px;
+
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
+
+  min-width: 0;
 `;

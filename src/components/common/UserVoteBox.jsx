@@ -1,95 +1,123 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled, { css } from "styled-components";
-import { billVote, removeBill } from "../redux/selectedBillsSlice";
+import styled from "styled-components";
+import { billVote, removeBill, addBill } from "../redux/selectedBillsSlice";
 import TrashIcon from "../../assets/svg-icons/TrashIcon";
 
 const voteOptions = {
+  DEFAULT: 0,
   FOR: 1,
   AGAINST: 2,
   NEUTRAL: 3,
 };
 
-const UserVoteBox = (props) => {
-  const { billId } = props;
+const UserVoteBox = ({ bill, removeBillButton }) => {
+  const billId = bill.id;
   const selectedBills = useSelector((state) => state.selectedBills);
-  const [selectedValue, setSelectedValue] = useState(selectedBills[billId]?.vote || voteOptions.NEUTRAL);
   const dispatch = useDispatch();
 
-  const onClickHandler = (vote) => {
-    const newVote = selectedValue === vote ? voteOptions.NEUTRAL : vote;// in case of double tap on button - vote is neutral
+  const selectedBill = selectedBills.find(item => item.id === billId);
+  const selectedValue = selectedBill ? selectedBill.vote : voteOptions.DEFAULT;
 
-    setSelectedValue(newVote);
-    dispatch(billVote({ billId: billId, vote: newVote }));
+  const onClickHandler = (vote) => {
+    if (!selectedBill) {
+      dispatch(addBill(bill));
+    }
+    dispatch(billVote({ billId, vote }));
   };
 
   const removeBillHandler = () => {
     dispatch(removeBill(billId));
-  }
+  };
 
   return (
-    <VoteOptionsWrapper id={billId}>
-      <RemoveButton onClick={removeBillHandler}><TrashIcon /></RemoveButton>
-      <AgainstOptionButton isActive={voteOptions.AGAINST === selectedValue} onClick={() => onClickHandler(voteOptions.AGAINST)}>נגד</AgainstOptionButton>
-      <ForOptionButton isActive={voteOptions.FOR === selectedValue} onClick={() => onClickHandler(voteOptions.FOR)}>בעד</ForOptionButton>
+    <VoteOptionsWrapper>
+      {removeBillButton && (
+        <RemoveButton onClick={removeBillHandler}>
+          <TrashIcon />
+        </RemoveButton>
+      )}
+      <VoteButton
+        isActive={selectedValue === voteOptions.AGAINST}
+        onClick={() => onClickHandler(voteOptions.AGAINST)}
+        aria-label="נגד"
+      >
+        <Tooltip>נגד</Tooltip>
+        👎
+      </VoteButton>
+
+      <VoteButton
+        isActive={selectedValue === voteOptions.FOR}
+        onClick={() => onClickHandler(voteOptions.FOR)}
+        aria-label="בעד"
+      >
+        <Tooltip>בעד</Tooltip>
+        👍
+      </VoteButton>
+
+      <VoteButton
+        isActive={selectedValue === voteOptions.NEUTRAL}
+        onClick={() => onClickHandler(voteOptions.NEUTRAL)}
+        aria-label="נמנע"
+      >
+        <Tooltip>נמנע</Tooltip>
+        ➖
+      </VoteButton>
     </VoteOptionsWrapper>
   );
 };
 
-const VoteButton = css`
-  width: 5rem;
-  appearance: none;
-  background-color: #2ea44f;
-  border: 1px solid rgba(27, 31, 35, .15);
-  border-radius: 6px;
-  box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
-  box-sizing: border-box;
-  display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  padding: 6px 16px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: middle;
-  white-space: nowrap;
+export default UserVoteBox;
 
-`;
+// Styled Components:
 
 const VoteOptionsWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  width: 18rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
 `;
 
-const ForOptionButton = styled.button`
-  ${VoteButton}
-  background: ${(props) => props.isActive ? '#C8E4B2' : '#f9f9f9'};
+const VoteButton = styled.button`
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 50%;
+  background-color: ${props => props.isActive ? '#C8E4B2' : '#f0f0f0'};
+  box-shadow: ${props => props.isActive ? '0 0 8px rgba(0,0,0,0.3)' : 'none'};
   cursor: pointer;
-  &: hover {
-    background-color: #C8E4B2;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: ${props => props.isActive ? '#C8E4B2' : '#e0e0e0'};
+  }
+
+  &:hover span {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-120%);
   }
 `;
 
-const AgainstOptionButton = styled.button`
-  ${VoteButton}
-  background: ${(props) => props.isActive ? '#EF6262' : '#f9f9f9'};
-  cursor: pointer;
-  &: hover {
-    background-color: #EF6262;
-  }
+const Tooltip = styled.span`
+  position: absolute;
+  bottom: 25%;
+  background-color: #333;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 10;
 `;
-
+  
 const RemoveButton = styled.button`
-  width: fit-content;
   background-color: transparent;
-  border: 1px solid transparent;
-  cursor: pointer
+  border: none;
+  cursor: pointer;
 `;
-
-export default UserVoteBox;

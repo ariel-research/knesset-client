@@ -4,17 +4,19 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LandingScreen from "../components/common/LandingScreen";
 import Loader from "../components/common/Loader";
-import { ActionButton, HeadersWrapper, HintsWrapper, HomepageWrapper, StyledHint, TableWrapper } from "./Homepage.styled";
+import { ActionButton, HeadersWrapper, HomepageWrapper, TableWrapper, TabsWrapper, TabButton } from "./Homepage.styled";
 import { useNavigate } from "react-router-dom";
 import { getVotesScore } from "../utils/apiUtils";
 import { updateResults } from "../components/redux/compassResultsSlice";
 
 const Homepage = () => {
-  const tableHeaders = ['', 'נושא ההצבעה', 'תאריך'];
-  const hint = 'מחפשים הצעות חוק מהמאגר על פי מספר כנסת או חיפוש חופשי, לכל חוק מצביעים על פי דעתכם וממשיכים לדף תוצאות המשקף את חברי הכנסת הדומים לכם בדעתכם.';
-  const [isLoading, setIsLoading] = useState(true);
+  const tableHeaders = ['תאריך', 'נושא ההצבעה', 'מספר כנסת', 'הצבעת משתמש'];
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("all");
+
   const dispatch = useDispatch();
   const selectedBills = useSelector((state) => state.selectedBills);
+  const displayedBills = useSelector((state) => state.displayedBills);
   const navigate = useNavigate();
 
   const onFindMatchesButtonHandler = () => {
@@ -43,24 +45,51 @@ const Homepage = () => {
       });
   };
 
+  const getUnvotedBills = () => {
+    const selectedIds = selectedBills.map(bill => bill.id);
+    return displayedBills.filter(bill => !selectedIds.includes(bill.id));
+  };
+
+  const renderTable = () => {
+    if (activeTab === "all") {
+      return <Table headers={tableHeaders} data={displayedBills} removeBill={[false]} />;
+    } else if (activeTab === "voted") {
+      return <Table headers={tableHeaders} data={selectedBills} removeBill={[true]} />;
+    } else if (activeTab === "unvoted") {
+      const unvotedBills = getUnvotedBills();
+      return <Table headers={tableHeaders} data={unvotedBills} removeBill={[false]} />;
+    }
+  };
+
   return (
     <HomepageWrapper>
       <LandingScreen />
       <HeadersWrapper>
-        <HintsWrapper>
-          <StyledHint>{hint}</StyledHint>
-          <h4>*התוצאות מסתמכות על הממשק של אתר הכנסת וייתכן שאינן מעודכנות.</h4>
-        </HintsWrapper>
         <SearchBills setIsLoading={setIsLoading} />
       </HeadersWrapper>
-      <ActionButton disabled={!selectedBills.length} onClick={onFindMatchesButtonHandler}>מצא התאמות</ActionButton>
+
       {isLoading && <Loader />}
+
+      <TabsWrapper>
+        <TabButton isActive={activeTab === "all"} onClick={() => setActiveTab("all")}>
+          כל ההצעות
+        </TabButton>
+        <TabButton isActive={activeTab === "voted"} onClick={() => setActiveTab("voted")}>
+          הצעות שהצבעתי להן ({selectedBills.length})
+        </TabButton>
+        <TabButton isActive={activeTab === "unvoted"} onClick={() => setActiveTab("unvoted")}>
+          הצעות שלא הצבעתי
+        </TabButton>
+      </TabsWrapper>
+
       <TableWrapper loadingState={isLoading}>
-        <Table headers={tableHeaders} data={selectedBills} rows={2} />
+        {renderTable()}
+        <ActionButton disabled={!selectedBills.length} onClick={onFindMatchesButtonHandler}>
+        מצא התאמות
+      </ActionButton>
       </TableWrapper>
     </HomepageWrapper>
-  )
-
+  );
 };
 
 export default Homepage;

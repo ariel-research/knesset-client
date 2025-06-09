@@ -7,6 +7,7 @@ import {
 } from "./AutoComplete.styled";
 import { useDispatch, useSelector } from "react-redux";
 import { update } from "../redux/searchedBillSlice";
+import {setDisplayedBills} from "../redux/displayedBillsSlice";
 import { useEffect } from "react";
 
 const AutoComplete = (props) => {
@@ -20,6 +21,8 @@ const AutoComplete = (props) => {
     setUserInput(val.label);
     setFilteredSuggestions([]);
     dispatch(update(val));
+    dispatch(setDisplayedBills([val]))
+
   };
 
   const onChangeHandler = (e) => {
@@ -49,6 +52,45 @@ const AutoComplete = (props) => {
     }
   };
 
+  const onSearchClick = () => {
+    dispatch(setDisplayedBills(filteredSuggestions))
+  }
+
+  const onKeyDownHandler = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (userInput !== "" && filteredSuggestions.length){
+        console.log("enter!")
+        onSearchClick(); // Trigger the table
+      }
+    }
+  };
+  
+
+  const formatText = (text) => text.replace(/ /g, '\u00A0'); // non-breaking space
+ 
+  const highlightMatch = (label) => {
+    if (!userInput) return label;
+  
+    const lowerLabel = label.toLowerCase();
+    const lowerInput = userInput.toLowerCase();
+    const startIndex = lowerLabel.indexOf(lowerInput);
+  
+    if (startIndex === -1) return label;
+    
+    const beforeMatch = formatText(label.slice(0, startIndex));
+    const matchText = formatText(label.slice(startIndex, startIndex + userInput.length));
+    const afterMatch = formatText(label.slice(startIndex + userInput.length));
+  
+    return (
+      <>
+        {beforeMatch}
+        <span style={{ fontWeight: 'bold', color: '#000000' }}>{matchText}</span>
+        {afterMatch}
+      </>
+    );
+  };
+  
   useEffect(() => {
     setUserInput(searchedBill.label);
   }, [searchedBill]);
@@ -60,6 +102,7 @@ const AutoComplete = (props) => {
         autoComplete="off"
         placeholder="שם הצעת חוק"
         onChange={onChangeHandler}
+        onKeyDown={onKeyDownHandler} 
         value={userInput}
       />
       {filteredSuggestions.length > 0 && (
@@ -68,9 +111,10 @@ const AutoComplete = (props) => {
             return (
               <AutoCompleteRow
                 key={index}
+                title={bill.label}
                 onClick={() => onSuggestionClickHandler(bill)}
               >
-                {bill.label}
+                {highlightMatch(bill.label)}
               </AutoCompleteRow>
             );
           })}

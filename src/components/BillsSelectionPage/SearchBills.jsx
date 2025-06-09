@@ -5,6 +5,8 @@ import AutoComplete from "./AutoComplete";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../redux/searchedBillSlice";
 import { addBill, addMultipleBills } from "../redux/selectedBillsSlice";
+import {setDisplayedBills} from "../redux/displayedBillsSlice";
+
 import {
   ActionButton,
   ActionButtonsContainer,
@@ -37,8 +39,9 @@ const SearchBills = (props) => {
 
   const addBillHandler = () => {
     if (currentSearchedBill.id !== EMPTY_BILL.id) {
-      dispatch(addBill(currentSearchedBill));
+      //dispatch(addBill(currentSearchedBill));
       dispatch(clear());
+      dispatch(setDisplayedBills([currentSearchedBill]))
     }
   };
 
@@ -60,13 +63,15 @@ const SearchBills = (props) => {
       const bills=billsarr.flat();
       
       bills.forEach((bill) => {
-        const current = { id: bill.id, label: bill.name };
+        const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.date  };
         arr.push(current);
       });
       console.log("bills selected handler:",arr);
       setFilteredBillsByKnessetNum([...arr]);
+      dispatch(setDisplayedBills(arr))
     });
   };
+
 
   // for voting
   const addKnessetNumBIlls = () => {
@@ -75,7 +80,7 @@ const SearchBills = (props) => {
 
     //if the first option was selected - load all bills
     if (selectedKnessetNum === "0") {
-      dispatch(addMultipleBills(allBills));
+      //dispatch(addMultipleBills(allBills));
       setIsLoading(false);
       return;
     }
@@ -85,11 +90,11 @@ const SearchBills = (props) => {
         const bills = res.data;
         
         bills.forEach((bill) => {
-          const current = { id: bill.id, label: bill.name };
+          const current = { id: bill.id, label: bill.name ,knessetNum: bill.knessetNum, date: bill.date };
           arr.push(current);
         });
         console.log("bills selected:",arr);
-        dispatch(addMultipleBills(arr));
+        //dispatch(addMultipleBills(arr));
       })
       .catch((err) => {
         console.log(err);
@@ -111,7 +116,7 @@ const SearchBills = (props) => {
 
   useEffect(() => {
     setIsLoading(true);
-    getAllBills()
+    /*getAllBills()
     .then((res) => {
       const arr = [];
       const bills = res.data;
@@ -120,20 +125,23 @@ const SearchBills = (props) => {
         arr.push(current);
       });
       console.log("arr: ",arr)
-      setAllBills(arr);    })
+      setAllBills(arr);  
+      dispatch(setDisplayedBills(arr));  
+    })
     .catch((err) => {
       console.log(err);
-    })
+    })*/
     getBillsOfKnesset(selectedKnessetNum)
       .then((res) => {
         const arr = [];
         const bills = res.data;
         bills.forEach((bill) => {
-          const current = { id: bill.id, label: bill.name };
+          const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.date, ordinal: bill.ordinal };
           arr.push(current);
         });
         console.log("arr: ",arr)
         setFilteredBillsByKnessetNum(arr);
+        dispatch(setDisplayedBills(arr));  
         
       })
       .catch((err) => {
@@ -146,7 +154,6 @@ const SearchBills = (props) => {
 
   return (
     <TabContainer>
-      <TabHeader id={`tab_title`}>{title}</TabHeader>
       <TabContent>
         <TabDescription id="tab_description">{description}</TabDescription>
         <BillsSelectionContainer>
@@ -156,22 +163,12 @@ const SearchBills = (props) => {
             selectValue={selectedKnessetNum}
             optionsLabels={Object.keys(ALL_KNESSET_NUMBERS)}
             optionsValues={Object.values(ALL_KNESSET_NUMBERS)}
-            defaultLabel={DEFAULT_KNESSET[0]}
-            defaultValue={DEFAULT_KNESSET[1]}
           />
 
           <AutoCompleteContainer>
-            <AutoComplete data={filteredBillsByKnessetNum} />
+            <AutoComplete data={filteredBillsByKnessetNum}/>
           </AutoCompleteContainer>
         </BillsSelectionContainer>
-        <ActionButtonsContainer>
-          <ActionButton id="add_bill" onClick={addBillHandler}>
-            הוסף הצעת חוק שנבחרה
-          </ActionButton>
-          <ActionButton id="add_all_bills" onClick={addKnessetNumBIlls}>
-            הוסף את כל הצעות הכנסת
-          </ActionButton>
-        </ActionButtonsContainer>
       </TabContent>
     </TabContainer>
   );
