@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { update } from "../redux/searchedBillSlice";
 import {setDisplayedBills} from "../redux/displayedBillsSlice";
-import { useEffect } from "react";
+import { useEffect,useRef  } from "react";
 
 const AutoComplete = (props) => {
   const { data } = props;
@@ -16,6 +16,7 @@ const AutoComplete = (props) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const searchedBill = useSelector((select) => select.searchedBill);
   const dispatch = useDispatch();
+  const inputRef = useRef(null);
 
   const onSuggestionClickHandler = (val) => {
     setUserInput(val.label);
@@ -52,6 +53,20 @@ const AutoComplete = (props) => {
     }
   };
 
+  const onFocusHandler = () => {
+    if (userInput) {
+      const filtered = data.filter(
+        (suggestion) =>
+          suggestion.label.toLowerCase().includes(userInput.toLowerCase())
+      );
+      setFilteredSuggestions(filtered.slice(0, 30));
+    }
+  };
+  
+  
+
+
+
   const onSearchClick = () => {
     dispatch(setDisplayedBills(filteredSuggestions))
   }
@@ -61,7 +76,10 @@ const AutoComplete = (props) => {
       e.preventDefault();
       if (userInput !== "" && filteredSuggestions.length){
         console.log("enter!")
-        onSearchClick(); // Trigger the table
+        onSearchClick();
+        setFilteredSuggestions([]); // Trigger the table
+        inputRef.current?.blur();
+
       }
     }
   };
@@ -103,7 +121,10 @@ const AutoComplete = (props) => {
         placeholder="שם הצעת חוק"
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler} 
+        onFocus={onFocusHandler}
         value={userInput}
+        ref={inputRef}
+
       />
       {filteredSuggestions.length > 0 && (
         <AutoCompleteRowsContainer id="autocomplete-dropdown">

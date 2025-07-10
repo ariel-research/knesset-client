@@ -1,0 +1,42 @@
+.highfive-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.highfive-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffffff;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: width 0.2s ease, height 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.highfive-button.expanded {
+  width: 100px;
+  height: 100px;
+}
+
+.highfive-image {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.highfive-gif {
+  width: 75px;
+  height: 75px;
+  object-fit: contain;
+  pointer-events: none;
+}

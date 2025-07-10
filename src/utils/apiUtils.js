@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const BASE_URL = "https://csariel.xyz:8080/";
-const BASE_URL = "https://knesset.csariel.xyz/general/";
+//const BASE_URL = "https://knesset.csariel.xyz/general/";
+const BASE_URL = "http://csariel.xyz:8088/general/";
 
 export const getAllBills = async () => {
   return await axios.get(`${BASE_URL}bills`);

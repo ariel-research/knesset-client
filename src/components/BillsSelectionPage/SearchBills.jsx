@@ -4,7 +4,7 @@ import { getAllBills, getBillsOfKnesset } from "../../utils/apiUtils";
 import AutoComplete from "./AutoComplete";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../redux/searchedBillSlice";
-import { addBill, addMultipleBills } from "../redux/selectedBillsSlice";
+import { addBill, addMultipleBills, clearAllBills } from "../redux/selectedBillsSlice";
 import {setDisplayedBills} from "../redux/displayedBillsSlice";
 
 import {
@@ -16,6 +16,7 @@ import {
   TabContent,
   TabDescription,
   TabHeader,
+  ResetButton,
 } from "./SearchBills.styled";
 import StyledSelect from "../common/StyledSelect";
 
@@ -63,7 +64,7 @@ const SearchBills = (props) => {
       const bills=billsarr.flat();
       
       bills.forEach((bill) => {
-        const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.date  };
+        const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.billDate  };
         arr.push(current);
       });
       console.log("bills selected handler:",arr);
@@ -90,7 +91,7 @@ const SearchBills = (props) => {
         const bills = res.data;
         
         bills.forEach((bill) => {
-          const current = { id: bill.id, label: bill.name ,knessetNum: bill.knessetNum, date: bill.date };
+          const current = { id: bill.id, label: bill.name ,knessetNum: bill.knessetNum, date: bill.billDate };
           arr.push(current);
         });
         console.log("bills selected:",arr);
@@ -102,6 +103,27 @@ const SearchBills = (props) => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  const onResetAllHandler = () => {
+    dispatch(clearAllBills()); // איפוס ההצבעות
+    localStorage.removeItem("selectedBills"); // הסרת מה-localStorage
+    dispatch(clear()); // איפוס החיפוש
+  
+    // שליפת הצעות חוק מחדש לפי הכנסת שנבחרה
+    setIsLoading(true);
+    getBillsOfKnesset(selectedKnessetNum)
+      .then((res) => {
+        const arr = res.data.map((bill) => ({
+          id: bill.id,
+          label: bill.name,
+          knessetNum: bill.knessetNum,
+          date: bill.date,
+        }));
+        dispatch(setDisplayedBills(arr));
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
   };
 
   // log the filtered bills arr every time it changes
@@ -136,7 +158,7 @@ const SearchBills = (props) => {
         const arr = [];
         const bills = res.data;
         bills.forEach((bill) => {
-          const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.date, ordinal: bill.ordinal };
+          const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.billDate, ordinal: bill.ordinal };
           arr.push(current);
         });
         console.log("arr: ",arr)
@@ -151,6 +173,15 @@ const SearchBills = (props) => {
         setIsLoading(false);
       });
   }, [setIsLoading]);
+
+
+  
+  useEffect(() => {
+    const stored = localStorage.getItem("selectedBills");
+    if (stored) {
+      dispatch(addMultipleBills(JSON.parse(stored)));
+    }
+  }, []);
 
   return (
     <TabContainer>
@@ -168,6 +199,7 @@ const SearchBills = (props) => {
           <AutoCompleteContainer>
             <AutoComplete data={filteredBillsByKnessetNum}/>
           </AutoCompleteContainer>
+          <ResetButton onClick={onResetAllHandler}>איפוס</ResetButton>
         </BillsSelectionContainer>
       </TabContent>
     </TabContainer>

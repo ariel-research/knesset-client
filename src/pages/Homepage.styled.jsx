@@ -82,3 +82,13 @@ export const TabButton = styled.button`
     color: #4a90e2;
   }
 `;
+
+export const EmptyMatchesMessage = styled.div`
+  font-family: Assistant, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: ${palette.brand};
+  text-align: center;
+  margin: 2rem auto;
+  line-height: 1.6;
+`;

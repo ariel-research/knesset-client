@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import logo from '../../assets/png-images/democratometer.png';
 import { palette } from "../../assets/colorsPalette";
+import HighFiveButton from "./highfiveIcon";
 
 const LandingScreen = () => {
     const header = "VoteMate";
@@ -14,7 +15,6 @@ const LandingScreen = () => {
 
             {/* כאן בעתיד תוכל לשים קומפוננטות נוספות */}
             <HeaderRightContent>
-                {/* לדוג' כפתור, חיפוש וכו' */}
             </HeaderRightContent>
         </HeaderWrapper>
     );

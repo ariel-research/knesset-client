@@ -84,3 +84,18 @@ export const ActionButton = styled.button`
   border: 1px solid transparent;
   cursor: pointer;
 `;
+export const ResetButton = styled.button`
+  background-color: white;
+  border: 2px solid ${palette.brand};
+  color: ${palette.brand};
+  font-family: Assistant, sans-serif;
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: ${palette.brandLight};
+  }
+`;

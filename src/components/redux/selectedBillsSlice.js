@@ -41,10 +41,13 @@ export const selectedBillsSlice = createSlice({
         state.splice(index, 1);
       }
     },
+    clearAllBills: () => {
+      return [];
+    },
   },
 });
 
-export const { addMultipleBills, addBill, billVote, removeBill } =
+export const { addMultipleBills, addBill, billVote, removeBill, clearAllBills } =
   selectedBillsSlice.actions;
 
 export default selectedBillsSlice.reducer;

@@ -25,8 +25,9 @@ export const TableHeaderCell = styled.th`
   border-bottom: 1px solid #ddd;
   text-align: right;
   font-weight: bold;
+  align-items: center;
+  display: flex;
   position: sticky;
-  top: 0;
   z-index: 3;
   background-color: #f5f5f5;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -34,7 +35,7 @@ export const TableHeaderCell = styled.th`
   &:nth-child(1) { flex: 1; }
   &:nth-child(2) { flex: 0.8; }
   &:nth-child(3) { flex: 4; }
-  &:nth-child(4) { flex: 0.8; }
+  &:nth-child(4) { flex: 0.9; }
   &:nth-child(5) { flex: 2; }
 `;
 
@@ -66,6 +67,6 @@ export const TableCell = styled.td`
   &:nth-child(1) { flex: 1; }
   &:nth-child(2) { flex: 0.8; }
   &:nth-child(3) { flex: 4; }
-  &:nth-child(4) { flex: 0.8; }
+  &:nth-child(4) { flex: 0.9; }
   &:nth-child(5) { flex: 2; }
 `;

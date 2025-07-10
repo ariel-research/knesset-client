@@ -1,10 +1,11 @@
 import Table from "../components/Table/Table";
 import SearchBills from "../components/BillsSelectionPage/SearchBills";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LandingScreen from "../components/common/LandingScreen";
 import Loader from "../components/common/Loader";
-import { ActionButton, HeadersWrapper, HomepageWrapper, TableWrapper, TabsWrapper, TabButton } from "./Homepage.styled";
+import CompassResultsPage from "./CompassResultsPage"
+import { ActionButton, HeadersWrapper, HomepageWrapper, TableWrapper, TabsWrapper, TabButton, EmptyMatchesMessage } from "./Homepage.styled";
 import { useNavigate } from "react-router-dom";
 import { getVotesScore } from "../utils/apiUtils";
 import { updateResults } from "../components/redux/compassResultsSlice";
@@ -35,7 +36,7 @@ const Homepage = () => {
     getVotesScore(body)
       .then((res) => {
         dispatch(updateResults(res.data));
-        navigate("/results");
+        
       })
       .catch((err) => {
         console.log(err);
@@ -59,8 +60,27 @@ const Homepage = () => {
       const unvotedBills = getUnvotedBills();
       return <Table headers={tableHeaders} data={unvotedBills} removeBill={[false]} />;
     }
+    else if(activeTab== "matches"){
+      if (selectedBills.length){
+        return <CompassResultsPage/>;
+
+      }else{
+        return <EmptyMatchesMessage>יש להצביע לחוק אחד לפחות על מנת לראות התאמות</EmptyMatchesMessage>;
+      }
+    }
   };
 
+  useEffect(() => {
+    if (activeTab === "matches" && selectedBills.length) {
+      onFindMatchesButtonHandler();
+    }
+  }, [activeTab, selectedBills]);
+  
+
+  useEffect(() => {
+    localStorage.setItem("selectedBills", JSON.stringify(selectedBills));
+  }, [selectedBills]);
+  
   return (
     <HomepageWrapper>
       <LandingScreen />
@@ -80,13 +100,14 @@ const Homepage = () => {
         <TabButton isActive={activeTab === "unvoted"} onClick={() => setActiveTab("unvoted")}>
           הצעות שלא הצבעתי
         </TabButton>
+        <TabButton isActive={activeTab === "matches"} onClick={() => setActiveTab("matches")}>
+          התאמות
+        </TabButton>
+        
       </TabsWrapper>
 
       <TableWrapper loadingState={isLoading}>
         {renderTable()}
-        <ActionButton disabled={!selectedBills.length} onClick={onFindMatchesButtonHandler}>
-        מצא התאמות
-      </ActionButton>
       </TableWrapper>
     </HomepageWrapper>
   );

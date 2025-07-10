@@ -2,7 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { billVote, removeBill, addBill } from "../redux/selectedBillsSlice";
 import TrashIcon from "../../assets/svg-icons/TrashIcon";
-
+import {
+  ThumbUpIcon,
+  ThumbDownIcon,
+  NeutralIcon,
+}
+from "./Thumbs";
 const voteOptions = {
   DEFAULT: 0,
   FOR: 1,
@@ -42,7 +47,7 @@ const UserVoteBox = ({ bill, removeBillButton }) => {
         aria-label="נגד"
       >
         <Tooltip>נגד</Tooltip>
-        👎
+        <ThumbDownIcon/>
       </VoteButton>
 
       <VoteButton
@@ -51,7 +56,7 @@ const UserVoteBox = ({ bill, removeBillButton }) => {
         aria-label="בעד"
       >
         <Tooltip>בעד</Tooltip>
-        👍
+        <ThumbUpIcon/>
       </VoteButton>
 
       <VoteButton
@@ -60,7 +65,7 @@ const UserVoteBox = ({ bill, removeBillButton }) => {
         aria-label="נמנע"
       >
         <Tooltip>נמנע</Tooltip>
-        ➖
+        <NeutralIcon/>
       </VoteButton>
     </VoteOptionsWrapper>
   );
