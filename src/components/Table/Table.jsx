@@ -69,10 +69,10 @@ const Table = ({ data, removeBill }) => {
   );
   
 
-const Row = ({ index, style, data }) => {
+const Row = ({ index, data }) => {
   const el = data[index];
   return (
-    <TableRow key={el.id} style={style}>
+    <TableRow key={el.id} >
       <TableCell>{new Date(el.date).toLocaleDateString("he-IL")}</TableCell>
       <TableCell>{el.knessetNum}</TableCell>
       <TableCell>{el.label}</TableCell>
@@ -90,7 +90,7 @@ const Row = ({ index, style, data }) => {
     <TableWrapper>
       <StyledTable>
         <TableHead>
-          <TableRow style={style}>
+          <TableRow>
             <TableHeaderCell>
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             תאריך

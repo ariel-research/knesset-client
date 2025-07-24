@@ -49,7 +49,7 @@ export const ScrollableTBody = styled.tbody`
 export const TableRow = styled.tr`
   display: flex;
   width: 100%;
-
+  direction: rtl;
   &:nth-child(even) {
     background-color: #fafafa;
   }

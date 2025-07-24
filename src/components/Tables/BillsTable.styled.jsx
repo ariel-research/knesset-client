@@ -9,7 +9,7 @@ export const TableContainer = styled.table`
 
 export const TableHead = styled.thead`
   color: #fff;
-  background-color: ${palette.brand};
+  background-color: #f5f5f5;
   border-color: #454d55;
 `;
 

@@ -16,6 +16,7 @@ const TableHeaderCellStyled = styled.th`
   font-family: Assistant, sans-serif;
   text-transform: uppercase;
   font-weight: 600;
+  color: black;
   text-align: ${({ textAlign }) => (textAlign ? textAlign : "")};
   border-bottom: ${({ noBorders }) =>
     noBorders ? "" : `2px solid ${palette.greyScale}`};
