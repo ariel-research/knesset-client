@@ -110,7 +110,7 @@ const CompassResultsPage = () => {
     res.forEach((record) => {
       const ans = {
         id: parseInt(record.bill_id),
-        label: record.bill_name,
+        label: record.vote_name,
       };
 
       record.voters.forEach((voter) => {
