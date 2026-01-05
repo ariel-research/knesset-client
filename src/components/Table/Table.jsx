@@ -15,8 +15,6 @@ import {
 from "../common/Arrows";
 
 import { useState, useEffect } from "react";
-import { FixedSizeList as List } from "react-window";
-
 
 const Table = ({ data, removeBill }) => {
   const [sortedData, setSortedData] = useState([...data]);
@@ -68,22 +66,7 @@ const Table = ({ data, removeBill }) => {
     </div>
   );
   
-
-const Row = ({ index, data }) => {
-  const el = data[index];
-  return (
-    <TableRow key={el.id} >
-      <TableCell>{new Date(el.date).toLocaleDateString("he-IL")}</TableCell>
-      <TableCell>{el.knessetNum}</TableCell>
-      <TableCell>{el.label}</TableCell>
-      <TableCell>{el.ordinal}</TableCell>
-      <TableCell>
-        <UserVoteBox bill={el} removeBillButton={removeBill[0]} />
-      </TableCell>
-    </TableRow>
-  );
-};
-
+  
   
 
   return (
@@ -114,16 +97,19 @@ const Row = ({ index, data }) => {
           </TableRow>
         </TableHead>
 
-        <List
-          height={500} // גובה כולל
-          itemCount={sortedData.length}
-          itemSize={50} // גובה כל שורה
-          width="100%"
-          itemData={sortedData}
-          >
-          {Row}
-        </List>
-
+        <ScrollableTBody>
+          {sortedData.map((el) => (
+            <TableRow key={el.id}>
+              <TableCell>{new Date(el.date).toLocaleDateString('he-IL')}</TableCell>
+              <TableCell>{el.knessetNum}</TableCell>
+              <TableCell>{el.label}</TableCell>
+              <TableCell>{el.ordinal}</TableCell>
+              <TableCell>
+                <UserVoteBox bill={el} removeBillButton={removeBill[0]} />
+              </TableCell>
+            </TableRow>
+          ))}
+        </ScrollableTBody>
       </StyledTable>
     </TableWrapper>
   );

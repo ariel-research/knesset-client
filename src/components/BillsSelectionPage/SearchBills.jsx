@@ -105,7 +105,7 @@ const SearchBills = (props) => {
       });
   };
 
-  const onResetAllHandler = () => {
+ /* const onResetAllHandler = () => {
     dispatch(clearAllBills()); // איפוס ההצבעות
     localStorage.removeItem("selectedBills"); // הסרת מה-localStorage
     dispatch(clear()); // איפוס החיפוש
@@ -125,7 +125,7 @@ const SearchBills = (props) => {
       .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
   };
-
+*/
   // log the filtered bills arr every time it changes
   useEffect(() => {
     console.log("Updated filteredBillsByKnessetNum:", filteredBillsByKnessetNum);
@@ -199,7 +199,6 @@ const SearchBills = (props) => {
           <AutoCompleteContainer>
             <AutoComplete data={filteredBillsByKnessetNum}/>
           </AutoCompleteContainer>
-          <ResetButton onClick={onResetAllHandler}>איפוס</ResetButton>
         </BillsSelectionContainer>
       </TabContent>
     </TabContainer>
