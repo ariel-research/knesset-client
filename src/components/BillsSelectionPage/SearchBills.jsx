@@ -62,9 +62,9 @@ const SearchBills = (props) => {
     getBillsOfKnesset(selectedValue).then((res) => {
       const billsarr = res.data;
       const bills=billsarr.flat();
-      
+
       bills.forEach((bill) => {
-        const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.billDate  };
+        const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.billDate, link: bill.link };
         arr.push(current);
       });
       console.log("bills selected handler:",arr);
@@ -158,7 +158,7 @@ const SearchBills = (props) => {
         const arr = [];
         const bills = res.data;
         bills.forEach((bill) => {
-          const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.billDate, ordinal: bill.ordinal };
+          const current = { id: bill.id, label: bill.name, knessetNum: bill.knessetNum, date: bill.billDate, ordinal: bill.ordinal, link: bill.link };
           arr.push(current);
         });
         console.log("arr: ",arr)

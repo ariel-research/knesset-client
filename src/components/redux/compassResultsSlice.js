@@ -10,9 +10,7 @@ export const compassResultsSlice = createSlice({
   initialState,
   reducers: {
     updateResults: (state, action) => {
-      action.payload.batch.forEach((res) => {
-        state.push({ ...res });
-      });
+      return action.payload.batch;
     },
   },
 });
