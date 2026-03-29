@@ -1,95 +1,198 @@
 import styled from "styled-components";
-import { palette } from "../assets/colorsPalette";
 
 export const CompassResWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  padding: 2rem 1rem;
-  background-color: #f7f7f7;
+  padding: 0.5rem 0 2rem;
   box-sizing: border-box;
 `;
 
-export const ResultsHeader = styled.h2`
-  font-family: "Assistant", sans-serif;
-  font-size: 2rem;
-  font-weight: 600;
-  color: ${palette.brand};
-  margin-bottom: 1.5rem;
+export const ResultsHeader = styled.div`
+  text-align: center;
+  margin-bottom: 1.2rem;
 `;
 
 export const DataContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: flex-start;
-  gap: 3rem;
+  gap: 1.25rem;
   width: 100%;
-  max-width: 1200px;
   flex-wrap: wrap;
 `;
 
-export const GradesWrapper = styled.div`
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* ── SCORES CARD ─────────────────────────────── */
+export const ScoresCard = styled.div`
+  flex: 0 0 350px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f2;
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    flex: 1 1 100%;
+  }
+`;
+
+export const CardHeader = styled.div`
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid #e2e8f2;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+`;
+
+export const CardIcon = styled.div`
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #6366f1, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg { width: 14px; height: 14px; color: #fff; }
+`;
+
+export const CardTitleBlock = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  height: 100%;
 `;
 
-export const GradesHeader = styled.h3`
-  font-family: "Assistant", sans-serif;
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: ${palette.brand};
-  margin-bottom: 1rem;
+export const CardTitle = styled.span`
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1b2a45;
+  line-height: 1.2;
 `;
 
-export const Grades = styled.div`
-  width: 100%;
-  height: 500px;
+export const CardSub = styled.span`
+  font-size: 0.71rem;
+  color: #64748b;
+  margin-top: 1px;
+`;
+
+export const ScoresList = styled.div`
+  padding: 0.55rem 1.1rem;
+  max-height: 490px;
   overflow-y: auto;
-  padding-right: 8px;
 
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: ${palette.brand};
-    border-radius: 6px;
-  }
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: #dde3f0; border-radius: 4px; }
 `;
 
-export const VoterGradeWrapper = styled.div`
+export const ScoreRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.8rem;
+  gap: 0.6rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  &:last-child { border-bottom: none; }
 `;
 
-export const ProgressVoterName = styled.span`
-  font-size: 0.9rem;
-  color: #333;
+export const ScoreRank = styled.span`
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 700;
+  min-width: 24px;
   flex-shrink: 0;
 `;
 
-export const VotesTableWrapper = styled.div`
-  flex: 2;
-  min-width: 400px;
-  max-width: 700px;
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+export const ScoreName = styled.span`
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1b2a45;
+  line-height: 1.35;
+  word-break: break-word;
 `;
+
+export const ScoreTrack = styled.div`
+  width: 70px;
+  height: 5px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+`;
+
+export const ScoreFill = styled.div`
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1s ease 0.15s;
+  background: ${({ positive }) =>
+    positive
+      ? 'linear-gradient(90deg, #6366f1, #3b82f6)'
+      : 'linear-gradient(90deg, #fb7185, #e11d48)'};
+`;
+
+export const ScoreVal = styled.span`
+  font-size: 0.82rem;
+  font-weight: 700;
+  min-width: 40px;
+  text-align: left;
+  flex-shrink: 0;
+  color: ${({ positive }) => (positive ? '#4338ca' : '#be123c')};
+`;
+
+/* ── VOTES CARD ──────────────────────────────── */
+export const VotesCard = styled.div`
+  flex: 1;
+  min-width: 340px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f2;
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  overflow: hidden;
+  overflow-x: auto;
+
+  @media (max-width: 900px) {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+`;
+
+export const VotesCardHeader = styled.div`
+  padding: 0.75rem 1.1rem;
+  border-bottom: 1px solid #e2e8f2;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+`;
+
+export const FilterRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-right: auto;
+`;
+
+export const FilterLabel = styled.span`
+  font-size: 0.76rem;
+  color: #64748b;
+  font-weight: 600;
+`;
+
+export const FilterSelect = styled.select`
+  padding: 0.25rem 0.5rem;
+  border: 1.5px solid #e2e8f2;
+  border-radius: 6px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.8rem;
+  color: #1b2a45;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.18s;
+  direction: rtl;
+
+  &:focus { border-color: #2563eb; }
+`;
+

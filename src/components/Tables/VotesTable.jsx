@@ -1,139 +1,117 @@
 import { useSelector } from "react-redux";
-import {
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableHeaderRow,
-  TableRow,
-} from "./BillsTable.styled";
-import TableHeaderCell from "./TableHeaderCell";
-import TableRowCell from "./TableRowCell";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import { ThumbUpIcon, ThumbDownIcon, NeutralIcon } from "../common/Thumbs";
 
-const VoteTable = (props) => {
-  const { data } = props;
-  const prefix = "results-table";
+const voteConfig = {
+  1: { label: "בעד",  bg: "#eef2ff", color: "#4f46e5", border: "#c7d2fe", Icon: ThumbUpIcon },
+  2: { label: "נגד",  bg: "#fff1f2", color: "#e11d48", border: "#fecdd3", Icon: ThumbDownIcon },
+  3: { label: "נמנע", bg: "#fffbeb", color: "#d97706", border: "#fde68a", Icon: NeutralIcon },
+};
+
+const VotePill = ({ vote }) => {
+  const cfg = voteConfig[vote];
+  if (!cfg) return null;
+  const { label, bg, color, border, Icon } = cfg;
+  return (
+    <Pill style={{ background: bg, color, borderColor: border }}>
+      <Icon size={12} color={color} />
+      {label}
+    </Pill>
+  );
+};
+
+const VoteTable = ({ data }) => {
   const [userVotes, setUserVotes] = useState([]);
   const userBillsSelection = useSelector((state) => state.selectedBills);
 
-  const renderVoteValue = (vote) => {
-    switch (vote) {
-      case 1:
-        return "בעד";
-      case 2:
-        return "נגד";
-      case 3:
-        return "נמנע";
-      default:
-        return "";
-    }
-  };
-
-  const renderTableBody = () => {
-    return (
-      data &&
-      data.map(({ id, label, km_name, km_vote }, index) => {
-        const user_vote = userVotes.find((bill) => bill.id === id);
-        return (
-          <TableRow
-            id={`${prefix}-table_row-${index}`}
-            key={`${prefix}-table_row-${index}`}
-          >
-            <TableRowCell
-              id={`${prefix}-user_vote-${index}`}
-              key={`${prefix}-user_vote-${index}`}
-              width="15%"
-              textAlign="center"
-            >
-              {user_vote ? renderVoteValue(user_vote.vote) : ""}
-            </TableRowCell>
-            <TableRowCell
-              id={`${prefix}-km_vote-${index}`}
-              key={`${prefix}-km_vote-${index}`}
-              width="15%"
-              textAlign="center"
-            >
-              {renderVoteValue(km_vote)}
-            </TableRowCell>
-            <TableRowCell
-              id={`${prefix}-km_name-${index}`}
-              key={`${prefix}-km_name-${index}`}
-              width="15%"
-              textAlign="center"
-            >
-              {km_name}
-            </TableRowCell>
-            <TableRowCell
-              id={`${prefix}-label-${index}`}
-              key={`${prefix}-label-${index}`}
-              width="65%"
-              textAlign="center"
-            >
-              {label}
-            </TableRowCell>
-            <TableRowCell
-              id={`${prefix}-identifier-${index}`}
-              key={`${prefix}-identifier-${index}`}
-              width="15%"
-              textAlign="center"
-            >
-              {id}
-            </TableRowCell>
-            <TableRowCell
-              id={`${prefix}-index-${index}`}
-              key={`${prefix}-index-${index}`}
-              width="5%"
-              textAlign="center"
-            >
-              {index + 1}
-            </TableRowCell>
-          </TableRow>
-        );
-      })
-    );
-  };
-
   useEffect(() => {
-    if (userBillsSelection) {
-      const res = [...userBillsSelection];
-      setUserVotes(res);
-    }
+    if (userBillsSelection) setUserVotes([...userBillsSelection]);
   }, [userBillsSelection]);
 
   return (
-    <TableContainer>
-      <TableHead>
-        <TableHeaderRow>
-          <TableHeaderCell
-            key="user_vote_header"
-            width="10%"
-            textAlign="center"
-          >
-            הצבעתך
-          </TableHeaderCell>
-          <TableHeaderCell key="km_vote_header" width="10%" textAlign="center">
-            הצבעת חבר כנסת
-          </TableHeaderCell>
-          <TableHeaderCell key="km_name_header" width="10%" textAlign="center">
-            שם חבר כנסת
-          </TableHeaderCell>
-          <TableHeaderCell
-            key="bill_label_header"
-            width="40%"
-            textAlign="center"
-          >
-            הצעת חוק
-          </TableHeaderCell>
-          <TableHeaderCell key="bill_id_header" width="10%" textAlign="center">
-            מזהה חוק
-          </TableHeaderCell>
-          <TableHeaderCell key="user_header" width="3%" />
-        </TableHeaderRow>
-      </TableHead>
-      <TableBody>{renderTableBody()}</TableBody>
-    </TableContainer>
+    <TableWrap>
+      <THead>
+        <TH style={{ flex: "0 0 160px" }}>שם ח"כ</TH>
+        <TH style={{ flex: "0 0 110px" }}>הצבעת ח"כ</TH>
+        <TH style={{ flex: "0 0 100px" }}>הצבעתך</TH>
+        <TH style={{ flex: 1 }}>הצעת חוק</TH>
+      </THead>
+      <TBody>
+        {data && data.map(({ id, label, km_name, km_vote }, i) => {
+          const user_vote = userVotes.find((b) => b.id === id);
+          return (
+            <TRow key={i}>
+              <TD style={{ flex: "0 0 160px", fontWeight: 600 }}>{km_name}</TD>
+              <TD style={{ flex: "0 0 110px" }}><VotePill vote={km_vote} /></TD>
+              <TD style={{ flex: "0 0 100px" }}><VotePill vote={user_vote?.vote} /></TD>
+              <TD style={{ flex: 1 }}>{label}</TD>
+            </TRow>
+          );
+        })}
+      </TBody>
+    </TableWrap>
   );
 };
 
 export default VoteTable;
+
+const TableWrap = styled.div`
+  width: 100%;
+  min-width: 480px;
+`;
+
+const THead = styled.div`
+  display: flex;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f2;
+  padding: 0 1rem;
+`;
+
+const TH = styled.div`
+  padding: 0.75rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+`;
+
+const TBody = styled.div`
+  max-height: 460px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar { width: 5px; }
+  &::-webkit-scrollbar-thumb { background: #dde3f0; border-radius: 4px; }
+`;
+
+const TRow = styled.div`
+  display: flex;
+  padding: 0.82rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  align-items: flex-start;
+  transition: background 0.12s;
+  &:hover { background: #f8faff; }
+  &:last-child { border-bottom: none; }
+`;
+
+const TD = styled.div`
+  font-size: 0.92rem;
+  color: #1b2a45;
+  padding: 0 0.6rem;
+  line-height: 1.5;
+  word-break: break-word;
+`;
+
+const Pill = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.22rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+`;

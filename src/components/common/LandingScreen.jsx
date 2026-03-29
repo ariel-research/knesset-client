@@ -1,58 +1,98 @@
 import styled from "styled-components";
-import logo from '../../assets/png-images/democratometer.png';
-import { palette } from "../../assets/colorsPalette";
-import HighFiveButton from "./highfiveIcon";
 
 const LandingScreen = () => {
-    const header = "VoteMate";
+  return (
+    <NavBar>
+      <Brand>
+        <LogoMark>
+          {/* layers / stacks icon — matches the VoteMate identity */}
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </LogoMark>
+        <BrandText>
+          <BrandName>VoteMate</BrandName>
+          <BrandSub>מצפן הצבעות כנסת</BrandSub>
+        </BrandText>
+      </Brand>
 
-    return (
-        <HeaderWrapper>
-            <LogoHeaderContainer>
-                <LogoImage src={logo} alt="Logo" />
-                <LandingScreenHeader>{header}</LandingScreenHeader>
-            </LogoHeaderContainer>
-
-            {/* כאן בעתיד תוכל לשים קומפוננטות נוספות */}
-            <HeaderRightContent>
-            </HeaderRightContent>
-        </HeaderWrapper>
-    );
+      <KnessetPill>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <path d="M8 21h8M12 17v4"/>
+        </svg>
+        כנסת 25
+      </KnessetPill>
+    </NavBar>
+  );
 };
 
 export default LandingScreen;
 
-const HeaderWrapper = styled.div`
-  font-family: Assistant, sans-serif;
+const NavBar = styled.header`
+  height: 62px;
+  padding: 0 2rem;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
+  background: #1b2a45;
+  box-shadow: 0 2px 14px rgba(0,0,0,.22);
+  position: sticky;
+  top: 0;
+  z-index: 100;
   direction: rtl;
-  width: 100%;
-  box-sizing: border-box;
 `;
 
-const LogoHeaderContainer = styled.div`
+const Brand = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 `;
 
-const LandingScreenHeader = styled.div`
+const LogoMark = styled.div`
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: linear-gradient(140deg, #6366f1, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(99,102,241,.45);
+  flex-shrink: 0;
+`;
+
+const BrandText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+`;
+
+const BrandName = styled.span`
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+`;
+
+const BrandSub = styled.span`
+  font-size: 0.68rem;
+  color: #93c5fd;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+`;
+
+const KnessetPill = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.38rem;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  color: #cbd5e1;
+  font-size: 0.78rem;
   font-weight: 600;
-  font-size: 24px;
-  color: ${palette.brand};
-`;
-
-const LogoImage = styled.img`
-  height: 40px;
-  width: auto;
-  object-fit: contain;
-`;
-
-const HeaderRightContent = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
 `;

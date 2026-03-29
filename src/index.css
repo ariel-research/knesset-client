@@ -1,14 +1,40 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Assistant&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --navy:        #1b2a45;
+  --blue:        #2563eb;
+  --blue-pale:   #eff6ff;
+  --slate:       #64748b;
+  --slate-lt:    #94a3b8;
+  --border:      #e2e8f2;
+  --bg:          #f2f5fa;
+  --surface:     #ffffff;
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,.06);
+  --shadow-md:   0 4px 16px rgba(0,0,0,.08);
+  --for-color:     #4f46e5;
+  --against-color: #e11d48;
+  --neutral-color: #d97706;
+}
 
 body {
   margin: 0;
-  font-family:  Assistant, sans-serif;
+  font-family: 'Heebo', sans-serif;
+  background: var(--bg);
+  color: var(--navy);
+  direction: rtl;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

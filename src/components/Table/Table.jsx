@@ -92,7 +92,7 @@ const Table = ({ data, removeBill }) => {
 
 
 
-            <TableHeaderCell>מספר הצבעה</TableHeaderCell>
+            <TableHeaderCell>קישור</TableHeaderCell>
             <TableHeaderCell>הצבעתך</TableHeaderCell>
           </TableRow>
         </TableHead>
@@ -101,9 +101,38 @@ const Table = ({ data, removeBill }) => {
           {sortedData.map((el) => (
             <TableRow key={el.id}>
               <TableCell>{new Date(el.date).toLocaleDateString('he-IL')}</TableCell>
-              <TableCell>{el.knessetNum}</TableCell>
+              <TableCell>
+                <span style={{
+                  background: "#eff6ff", color: "#2563eb",
+                  padding: "2px 7px", borderRadius: "4px",
+                  fontSize: "0.73rem", fontWeight: 700
+                }}>{el.knessetNum}</span>
+              </TableCell>
               <TableCell>{el.label}</TableCell>
-              <TableCell>{el.ordinal}</TableCell>
+              <TableCell>
+                {el.link && (
+                  <a
+                    href={el.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      width: 28, height: 28, borderRadius: 7,
+                      background: "#f1f5fb", border: "1px solid #e2e8f2",
+                      color: "#64748b", textDecoration: "none",
+                      transition: "background 0.15s, color 0.15s"
+                    }}
+                    onMouseOver={e => { e.currentTarget.style.background = "#1b2a45"; e.currentTarget.style.color = "#fff"; }}
+                    onMouseOut={e => { e.currentTarget.style.background = "#f1f5fb"; e.currentTarget.style.color = "#64748b"; }}
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                      <polyline points="15 3 21 3 21 9"/>
+                      <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                  </a>
+                )}
+              </TableCell>
               <TableCell>
                 <UserVoteBox bill={el} removeBillButton={removeBill[0]} />
               </TableCell>

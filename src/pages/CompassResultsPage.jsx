@@ -2,19 +2,28 @@ import VoteTable from "../components/Tables/VotesTable";
 import {
   CompassResWrapper,
   DataContainer,
-  Grades,
-  GradesHeader,
-  GradesWrapper,
-  ProgressVoterName,
-  ResultsHeader,
-  VoterGradeWrapper,
-  VotesTableWrapper,
+  ScoresCard,
+  CardHeader,
+  CardIcon,
+  CardTitleBlock,
+  CardTitle,
+  CardSub,
+  ScoresList,
+  ScoreRow,
+  ScoreRank,
+  ScoreName,
+  ScoreTrack,
+  ScoreFill,
+  ScoreVal,
+  VotesCard,
+  VotesCardHeader,
+  FilterRow,
+  FilterLabel,
+  FilterSelect,
 } from "./CompassResultsPage.styled";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import ProgressBar from "../components/common/ProgressBar";
-import VotesTableFilterActions from "../components/CompassResultsPage/VotesTableFilterActions";
-import { useNavigate } from "react-router-dom";
+import { VOTES_TYPES } from "../assets/consts";
 
 const CompassResultsPage = () => {
   const [data, setData] = useState([]);
@@ -22,143 +31,139 @@ const CompassResultsPage = () => {
   const [selectedKnessetMember, setSelectedKnessetMember] = useState();
   const [voteFilter, setVoteFilter] = useState(0);
   const [allKnessetMembers, setAllKnessetMembers] = useState([]);
-  const [gradesData, setGradesData] = useState([{ km_name: "", grade: 0 }]);
-  const [gradesFilteredData, setGradesFilteredData] = useState([
-    { km_name: "", grade: 0 },
-  ]);
+  const [gradesData, setGradesData] = useState([]);
+  const [gradesFilteredData, setGradesFilteredData] = useState([]);
   const compassResults = useSelector((state) => state.compassResults);
-  const navigate = useNavigate();
 
-
-
-  const KnessetMemberFilter = () => {
-    if (!selectedKnessetMember) {
-      return originalData;
+  const applyFilters = (member, vote) => {
+    let filtered = [...originalData];
+    if (member) {
+      filtered = filtered.filter((r) => r.km_name.toLowerCase() === member.toLowerCase());
     }
-    const filtered = originalData.filter(
-      (suggestion) =>
-        suggestion.km_name.toLowerCase() === selectedKnessetMember.toLowerCase()
-    );
-    return filtered;
-  };
-
-  const VoteFilter = (data) => {
-    //if all votes selected - don't filter
-    if (voteFilter === 0) {
-      return data;
+    if (vote !== 0) {
+      filtered = filtered.filter((r) => r.km_vote === vote);
     }
-    return data.filter((record) => record.km_vote === voteFilter);
-  };
 
-  const filterGrades = (membersToShow) => {
+    // update scores panel to only show members in filtered view
+    const seen = new Set();
     const res = [];
-    membersToShow.forEach((el) => {
-      const index = gradesData.findIndex(
-        (record) => record.km_name === el.km_name
-      );
-      // if the data should be filtered
-      if (index !== -1) {
-        res.push(gradesData[index]);
-      }
+    filtered.forEach((el) => {
+      if (seen.has(el.km_name)) return;
+      const idx = gradesData.findIndex((r) => r.km_name === el.km_name);
+      if (idx !== -1) { res.push(gradesData[idx]); seen.add(el.km_name); }
     });
     setGradesFilteredData(res);
-  };
-
-  const onKnessetMemberFilterChange = () => {
-    const filteredKnessetMember = KnessetMemberFilter();
-    const filtered = VoteFilter(filteredKnessetMember);
-    filterGrades(filtered);
     setData(filtered);
   };
 
   const onKnessetMemberSelectHandler = (e) => {
-    const selectedValue = e.target.value;
-    if (selectedValue === "0") {
-      setSelectedKnessetMember();
-      return;
-    }
-    setSelectedKnessetMember(selectedValue);
+    const val = e.target.value;
+    const member = val === "0" ? undefined : val;
+    setSelectedKnessetMember(member);
+    applyFilters(member, voteFilter);
   };
 
   const onVoteSelectHandler = (e) => {
-    setVoteFilter(parseInt(e.target.value));
+    const vote = parseInt(e.target.value);
+    setVoteFilter(vote);
+    applyFilters(selectedKnessetMember, vote);
   };
 
-  const renderVotersGrade = () => {
-    const sortedData = gradesFilteredData.sort(
-      (a, b) => parseInt(b.grade) - parseInt(a.grade)
-    );
-    const satBar = [];
-    sortedData.forEach((el, i) => {
-      satBar.push(
-        <VoterGradeWrapper key={i}>
-          <ProgressBar done={el.grade?.toFixed(0)} />
-          <ProgressVoterName>{el.km_name}</ProgressVoterName>
-        </VoterGradeWrapper>
+  const renderScores = () => {
+    const sorted = [...gradesFilteredData].sort((a, b) => b.grade - a.grade);
+    return sorted.map((el, i) => {
+      const pct = el.grade?.toFixed(0);
+      const isPos = el.grade >= 0;
+      const barWidth = Math.max(Math.abs(pct), 3);
+      return (
+        <ScoreRow key={i}>
+          <ScoreRank>#{i + 1}</ScoreRank>
+          <ScoreName title={el.km_name}>{el.km_name}</ScoreName>
+          <ScoreTrack>
+            <ScoreFill positive={isPos} style={{ width: `${barWidth}%` }} />
+          </ScoreTrack>
+          <ScoreVal positive={isPos}>{pct}%</ScoreVal>
+        </ScoreRow>
       );
     });
-    return satBar;
   };
 
   useEffect(() => {
-    if (!compassResults.length) {
-      navigate("/");
-    }
+    if (!compassResults.length) return;
+
     const parsed = [];
     const gradedDataParsed = [];
-    const res = [...compassResults];
-    res.forEach((record) => {
-      const ans = {
-        id: parseInt(record.bill_id),
-        label: record.vote_name,
-      };
 
+    compassResults.forEach((record) => {
+      const ans = { id: parseInt(record.bill_id), label: record.vote_name };
       record.voters.forEach((voter) => {
-        parsed.push({
-          ...ans,
-          km_name: voter.voter_name,
-          km_vote: voter.ballot,
-        });
-        const index = gradedDataParsed.findIndex(
-          (km) => km.km_name === voter.voter_name
-        );
-        if (index === -1) {
-          gradedDataParsed.push({
-            km_name: voter.voter_name,
-            grade: voter.graded,
-          });
+        parsed.push({ ...ans, km_name: voter.voter_name, km_vote: voter.ballot });
+        if (!gradedDataParsed.find((km) => km.km_name === voter.voter_name)) {
+          gradedDataParsed.push({ km_name: voter.voter_name, grade: voter.graded });
         }
       });
     });
-    const all_km = parsed.filter((object, index, self) => {
-      return index === self.findIndex((o) => o.km_name === object.km_name);
-    });
+
+    const all_km = [...new Map(parsed.map((p) => [p.km_name, p])).values()];
     setGradesData(gradedDataParsed);
     setGradesFilteredData(gradedDataParsed);
-    setAllKnessetMembers(all_km.map((bill) => bill.km_name).sort());
+    setAllKnessetMembers(all_km.map((b) => b.km_name).sort());
     setData(parsed);
     setOriginalData(parsed);
-  }, [compassResults, navigate]);
+  }, [compassResults]);
 
   return (
     <CompassResWrapper>
-      <ResultsHeader>תוצאות</ResultsHeader>
       <DataContainer>
-        <GradesWrapper>
-          <GradesHeader>ציון חברי הכנסת</GradesHeader>
-          <Grades>{renderVotersGrade()}</Grades>
-        </GradesWrapper>
-        <VotesTableWrapper>
-          <VotesTableFilterActions
-            selectedKnessetMember={selectedKnessetMember}
-            allKnessetMembers={allKnessetMembers}
-            onKnessetMemberFilterChange={onKnessetMemberFilterChange}
-            onKnessetMemberSelectHandler={onKnessetMemberSelectHandler}
-            onVoteSelectHandler={onVoteSelectHandler}
-            voteFilter={voteFilter}
-          />
+        {/* ── Scores panel ── */}
+        <ScoresCard>
+          <CardHeader>
+            <CardIcon>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+            </CardIcon>
+            <CardTitleBlock>
+              <CardTitle>ציוני חברי הכנסת</CardTitle>
+              <CardSub>לפי התאמה לעמדותיך</CardSub>
+            </CardTitleBlock>
+          </CardHeader>
+          <ScoresList>{renderScores()}</ScoresList>
+        </ScoresCard>
+
+        {/* ── Votes detail panel ── */}
+        <VotesCard>
+          <VotesCardHeader>
+            <CardIcon>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="3" y1="9" x2="21" y2="9" />
+                <line x1="9" y1="21" x2="9" y2="9" />
+              </svg>
+            </CardIcon>
+            <CardTitleBlock>
+              <CardTitle>פירוט הצבעות</CardTitle>
+              <CardSub>השוואה לעמדות ח"כ</CardSub>
+            </CardTitleBlock>
+            <FilterRow>
+              <FilterLabel>ח"כ:</FilterLabel>
+              <FilterSelect value={selectedKnessetMember || "0"} onChange={onKnessetMemberSelectHandler}>
+                <option value="0">הכל</option>
+                {allKnessetMembers.map((name) => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </FilterSelect>
+              <FilterLabel>הצבעה:</FilterLabel>
+              <FilterSelect value={voteFilter} onChange={onVoteSelectHandler}>
+                <option value="0">הכל</option>
+                {Object.entries(VOTES_TYPES).map(([label, val]) => (
+                  <option key={val} value={val}>{label}</option>
+                ))}
+              </FilterSelect>
+            </FilterRow>
+          </VotesCardHeader>
           <VoteTable data={data} />
-        </VotesTableWrapper>
+        </VotesCard>
       </DataContainer>
     </CompassResWrapper>
   );
