@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_API_URL ?? "http://localhost:8088";
+const BASE_URL = process.env.REACT_APP_BASE_URL ?? "http://localhost:8080";
 const v2 = axios.create({ baseURL: `${BASE_URL}/v2/` });
 
 // GET /v2/browse?knessetNum=N&cursor=LAST_ID&limit=50
