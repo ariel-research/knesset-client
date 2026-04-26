@@ -13,7 +13,7 @@
  * All other props are identical to Table.jsx: { data, removeBill }
  */
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { FixedSizeList } from "react-window";
 import styled from "styled-components";
 import UserVoteBox from "../common/UserVoteBox";
@@ -191,6 +191,9 @@ const VirtualizedBillsTable = ({
 }) => {
   const [sortField, setSortField] = useState("date");
   const [sortDirection, setSortDirection] = useState("desc");
+  const [visibleStop, setVisibleStop] = useState(-1);
+  const onLoadMoreRef = useRef(onLoadMore);
+  useEffect(() => { onLoadMoreRef.current = onLoadMore; });
 
   const sortedBills = useMemo(() => {
     return [...data].sort((a, b) => {
@@ -207,6 +210,15 @@ const VirtualizedBillsTable = ({
       return 0;
     });
   }, [data, sortField, sortDirection]);
+
+  // Trigger load when loading finishes and user is near the bottom.
+  // onItemsRendered alone misses this because FixedSizeList doesn't re-fire
+  // after a prop change (e.g. loading → false) with no scroll event.
+  useEffect(() => {
+    if (onLoadMoreRef.current && hasMore && !loading && visibleStop >= sortedBills.length - 10) {
+      onLoadMoreRef.current();
+    }
+  }, [loading, hasMore, visibleStop, sortedBills.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSort = useCallback((field, direction) => {
     setSortField(field);
@@ -249,12 +261,7 @@ const VirtualizedBillsTable = ({
         itemSize={ROW_HEIGHT}
         itemData={itemData}
         width="100%"
-        onItemsRendered={({ visibleStopIndex }) => {
-          // Load next page when the user scrolls within 10 rows of the end
-          if (onLoadMore && hasMore && !loading && visibleStopIndex >= sortedBills.length - 10) {
-            onLoadMore();
-          }
-        }}
+        onItemsRendered={({ visibleStopIndex }) => setVisibleStop(visibleStopIndex)}
       >
         {BillRow}
       </FixedSizeList>
