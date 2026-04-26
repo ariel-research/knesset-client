@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { getAllBills, getBillsOfKnesset } from "../../utils/apiUtils";
-import AutoComplete from "./AutoComplete";
+import { getAllBills, getBillsOfKnesset } from "../../utils/apiUtilsOld";
+import AutoComplete from "./AutoCompleteOld";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../redux/searchedBillSlice";
 import { addBill, addMultipleBills, clearAllBills } from "../redux/selectedBillsSlice";
@@ -19,7 +19,7 @@ import {
   ResetButton,
   SearchIconWrap,
   SearchDivider,
-} from "./SearchBills.styled";
+} from "./SearchBillsOld.styled";
 import StyledSelect from "../common/StyledSelect";
 
 import { ALL_KNESSET_NUMBERS } from "../../assets/consts"; //name and number 

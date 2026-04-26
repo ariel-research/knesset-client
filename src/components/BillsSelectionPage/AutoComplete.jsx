@@ -1,152 +1,233 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import styled from "styled-components";
 import {
   AutoCompleteInput,
   AutoCompleteRow,
   AutoCompleteRowsContainer,
   AutoCompleteWrapper,
-  InputRow,
-  SearchIconButton,
 } from "./AutoComplete.styled";
-import { useDispatch, useSelector } from "react-redux";
-import { update } from "../redux/searchedBillSlice";
-import {setDisplayedBills} from "../redux/displayedBillsSlice";
-import { useEffect,useRef  } from "react";
 
-const AutoComplete = (props) => {
-  const { data } = props;
-  const [userInput, setUserInput] = useState("");
-  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-  const [allFilteredSuggestions, setAllFilteredSuggestions] = useState([]);
-  const searchedBill = useSelector((select) => select.searchedBill);
-  const dispatch = useDispatch();
-  const inputRef = useRef(null);
+// ─── Visible input shell ──────────────────────────────────────────────────────
+
+const InputShell = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 280px;
+  padding: 0 12px;
+  background: #ffffff;
+  border: 1.5px solid ${({ $focused }) => ($focused ? "#2563eb" : "#cbd5e1")};
+  border-radius: 10px;
+  box-shadow: ${({ $focused }) =>
+    $focused ? "0 0 0 3px rgba(37,99,235,0.12)" : "0 1px 4px rgba(0,0,0,0.06)"};
+  transition: border-color 0.18s, box-shadow 0.18s;
+  direction: rtl;
+`;
+
+const SearchIcon = styled.svg`
+  flex-shrink: 0;
+  color: ${({ $focused }) => ($focused ? "#2563eb" : "#94a3b8")};
+  transition: color 0.18s;
+`;
+
+const ClearBtn = styled.button`
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  padding: 2px 4px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.12s, background 0.12s;
+  &:hover { color: #1b2a45; background: #f1f5f9; }
+`;
+
+// ─── "See all results" footer button ─────────────────────────────────────────
+
+const ShowAllButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-top: 1px solid #e2e8f2;
+  background: #f8fafc;
+  color: #2563eb;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  direction: rtl;
+  transition: background 0.12s;
+
+  &:hover { background: #eff6ff; }
+
+  span { color: #94a3b8; font-weight: 400; }
+`;
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+const AutoCompleteV2 = ({
+  query,
+  onQueryChange,
+  suggestions = [],
+  mode,
+  totalResults = 0,
+  hasMoreResults = false,
+}) => {
+  const [open, setOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const wrapperRef = useRef(null);
+  const inputRef = useRef(null);
 
-  const onSuggestionClickHandler = (val) => {
-    setUserInput(val.label);
-    setFilteredSuggestions([]);
-    dispatch(update(val));
-    dispatch(setDisplayedBills([val]))
-
-  };
-
-  const onChangeHandler = (e) => {
-    const value = e.target.value;
-    setUserInput(value);
-    const filtered = data.filter(
-      (suggestion) =>
-        suggestion.label.toLowerCase().indexOf(value.toLowerCase()) > -1
-    );
-    if (value) {
-      //sort by prefix
-      filtered.sort((a, b) => {
-        if (a.label.startsWith(value) && !b.label.startsWith(value)) {
-          return -1;
-        }
-        if (b.label.startsWith(value) && !a.label.startsWith(value)) {
-          return 1;
-        }
-        return a.label.localeCompare(b.label);
-      });
-      setAllFilteredSuggestions(filtered);
-      //present only the first 30 results in the dropdown
-      setFilteredSuggestions(filtered.slice(0, 30));
-    } else {
-      setAllFilteredSuggestions([]);
-      setFilteredSuggestions([]);
-    }
-  };
-
-  const onFocusHandler = () => {
-    if (userInput) {
-      const filtered = data.filter(
-        (suggestion) =>
-          suggestion.label.toLowerCase().includes(userInput.toLowerCase())
-      );
-      setFilteredSuggestions(filtered.slice(0, 30));
-    }
-  };
-  
-  
-
-
-
-  const onSearchClick = () => {
-    dispatch(setDisplayedBills(filteredSuggestions))
-  }
-
-  const onKeyDownHandler = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      if (userInput !== "" && filteredSuggestions.length){
-        console.log("enter!")
-        onSearchClick();
-        setFilteredSuggestions([]); // Trigger the table
-        inputRef.current?.blur();
-
+  // ── Close on click outside ──────────────────────────────────────────────────
+  useEffect(() => {
+    const handle = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setOpen(false);
       }
+    };
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, []);
+
+  // ── Open dropdown only when input is $focused — NOT on suggestions change ────
+  // (Watching suggestions here caused the dropdown to re-open on every scroll
+  // page load because bills.slice(0,30) is a new array reference each render.)
+  const showDropdown = isFocused && open && suggestions.length > 0 && !!query;
+
+  // ── Handlers ────────────────────────────────────────────────────────────────
+
+  const handleChange = (e) => {
+    onQueryChange(e.target.value);
+    if (e.target.value) setOpen(true);
+    else setOpen(false);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    if (query && suggestions.length) setOpen(true);
+  };
+
+  const handleBlur = () => setIsFocused(false);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === "Escape") {
+      e.preventDefault();
+      setOpen(false);
+      inputRef.current?.blur();
     }
   };
-  
 
-  const formatText = (text) => text.replace(/ /g, '\u00A0'); // non-breaking space
- 
+  const handleSuggestionClick = (bill) => {
+    onQueryChange(bill.label);
+    setOpen(false);
+  };
+
+  const handleClear = () => {
+    onQueryChange("");
+    setOpen(false);
+    inputRef.current?.focus();
+  };
+
+  // "See all in table" — just closes the dropdown; the table already shows results
+  const handleShowAll = () => {
+    setOpen(false);
+    inputRef.current?.blur();
+  };
+
+  // ── Highlight matching substring ────────────────────────────────────────────
+
   const highlightMatch = (label) => {
-    if (!userInput) return label;
-  
-    const lowerLabel = label.toLowerCase();
-    const lowerInput = userInput.toLowerCase();
-    const startIndex = lowerLabel.indexOf(lowerInput);
-  
-    if (startIndex === -1) return label;
-    
-    const beforeMatch = formatText(label.slice(0, startIndex));
-    const matchText = formatText(label.slice(startIndex, startIndex + userInput.length));
-    const afterMatch = formatText(label.slice(startIndex + userInput.length));
-  
+    if (!query) return label;
+    const lower = label.toLowerCase();
+    const lowerQ = query.toLowerCase();
+    const start = lower.indexOf(lowerQ);
+    if (start === -1) return label;
     return (
       <>
-        {beforeMatch}
-        <span style={{ fontWeight: 'bold', color: '#000000' }}>{matchText}</span>
-        {afterMatch}
+        {label.slice(0, start)}
+        <span style={{ fontWeight: "bold", color: "#000" }}>
+          {label.slice(start, start + query.length)}
+        </span>
+        {label.slice(start + query.length)}
       </>
     );
   };
-  
-  useEffect(() => {
-    setUserInput(searchedBill.label);
-  }, [searchedBill]);
+
+  const resultLabel = hasMoreResults
+    ? `${totalResults}+ תוצאות בטבלה`
+    : `${totalResults} תוצאות בטבלה`;
 
   return (
-    <AutoCompleteWrapper id="autocomplete-wrapper">
-      <AutoCompleteInput
-        id="autocomplete-input"
-        autoComplete="off"
-        placeholder="שם הצעת חוק"
-        onChange={onChangeHandler}
-        onKeyDown={onKeyDownHandler} 
-        onFocus={onFocusHandler}
-        value={userInput}
-        ref={inputRef}
+    <AutoCompleteWrapper ref={wrapperRef} id="autocomplete-wrapper-v2" style={{ position: "relative" }}>
+      <InputShell $focused={isFocused}>
+        {/* Search icon — right side (RTL) */}
+        <SearchIcon
+          $focused={isFocused}
+          width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2"
+          strokeLinecap="round" strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </SearchIcon>
 
-      />
-      {filteredSuggestions.length > 0 && (
-        <AutoCompleteRowsContainer id="autocomplete-dropdown">
-          {filteredSuggestions.map((bill, index) => {
-            return (
-              <AutoCompleteRow
-                key={index}
-                title={bill.label}
-                onClick={() => onSuggestionClickHandler(bill)}
-              >
-                {highlightMatch(bill.label)}
-              </AutoCompleteRow>
-            );
-          })}
+        <AutoCompleteInput
+          ref={inputRef}
+          id="autocomplete-input-v2"
+          autoComplete="off"
+          placeholder={mode === "search" ? "מחפש בכל הצעות החוק..." : "חיפוש הצעת חוק"}
+          value={query}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          style={{ flex: 1 }}
+        />
+
+        {/* Clear button — left side (RTL) */}
+        {query && (
+          <ClearBtn
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={handleClear}
+            title="נקה חיפוש"
+          >
+            ✕
+          </ClearBtn>
+        )}
+      </InputShell>
+
+      {showDropdown && (
+        <AutoCompleteRowsContainer id="autocomplete-dropdown-v2">
+          {suggestions.map((bill) => (
+            <AutoCompleteRow
+              key={bill.id}
+              title={bill.label}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => handleSuggestionClick(bill)}
+            >
+              {highlightMatch(bill.label)}
+            </AutoCompleteRow>
+          ))}
+
+          {/* "See all results in table" button */}
+          {mode === "search" && totalResults > 0 && (
+            <ShowAllButton
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={handleShowAll}
+            >
+              ראה את כל התוצאות בטבלה
+              <span>{resultLabel} ↓</span>
+            </ShowAllButton>
+          )}
         </AutoCompleteRowsContainer>
       )}
     </AutoCompleteWrapper>
   );
 };
 
-export default AutoComplete;
+export default AutoCompleteV2;

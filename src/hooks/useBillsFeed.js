@@ -13,7 +13,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import useDebounce from "./useDebounce";
-import { browseBills, searchBills } from "../utils/apiUtilsV2";
+import { browseBills, searchBills } from "../utils/apiUtils";
 
 const PAGE_SIZE = 50;
 

@@ -7,7 +7,7 @@ import {
   ScrollableTBody,
   TableRow,
   TableCell
-} from "./Table.styled";
+} from "./TableOld.styled";
 
 import {
   ArrowButton

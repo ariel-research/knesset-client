@@ -1,22 +1,16 @@
 import axios from "axios";
 
-//const BASE_URL = "https://knesset.csariel.xyz/general/";
-const BASE_URL = "http://localhost:8088/general/";
+const BASE_URL = process.env.REACT_APP_API_URL ?? "http://localhost:8088";
+const v2 = axios.create({ baseURL: `${BASE_URL}/v2/` });
 
-export const getAllBills = async () => {
-  return await axios.get(`${BASE_URL}bills`);
-};
+// GET /v2/browse?knessetNum=N&cursor=LAST_ID&limit=50
+export const browseBills = (knessetNum, cursor = null, limit = 50) =>
+  v2.get("browse", { params: { knessetNum, cursor: cursor ?? undefined, limit } });
 
-export const getAllKnessetNum = async () => {
-  return await axios.get(`${BASE_URL}knessetAmounts`);
-};
+// GET /v2/search?knessetNum=N&q=query&cursor=LAST_ID&limit=50
+export const searchBills = (knessetNum, query, cursor = null, limit = 50) =>
+  v2.get("search", { params: { knessetNum, q: query, cursor: cursor ?? undefined, limit } });
 
-export const getBillsOfKnesset = async (knesset_num) => {
-  return await axios.get(
-    `${BASE_URL}billsByKnessetNum?knessetNum=${knesset_num}`
-  );
-};
+export const getAllKnessetNumV2 = () => v2.get("knessetAmounts");
 
-export const getVotesScore = async (body) => {
-  return await axios.post(` ${BASE_URL}scores`, body);
-};
+export const getVotesScoreV2 = (body) => v2.post("scores", body);
