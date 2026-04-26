@@ -17,6 +17,8 @@ import {
   TabDescription,
   TabHeader,
   ResetButton,
+  SearchIconWrap,
+  SearchDivider,
 } from "./SearchBills.styled";
 import StyledSelect from "../common/StyledSelect";
 
@@ -188,6 +190,18 @@ const SearchBills = (props) => {
       <TabContent>
         <TabDescription id="tab_description">{description}</TabDescription>
         <BillsSelectionContainer>
+          <SearchIconWrap>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </SearchIconWrap>
+
+          <AutoCompleteContainer>
+            <AutoComplete data={filteredBillsByKnessetNum}/>
+          </AutoCompleteContainer>
+
+          <SearchDivider />
+
           <StyledSelect
             idPrefix="knesset_num_"
             onChangeFunc={onKnessetNumSelectHandler}
@@ -195,10 +209,6 @@ const SearchBills = (props) => {
             optionsLabels={Object.keys(ALL_KNESSET_NUMBERS)}
             optionsValues={Object.values(ALL_KNESSET_NUMBERS)}
           />
-
-          <AutoCompleteContainer>
-            <AutoComplete data={filteredBillsByKnessetNum}/>
-          </AutoCompleteContainer>
         </BillsSelectionContainer>
       </TabContent>
     </TabContainer>

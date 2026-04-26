@@ -4,11 +4,12 @@ import { billVote, removeBill, addBill } from "../redux/selectedBillsSlice";
 import TrashIcon from "../../assets/svg-icons/TrashIcon";
 import { ThumbUpIcon, ThumbDownIcon, NeutralIcon } from "./Thumbs";
 
-const voteOptions = {
-  DEFAULT: 0,
-  FOR: 1,
-  AGAINST: 2,
-  NEUTRAL: 3,
+const voteOptions = { DEFAULT: 0, FOR: 1, AGAINST: 2, NEUTRAL: 3 };
+
+const voteColors = {
+  for:     { border: "#4f46e5", bg: "#eef2ff", icon: "#4f46e5" },
+  against: { border: "#e11d48", bg: "#fff1f2", icon: "#e11d48" },
+  neutral: { border: "#d97706", bg: "#fffbeb", icon: "#d97706" },
 };
 
 const UserVoteBox = ({ bill, removeBillButton }) => {
@@ -20,53 +21,37 @@ const UserVoteBox = ({ bill, removeBillButton }) => {
   const selectedValue = selectedBill ? selectedBill.vote : voteOptions.DEFAULT;
 
   const onClickHandler = (vote) => {
-    if (!selectedBill) {
-      dispatch(addBill(bill));
-    }
+    if (!selectedBill) dispatch(addBill(bill));
     dispatch(billVote({ billId, vote }));
-  };
-
-  const removeBillHandler = () => {
-    dispatch(removeBill(billId));
   };
 
   return (
     <VoteOptionsWrapper>
       {removeBillButton && (
-        <RemoveButton onClick={removeBillHandler} title="הסר">
+        <RemoveButton onClick={() => dispatch(removeBill(billId))} title="הסר">
           <TrashIcon />
         </RemoveButton>
       )}
 
-      <IconWrap data-tip="נגד">
-        <VoteButton
-          voteType="against"
-          isActive={selectedValue === voteOptions.AGAINST}
-          onClick={() => onClickHandler(voteOptions.AGAINST)}
-          aria-label="נגד"
-        >
-          <ThumbDownIcon />
-        </VoteButton>
-      </IconWrap>
-
+      {/* DOM order matches mockup: בעד → נגד → נמנע.
+          In RTL flex, first child renders on the RIGHT. */}
       <IconWrap data-tip="בעד">
-        <VoteButton
-          voteType="for"
-          isActive={selectedValue === voteOptions.FOR}
-          onClick={() => onClickHandler(voteOptions.FOR)}
-          aria-label="בעד"
-        >
+        <VoteButton voteType="for" isActive={selectedValue === voteOptions.FOR}
+          onClick={() => onClickHandler(voteOptions.FOR)} aria-label="בעד">
           <ThumbUpIcon />
         </VoteButton>
       </IconWrap>
 
+      <IconWrap data-tip="נגד">
+        <VoteButton voteType="against" isActive={selectedValue === voteOptions.AGAINST}
+          onClick={() => onClickHandler(voteOptions.AGAINST)} aria-label="נגד">
+          <ThumbDownIcon />
+        </VoteButton>
+      </IconWrap>
+
       <IconWrap data-tip="נמנע">
-        <VoteButton
-          voteType="neutral"
-          isActive={selectedValue === voteOptions.NEUTRAL}
-          onClick={() => onClickHandler(voteOptions.NEUTRAL)}
-          aria-label="נמנע"
-        >
+        <VoteButton voteType="neutral" isActive={selectedValue === voteOptions.NEUTRAL}
+          onClick={() => onClickHandler(voteOptions.NEUTRAL)} aria-label="נמנע">
           <NeutralIcon />
         </VoteButton>
       </IconWrap>
@@ -123,18 +108,11 @@ const IconWrap = styled.div`
     z-index: 20;
   }
 
-  &:hover::after,
-  &:hover::before {
+  &:hover::after, &:hover::before {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
 `;
-
-const voteColors = {
-  for:     { border: "#4f46e5", bg: "#eef2ff", icon: "#4f46e5" },
-  against: { border: "#e11d48", bg: "#fff1f2", icon: "#e11d48" },
-  neutral: { border: "#d97706", bg: "#fffbeb", icon: "#d97706" },
-};
 
 const VoteButton = styled.button`
   width: 32px;
@@ -150,18 +128,12 @@ const VoteButton = styled.button`
   justify-content: center;
   transition: border-color 0.18s, background 0.18s, transform 0.12s;
 
+  /* All icons are outline/stroke — just drive the stroke color */
   svg {
-    color: ${({ isActive, voteType }) =>
-      isActive ? voteColors[voteType].icon : "#94a3b8"};
-    fill: ${({ isActive, voteType }) =>
-      voteType !== "neutral"
-        ? isActive ? voteColors[voteType].icon : "#94a3b8"
-        : "none"};
     stroke: ${({ isActive, voteType }) =>
-      voteType === "neutral"
-        ? isActive ? voteColors[voteType].icon : "#94a3b8"
-        : "none"};
-    transition: color 0.18s, fill 0.18s, stroke 0.18s;
+      isActive ? voteColors[voteType].icon : "#94a3b8"};
+    fill: none;
+    transition: stroke 0.18s;
   }
 
   &:hover {
@@ -181,6 +153,5 @@ const RemoveButton = styled.button`
   padding: 4px;
   color: #94a3b8;
   transition: color 0.15s;
-
   &:hover { color: #e11d48; }
 `;

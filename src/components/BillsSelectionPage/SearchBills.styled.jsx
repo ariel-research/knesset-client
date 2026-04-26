@@ -57,6 +57,21 @@ export const AutoCompleteContainer = styled.div`
   min-width: 300px;
 `;
 
+export const SearchIconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #94a3b8;
+  svg { width: 16px; height: 16px; }
+`;
+
+export const SearchDivider = styled.div`
+  width: 1px;
+  height: 22px;
+  background: #e2e8f2;
+  flex-shrink: 0;
+`;
+
 export const SelectKnessetNum = styled.select`
   border-radius: 4px;
   height: 44px;

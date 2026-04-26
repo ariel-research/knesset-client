@@ -6,8 +6,28 @@ export const AutoCompleteWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
+`;
+
+export const InputRow = styled.div`
+  display: flex;
   align-items: center;
-  justify-content: center;
+  width: 100%;
+  gap: 0.4rem;
+`;
+
+export const SearchIconButton = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  flex-shrink: 0;
+  color: #94a3b8;
+  transition: color 0.15s;
+
+  &:hover { color: #2563eb; }
+  svg { width: 16px; height: 16px; }
 `;
 
 export const AutoCompleteInput = styled.input`
@@ -56,8 +76,8 @@ export const AutoCompleteRowsWrapper = styled.div`
 
 export const AutoCompleteRow = styled.div`
   display: flex;
-  align-items: center;
-  height: 40px;
+  align-items: flex-start;
+  min-height: 40px;
   text-align: right;
   direction: rtl;
   font-family: 'Heebo', sans-serif;
@@ -65,10 +85,10 @@ export const AutoCompleteRow = styled.div`
   color: #1b2a45;
   border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
-  padding: 0 1rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 0.5rem 1rem;
+  white-space: normal;
+  overflow: visible;
+  word-break: break-word;
   transition: background 0.1s;
 
   &:last-child { border-bottom: none; }

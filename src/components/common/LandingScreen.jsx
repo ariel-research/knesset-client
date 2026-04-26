@@ -3,6 +3,7 @@ import styled from "styled-components";
 const LandingScreen = () => {
   return (
     <NavBar>
+      <NavInner>
       <Brand>
         <LogoMark>
           {/* layers / stacks icon — matches the VoteMate identity */}
@@ -25,6 +26,7 @@ const LandingScreen = () => {
         </svg>
         כנסת 25
       </KnessetPill>
+      </NavInner>
     </NavBar>
   );
 };
@@ -32,16 +34,24 @@ const LandingScreen = () => {
 export default LandingScreen;
 
 const NavBar = styled.header`
+  width: 100%;
+  align-self: stretch;
   height: 62px;
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   background: #1b2a45;
   box-shadow: 0 2px 14px rgba(0,0,0,.22);
   position: sticky;
   top: 0;
   z-index: 100;
+`;
+
+const NavInner = styled.div`
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   direction: rtl;
 `;
 

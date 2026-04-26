@@ -4,6 +4,8 @@ import {
   AutoCompleteRow,
   AutoCompleteRowsContainer,
   AutoCompleteWrapper,
+  InputRow,
+  SearchIconButton,
 } from "./AutoComplete.styled";
 import { useDispatch, useSelector } from "react-redux";
 import { update } from "../redux/searchedBillSlice";
@@ -14,9 +16,11 @@ const AutoComplete = (props) => {
   const { data } = props;
   const [userInput, setUserInput] = useState("");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const [allFilteredSuggestions, setAllFilteredSuggestions] = useState([]);
   const searchedBill = useSelector((select) => select.searchedBill);
   const dispatch = useDispatch();
   const inputRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   const onSuggestionClickHandler = (val) => {
     setUserInput(val.label);
@@ -44,11 +48,11 @@ const AutoComplete = (props) => {
         }
         return a.label.localeCompare(b.label);
       });
-      //present only the first 30 results
-      setFilteredSuggestions(
-        filtered.splice(0, filtered.length < 30 ? filtered.length : 30)
-      );
+      setAllFilteredSuggestions(filtered);
+      //present only the first 30 results in the dropdown
+      setFilteredSuggestions(filtered.slice(0, 30));
     } else {
+      setAllFilteredSuggestions([]);
       setFilteredSuggestions([]);
     }
   };
