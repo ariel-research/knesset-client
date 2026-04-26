@@ -16,7 +16,7 @@ export const ResultsHeader = styled.div`
 export const DataContainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 1.25rem;
   width: 100%;
   flex-wrap: wrap;
@@ -25,6 +25,9 @@ export const DataContainer = styled.div`
 /* ── SCORES CARD ─────────────────────────────── */
 export const ScoresCard = styled.div`
   flex: 0 0 350px;
+  display: flex;
+  flex-direction: column;
+  max-height: 560px;
   background: #ffffff;
   border-radius: 12px;
   border: 1px solid #e2e8f2;
@@ -33,6 +36,7 @@ export const ScoresCard = styled.div`
 
   @media (max-width: 900px) {
     flex: 1 1 100%;
+    max-height: 400px;
   }
 `;
 
@@ -78,10 +82,12 @@ export const CardSub = styled.span`
 
 export const ScoresList = styled.div`
   padding: 0.55rem 1.1rem;
-  max-height: 490px;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  direction: ltr;
 
-  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar { width: 5px; }
   &::-webkit-scrollbar-thumb { background: #dde3f0; border-radius: 4px; }
 `;
 
@@ -91,6 +97,7 @@ export const ScoreRow = styled.div`
   gap: 0.6rem;
   padding: 0.6rem 0;
   border-bottom: 1px solid #f1f5f9;
+  direction: rtl;
   &:last-child { border-bottom: none; }
 `;
 
@@ -143,16 +150,19 @@ export const ScoreVal = styled.span`
 export const VotesCard = styled.div`
   flex: 1;
   min-width: 340px;
+  display: flex;
+  flex-direction: column;
+  max-height: 560px;
   background: #ffffff;
   border-radius: 12px;
   border: 1px solid #e2e8f2;
   box-shadow: 0 4px 16px rgba(0,0,0,.08);
   overflow: hidden;
-  overflow-x: auto;
 
   @media (max-width: 900px) {
     min-width: 0;
     flex: 1 1 100%;
+    max-height: 500px;
   }
 `;
 

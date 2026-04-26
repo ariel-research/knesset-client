@@ -21,27 +21,24 @@ import {
   FilterLabel,
   FilterSelect,
 } from "./CompassResultsPage.styled";
+
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { VOTES_TYPES } from "../assets/consts";
 
 const CompassResultsPage = () => {
   const [data, setData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [selectedKnessetMember, setSelectedKnessetMember] = useState();
-  const [voteFilter, setVoteFilter] = useState(0);
   const [allKnessetMembers, setAllKnessetMembers] = useState([]);
   const [gradesData, setGradesData] = useState([]);
   const [gradesFilteredData, setGradesFilteredData] = useState([]);
   const compassResults = useSelector((state) => state.compassResults);
+  const selectedBills  = useSelector((state) => state.selectedBills);
 
-  const applyFilters = (member, vote) => {
+  const applyFilters = (member) => {
     let filtered = [...originalData];
     if (member) {
       filtered = filtered.filter((r) => r.km_name.toLowerCase() === member.toLowerCase());
-    }
-    if (vote !== 0) {
-      filtered = filtered.filter((r) => r.km_vote === vote);
     }
 
     // update scores panel to only show members in filtered view
@@ -60,13 +57,7 @@ const CompassResultsPage = () => {
     const val = e.target.value;
     const member = val === "0" ? undefined : val;
     setSelectedKnessetMember(member);
-    applyFilters(member, voteFilter);
-  };
-
-  const onVoteSelectHandler = (e) => {
-    const vote = parseInt(e.target.value);
-    setVoteFilter(vote);
-    applyFilters(selectedKnessetMember, vote);
+    applyFilters(member);
   };
 
   const renderScores = () => {
@@ -95,7 +86,9 @@ const CompassResultsPage = () => {
     const gradedDataParsed = [];
 
     compassResults.forEach((record) => {
-      const ans = { id: parseInt(record.bill_id), label: record.vote_name };
+      const billId = parseInt(record.bill_id);
+      const link = record.bill_link ?? selectedBills.find((b) => b.id === billId)?.link ?? null;
+      const ans = { id: billId, label: record.vote_name, link, date: record.vote_date ?? null };
       record.voters.forEach((voter) => {
         parsed.push({ ...ans, km_name: voter.voter_name, km_vote: voter.ballot });
         if (!gradedDataParsed.find((km) => km.km_name === voter.voter_name)) {
@@ -151,13 +144,6 @@ const CompassResultsPage = () => {
                 <option value="0">הכל</option>
                 {allKnessetMembers.map((name) => (
                   <option key={name} value={name}>{name}</option>
-                ))}
-              </FilterSelect>
-              <FilterLabel>הצבעה:</FilterLabel>
-              <FilterSelect value={voteFilter} onChange={onVoteSelectHandler}>
-                <option value="0">הכל</option>
-                {Object.entries(VOTES_TYPES).map(([label, val]) => (
-                  <option key={val} value={val}>{label}</option>
                 ))}
               </FilterSelect>
             </FilterRow>
