@@ -149,7 +149,7 @@ const HomepageV2 = () => {
     <HomepageWrapper>
       <DemoBanner>
         VoteMate
-        <ClearVotesBtn onClick={onClearVotes}>נקה הצבעות</ClearVotesBtn>
+        <ClearVotesBtn onClick={onClearVotes}>ניקוי הצבעות</ClearVotesBtn>
       </DemoBanner>
 
       <PageContent>
@@ -160,8 +160,8 @@ const HomepageV2 = () => {
             </svg>
             נתונים רשמיים מהכנסת
           </HeroTag>
-          <HeroTitle>גלה אילו ח"כים<br/><em>מייצגים אותך</em></HeroTitle>
-          <HeroBody>הצבע על הצעות החוק שחשובות לך, וגלה עד כמה כל חבר כנסת הולך בקנה אחד עם עמדותיך.</HeroBody>
+          <HeroTitle>גלו אילו ח"כים<br/><em>מייצגים אתכם</em></HeroTitle>
+          <HeroBody>הצביעו על הצעות החוק שחשובות לכם, וגלו עד כמה כל חבר כנסת הולך בקנה אחד עם עמדותיכם.</HeroBody>
         </Hero>
 
         {/* Search bar */}
