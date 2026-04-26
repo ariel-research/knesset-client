@@ -6,7 +6,7 @@ import Homepage from "./pages/Homepage";
 
 function App() {
   useEffect(() => {
-    document.title = "Political Transparency";
+    document.title = "VoteMate";
   }, []);
 
   return (

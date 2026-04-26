@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import VirtualizedBillsTable from "../components/Table/VirtualizedBillsTable";
@@ -12,7 +11,7 @@ import CompassResultsPage from "./CompassResultsPage";
 import useBillsFeed from "../hooks/useBillsFeed";
 
 import { setDisplayedBills } from "../components/redux/displayedBillsSlice";
-import { addMultipleBills } from "../components/redux/selectedBillsSlice";
+import { addMultipleBills, clearAllBills } from "../components/redux/selectedBillsSlice";
 import { updateResults } from "../components/redux/compassResultsSlice";
 
 import { getVotesScoreV2 } from "../utils/apiUtilsV2";
@@ -29,12 +28,31 @@ import {
 // ─── Styled ───────────────────────────────────────────────────────────────────
 
 const DemoBanner = styled.div`
+  width: 100%;
   background: linear-gradient(90deg, #1b2a45 0%, #2563eb 100%);
   color: #fff;
-  font-size: 0.82rem;
-  padding: 8px 20px;
-  text-align: center;
-  a { color: #93c5fd; text-decoration: underline; cursor: pointer; }
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  direction: rtl;
+`;
+
+const ClearVotesBtn = styled.button`
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  &:hover { background: rgba(255,255,255,0.28); }
 `;
 
 const SearchBar = styled.div`
@@ -57,7 +75,6 @@ const HomepageV2 = () => {
   const [knessetNum, setKnessetNum]   = useState(DEFAULT_KNESSET[1]);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const selectedBills = useSelector((s) => s.selectedBills);
 
   // ── useBillsFeed owns all data fetching ─────────────────────────────────────
@@ -80,6 +97,11 @@ const HomepageV2 = () => {
   }, [selectedBills]);
 
   // ── Scores ──────────────────────────────────────────────────────────────────
+
+  const onClearVotes = () => {
+    dispatch(clearAllBills());
+    localStorage.removeItem("selectedBills");
+  };
 
   const onFindMatches = () => {
     const bill_ids   = selectedBills.map((b) => b.id);
@@ -126,11 +148,8 @@ const HomepageV2 = () => {
   return (
     <HomepageWrapper>
       <DemoBanner>
-        גרסה משופרת — pagination · חיפוש בשרת · טבלה וירטואלית
-        &nbsp;|&nbsp;
-        <a href="/classic" onClick={(e) => { e.preventDefault(); navigate("/classic"); }}>
-          גרסה קלאסית ←
-        </a>
+        VoteMate
+        <ClearVotesBtn onClick={onClearVotes}>נקה הצבעות</ClearVotesBtn>
       </DemoBanner>
 
       <PageContent>
