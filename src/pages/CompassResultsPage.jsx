@@ -92,7 +92,7 @@ const CompassResultsPage = () => {
       record.voters.forEach((voter) => {
         parsed.push({ ...ans, km_name: voter.voter_name, km_vote: voter.ballot });
         if (!gradedDataParsed.find((km) => km.km_name === voter.voter_name)) {
-          gradedDataParsed.push({ km_name: voter.voter_name, grade: voter.graded });
+          gradedDataParsed.push({ km_name: voter.voter_name, grade: voter.graded ?? 0 });
         }
       });
     });
