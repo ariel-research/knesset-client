@@ -188,6 +188,7 @@ const VirtualizedBillsTable = ({
   onLoadMore = null,
   hasMore = false,
   loading = false,
+  noSort = false,
 }) => {
   const [sortField, setSortField] = useState("date");
   const [sortDirection, setSortDirection] = useState("desc");
@@ -196,6 +197,7 @@ const VirtualizedBillsTable = ({
   useEffect(() => { onLoadMoreRef.current = onLoadMore; });
 
   const sortedBills = useMemo(() => {
+    if (noSort) return [...data];
     return [...data].sort((a, b) => {
       if (sortField === "date") {
         const da = new Date(a.date);
@@ -243,11 +245,11 @@ const VirtualizedBillsTable = ({
       {/* Sticky header */}
       <HeaderRow>
         <HeaderCell flex={COL.date}>
-          תאריך {renderSortButtons("date")}
+          תאריך {!noSort && renderSortButtons("date")}
         </HeaderCell>
         <HeaderCell flex={COL.knesset}>מספר כנסת</HeaderCell>
         <HeaderCell flex={COL.name}>
-          שם הצעת חוק {renderSortButtons("label")}
+          שם הצעת חוק {!noSort && renderSortButtons("label")}
         </HeaderCell>
         <HeaderCell flex={COL.link} center>קישור</HeaderCell>
         <HeaderCell flex={COL.vote} center>הצבעתך</HeaderCell>

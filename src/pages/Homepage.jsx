@@ -123,7 +123,7 @@ const HomepageV2 = () => {
 
   const tableData = () => {
     if (activeTab === "all")     return bills;
-    if (activeTab === "voted")   return selectedBills;
+    if (activeTab === "voted")   return [...selectedBills].reverse();
     if (activeTab === "unvoted") return unvoted;
     return null;
   };
@@ -141,6 +141,7 @@ const HomepageV2 = () => {
         onLoadMore={activeTab === "all" ? loadMore : null}
         hasMore={activeTab === "all" ? hasMore : false}
         loading={activeTab === "all" ? loading : false}
+        noSort={activeTab === "voted"}
       />
     );
   };

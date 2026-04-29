@@ -21,6 +21,10 @@ const UserVoteBox = ({ bill, removeBillButton }) => {
   const selectedValue = selectedBill ? selectedBill.vote : voteOptions.DEFAULT;
 
   const onClickHandler = (vote) => {
+    if (selectedBill?.vote === vote) {
+      dispatch(removeBill(billId));
+      return;
+    }
     if (!selectedBill) dispatch(addBill(bill));
     dispatch(billVote({ billId, vote }));
   };
