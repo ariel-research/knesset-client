@@ -12,7 +12,7 @@ const voteColors = {
   neutral: { border: "#d97706", bg: "#fffbeb", icon: "#d97706" },
 };
 
-const UserVoteBox = ({ bill, removeBillButton }) => {
+const UserVoteBox = ({ bill, removeBillButton, disableToggleOff = false }) => {
   const billId = bill.id;
   const selectedBills = useSelector((state) => state.selectedBills);
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const UserVoteBox = ({ bill, removeBillButton }) => {
   const selectedValue = selectedBill ? selectedBill.vote : voteOptions.DEFAULT;
 
   const onClickHandler = (vote) => {
-    if (selectedBill?.vote === vote) {
+    if (!disableToggleOff && selectedBill?.vote === vote) {
       dispatch(removeBill(billId));
       return;
     }

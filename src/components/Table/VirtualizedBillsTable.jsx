@@ -174,7 +174,7 @@ const BillRow = ({ index, style, data }) => {
       </Cell>
 
       <Cell flex={COL.vote} center>
-        <UserVoteBox bill={bill} removeBillButton={removeBill[0]} />
+        <UserVoteBox bill={bill} removeBillButton={removeBill[0]} disableToggleOff={removeBill[0]} />
       </Cell>
     </Row>
   );
