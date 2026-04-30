@@ -137,7 +137,7 @@ const HomepageV2 = () => {
     return (
       <VirtualizedBillsTable
         data={tableData()}
-        removeBill={[activeTab === "voted"]}
+        removeBill={[false]}
         onLoadMore={activeTab === "all" ? loadMore : null}
         hasMore={activeTab === "all" ? hasMore : false}
         loading={activeTab === "all" ? loading : false}
