@@ -64,6 +64,13 @@ const SearchBar = styled.div`
   flex-wrap: wrap;
 `;
 
+const SortNote = styled.div`
+  font-size: 0.78rem;
+  color: #94a3b8;
+  direction: rtl;
+  padding: 4px 2px 0;
+`;
+
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -243,6 +250,10 @@ const HomepageV2 = () => {
             התאמות
           </TabButton>
         </TabsWrapper>
+
+        {activeTab === "voted" && (
+          <SortNote>ממוין לפי סדר ההצבעה — האחרונה תחילה</SortNote>
+        )}
 
         {/* Content */}
         {isScoreLoading ? <Loader /> : (
