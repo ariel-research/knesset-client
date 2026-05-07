@@ -27,34 +27,6 @@ import {
 
 // ─── Styled ───────────────────────────────────────────────────────────────────
 
-const DemoBanner = styled.div`
-  width: 100%;
-  background: linear-gradient(90deg, #1b2a45 0%, #2563eb 100%);
-  color: #fff;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  direction: rtl;
-`;
-
-const ClearVotesBtn = styled.button`
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.35);
-  color: #fff;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.15s;
-  &:hover { background: rgba(255,255,255,0.28); }
-`;
-
 const SearchBar = styled.div`
   display: flex;
   align-items: center;
@@ -105,11 +77,6 @@ const HomepageV2 = () => {
 
   // ── Scores ──────────────────────────────────────────────────────────────────
 
-  const onClearVotes = () => {
-    dispatch(clearAllBills());
-    localStorage.removeItem("selectedBills");
-  };
-
   const onFindMatches = () => {
     const bill_ids   = selectedBills.map((b) => b.id);
     const user_votes = selectedBills.map((b) => b.vote || 3);
@@ -155,11 +122,6 @@ const HomepageV2 = () => {
 
   return (
     <HomepageWrapper>
-      <DemoBanner>
-        VoteMate
-        <ClearVotesBtn onClick={onClearVotes}>ניקוי הצבעות</ClearVotesBtn>
-      </DemoBanner>
-
       <PageContent>
         <Hero>
           <HeroTag>
